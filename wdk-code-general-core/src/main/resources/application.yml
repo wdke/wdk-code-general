@@ -1,0 +1,7 @@
+server:
+  port: 8806
+spring:
+  application:
+    name: general-core #指定服务名
+  profiles:
+    active: dev

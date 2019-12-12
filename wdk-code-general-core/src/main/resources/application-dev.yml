@@ -1,0 +1,17 @@
+
+spring:
+  thymeleaf:
+    enabled: true
+    prefix: classpath:templates/
+    suffix: .html
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
+
+
+
+host: localhost:8806

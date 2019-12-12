@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/wdk-code-general.iml" filepath="$PROJECT_DIR$/wdk-code-general.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wdk-code-general-core/wdk-code-general-core.iml" filepath="$PROJECT_DIR$/wdk-code-general-core/wdk-code-general-core.iml" />
+    </modules>
+  </component>
+</project>
