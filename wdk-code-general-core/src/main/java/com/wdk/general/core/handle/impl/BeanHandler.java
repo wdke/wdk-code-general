@@ -5,6 +5,7 @@ import com.wdk.general.core.handle.IResultSetHandler;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class BeanHandler<T> implements IResultSetHandler<List<T>> {
 
     /**
      * 数据库集操作类
+     *
      * @param rSet 数据库处理结果集
      * @return 数据库结果集 List 集合
      */
@@ -40,7 +42,20 @@ public class BeanHandler<T> implements IResultSetHandler<List<T>> {
                 T obj = clazz.newInstance();
                 for (PropertyDescriptor descriptor : descriptors) {
                     Object value = rSet.getObject(descriptor.getName());
-                    descriptor.getWriteMethod().invoke(obj, value);
+                    if (null == value) {
+                        continue;
+                    }
+                    Class<?> propertyType = descriptor.getPropertyType();
+
+                    if(propertyType.equals(value.getClass())){
+                        descriptor.getWriteMethod().invoke(obj, value);
+                    }else if(value.getClass().equals(BigInteger.class)){
+                        descriptor.getWriteMethod().invoke(obj, ((BigInteger)value).longValue());
+                    }else{
+
+                        System.out.println(propertyType + "\t" + value.getClass());
+                        System.out.println(descriptor.getName() + "\t" + value);
+                    }
                 }
                 list.add(obj);
             }

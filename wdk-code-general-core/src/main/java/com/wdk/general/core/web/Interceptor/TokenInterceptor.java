@@ -9,12 +9,11 @@
  * @Copyright (c) 2017, Wanda.cn All right reserved.
  */
 
-package com.wdk.general.core.interceptor;
+package com.wdk.general.core.web.Interceptor;
 
 import com.alibaba.druid.util.StringUtils;
 import com.wdk.general.core.model.DbMessage;
-import com.wdk.general.core.utills.JwtUtils;
-import io.jsonwebtoken.Claims;
+import com.wdk.general.core.web.param.LoginParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -23,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by loutao on 2018/6/20.
@@ -45,18 +45,22 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         UserContext.current().setRequest(request);
         UserContext.current().setResponse(response);
-        String traceId = request.getParameter("__trace_id");
+        String traceId = request.getSession().getId();
 
         UserContext.current().setTraceId(traceId);
         long start = System.currentTimeMillis();
         UserContext.current().setStartTime(start);
 
         String requestURI = request.getRequestURI();
+        logger.info("requestURI->{}", requestURI);
         if (StringUtils.isEmpty(requestURI)) {
+            response.sendRedirect("/login");
             return false;
         }
 
-        if (requestURI.startsWith("/test")) {
+        if (requestURI.startsWith("/login")
+                || requestURI.startsWith("/index")
+                || requestURI.startsWith("/static")) {
             return true;
         } else {
             return preHandleService(request, response);
@@ -73,27 +77,39 @@ public class TokenInterceptor implements HandlerInterceptor {
             throws Exception {
         long start = UserContext.current().getStartTime();
         long duration = System.currentTimeMillis() - start;
-        if(duration > 3000){
+        if (duration > 3000) {
             logger.info("超时报警短信【__trace_id：{}】【duration：{}】", UserContext.current().getTraceId(), duration);
         }
         UserContext.release();
     }
 
     private boolean preHandleService(HttpServletRequest request, HttpServletResponse response) {
-       String loginToken = request.getHeader("Authorization");
-        if (StringUtils.isEmpty(loginToken)) {
-            loginToken = request.getParameter("Authorization");
-            if (StringUtils.isEmpty(loginToken)) {
-                return false;
-            }
-        }
 
-        if(!JwtUtils.isVerify(loginToken)){
+        LoginParam userInfo = (LoginParam) request.getSession().getAttribute("userInfo");
+
+        if (null == userInfo || StringUtils.isEmpty(userInfo.getUsername())) {
+
+            try {
+                response.sendRedirect("/login");
+                return false;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        DbMessage dbMessage = (DbMessage) request.getSession().getAttribute("dbMessage");
+
+        if (null == dbMessage && !request.getRequestURI().startsWith("/tables")) {
+
+            try {
+                response.sendRedirect("/tables/index");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return false;
         }
-        Claims claims = JwtUtils.parseJWT(loginToken);
-//        DbMessage dbMessage=claims.get("dbMessage",DbMessage.class);
-        UserContext.current().setDbMessage(claims.get("dbMessage",DbMessage.class));
+
+        UserContext.current().setDbMessage(dbMessage);
         return true;
     }
 

@@ -1,5 +1,6 @@
 package com.wdk.general.core.config;
-import com.wdk.general.core.interceptor.TokenInterceptor;
+
+import com.wdk.general.core.web.Interceptor.TokenInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

@@ -1,31 +1,17 @@
-/**  
- * @title: newmerchant-xapi   
- * @file: UserContext.java
- * @package: com.wanda.application.xapi.newmerchant.web.interceptor    
- * @description: 用ThreadLocal存储用户信息    
- * @author: jinyi10
- * @email: jinyi10@wanda.cn  
- * @time: 2017年3月20日 下午5:50:20   
- * @Copyright (c) 2017, Wanda.cn All right reserved. 
- */
-
-package com.wdk.general.core.interceptor;
+package com.wdk.general.core.web.Interceptor;
 
 import com.wdk.general.core.model.DbMessage;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by loutao on 2018/6/20.
+ * created by wdk on 2019/12/13
  */
 public class UserContext {
 
-    private static ThreadLocal<UserContext> threadLocal = new ThreadLocal<UserContext>() {
-        @Override
-        protected UserContext initialValue() {
-            return new UserContext();
-        }
-    };
+    private static ThreadLocal<UserContext> threadLocal = ThreadLocal.withInitial(() -> new UserContext());
+
 
     private String remortIP;
     private String localIp;
@@ -73,6 +59,7 @@ public class UserContext {
     public void setDbMessage(DbMessage dbMessage) {
         this.dbMessage = dbMessage;
     }
+
 
     public String getMemberId() {
         return memberId;
@@ -145,6 +132,4 @@ public class UserContext {
     public void setCreator(boolean creator) {
         this.creator = creator;
     }
-
-    //
 }

@@ -15,3 +15,5 @@ spring:
 
 
 host: localhost:8806
+
+filePath: /Users/wdke/person/java-code/github/wdk-code-general-core-test/

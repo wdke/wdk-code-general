@@ -1,18 +1,18 @@
 package com.wdk.general.core.dao.template;
 
 import com.wdk.general.core.handle.IResultSetHandler;
-import com.wdk.general.core.interceptor.UserContext;
 import com.wdk.general.core.utills.DruidUtil;
+import com.wdk.general.core.web.Interceptor.UserContext;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class JdbcTemplate {
+public class JdbcTemplates {
 
     // 工具类，私有化无参构造函数
-    private JdbcTemplate() {
+    private JdbcTemplates() {
     }
 
     /**
