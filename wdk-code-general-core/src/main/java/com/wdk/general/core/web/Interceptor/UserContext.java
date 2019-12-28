@@ -1,6 +1,7 @@
 package com.wdk.general.core.web.Interceptor;
 
 import com.wdk.general.core.model.DbMessage;
+import com.wdk.general.core.model.ProjectMetadata;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,10 +14,13 @@ public class UserContext {
     private static ThreadLocal<UserContext> threadLocal = ThreadLocal.withInitial(() -> new UserContext());
 
 
+    private String lastPages;
     private String remortIP;
     private String localIp;
     private DbMessage dbMessage;
-    private String memberId;
+    private ProjectMetadata projectMetadata;
+    private String projectRoot;
+    private String username;
     private String teamId;
     private Object remarkObj;
     private String traceId;
@@ -27,6 +31,13 @@ public class UserContext {
     private HttpServletRequest request;
     private HttpServletResponse response;
 
+    public String getLastPages() {
+        return lastPages;
+    }
+
+    public void setLastPages(String lastPages) {
+        this.lastPages = lastPages;
+    }
 
     public static void release() {
         threadLocal.remove();
@@ -60,13 +71,36 @@ public class UserContext {
         this.dbMessage = dbMessage;
     }
 
-
-    public String getMemberId() {
-        return memberId;
+    public static ThreadLocal<UserContext> getThreadLocal() {
+        return threadLocal;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public static void setThreadLocal(ThreadLocal<UserContext> threadLocal) {
+        UserContext.threadLocal = threadLocal;
+    }
+
+    public ProjectMetadata getProjectMetadata() {
+        return projectMetadata;
+    }
+
+    public void setProjectMetadata(ProjectMetadata projectMetadata) {
+        this.projectMetadata = projectMetadata;
+    }
+
+    public String getProjectRoot() {
+        return projectRoot;
+    }
+
+    public String getProjectServerRoot() {
+        return projectRoot + "/" + projectMetadata.getName() + "-server";
+    }
+
+    public String getProjectApiRoot() {
+        return projectRoot + "/" + projectMetadata.getName() + "-Api";
+    }
+
+    public void setProjectRoot(String projectRoot) {
+        this.projectRoot = projectRoot;
     }
 
     public Object getRemarkObj() {
@@ -77,7 +111,7 @@ public class UserContext {
         this.remarkObj = remarkObj;
     }
 
-    public String getTraceId()  {
+    public String getTraceId() {
         return traceId;
     }
 
@@ -131,5 +165,13 @@ public class UserContext {
 
     public void setCreator(boolean creator) {
         this.creator = creator;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

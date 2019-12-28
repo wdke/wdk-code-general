@@ -4,20 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>创建项目信息</title>
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/jquery/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" th:href="@{/static/bootstrap/3.3.7/css/bootstrap.min.css}">
+    <script th:src="@{/static/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
 </head>
 <body>
 
 <div class="container">
     <form class="form-horizontal" action="#" role="form" th:action="@{/project/metadata/save}" method="post">
 
-        <table class="table table-bordered">
+        <table class="table table-striped">
             <tbody>
 
             <tr>
-                <th width="50" i>
+                <th width="50">
                     <label for="group" class="col-sm-2 control-label">Group:</label>
                 </th>
                 <td>
@@ -143,9 +143,9 @@
             }
         } else {
             if (null == group || "" === group) {
-                $("#packages").val(artifact.replace(/-/g,"."));
+                $("#packages").val(artifact.replace(/-/g, "."));
             } else {
-                $("#packages").val(group + "." + artifact.replace(/-/g,"."));
+                $("#packages").val(group + "." + artifact.replace(/-/g, "."));
             }
         }
 

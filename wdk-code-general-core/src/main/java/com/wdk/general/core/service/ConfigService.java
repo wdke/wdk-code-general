@@ -7,11 +7,28 @@ public interface ConfigService {
 
 
     /**
+     * eureka配置
+     *
+     * @param sb
+     * @param addr
+     */
+    void eureka(StringBuilder sb, String addr);
+
+    /**
+     * redis配置
+     *
+     * @param sb
+     * @param addr
+     */
+    void redis(StringBuilder sb, String addr);
+
+
+    /**
      * 数据源配置
      *
      * @param sb
      */
-    void datasource(StringBuilder sb);
+    void thymeleafAndDatasource(StringBuilder sb);
 
 
     /**
@@ -50,10 +67,6 @@ public interface ConfigService {
     /**
      * log文件
      *
-     * @param branch
-     * @param path
      */
-    void logBack(String branch, String path);
-
-
+    void logBack();
 }

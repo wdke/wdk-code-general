@@ -6,4 +6,6 @@ package com.wdk.general.core.service;
 public interface PomService {
 
     void pom();
+
+    void serverPom();
 }

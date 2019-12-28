@@ -1,11 +1,19 @@
 package com.wdk.general.core.web.controller;
 
+import com.wdk.general.core.common.constant.RedisConstant;
+import com.wdk.general.core.model.ProjectMetadata;
+import com.wdk.general.core.storage.redis.RedisStringDao;
+import com.wdk.general.core.web.Interceptor.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * created by wdk on 2019/12/13
@@ -15,25 +23,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("project/metadata")
 public class ProjectMetadataController {
 
-    private Logger logger= LoggerFactory.getLogger(ProjectMetadataController.class);
+    private Logger logger = LoggerFactory.getLogger(ProjectMetadataController.class);
 
+    @Autowired
+    private RedisStringDao redisStringDao;
 
+    /**
+     * 进入创建项目目录
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("index")
-    public String index(Model model){
+    public String index(Model model) {
 
+        ProjectMetadata projectMetadata = (ProjectMetadata) redisStringDao.get(UserContext.current().getUsername());
 
-        model.addAttribute("group","com.wdk");
-        model.addAttribute("artifact","springboot-demo");
-        model.addAttribute("type","Maven Project");
-        model.addAttribute("language","java");
-        model.addAttribute("packaging","jar");
-        model.addAttribute("javaVersion","8");
-        model.addAttribute("version","0.0.1-SNAPSHOT");
-        model.addAttribute("name","springboot-demo");
-        model.addAttribute("description","Demo project for Spring Boot");
-        model.addAttribute("packages","com.wdk.springboot.demo");
+        if (projectMetadata == null) {
+            projectMetadata = new ProjectMetadata();
+        }
+
+        model.addAttribute("pm_", projectMetadata);
 
         return "project_metadata/index";
 
     }
+
+    /**
+     * 项目信息存储
+     *
+     * @param model
+     * @param projectMetadata
+     * @param request
+     * @return
+     */
+    @PostMapping("save")
+    public String save(Model model, ProjectMetadata projectMetadata, HttpServletRequest request) {
+
+        redisStringDao.set("pm_" + UserContext.current().getUsername(), projectMetadata, RedisConstant.PROJECT_TIME);
+
+        model.addAttribute("pm_", projectMetadata);
+
+        return "project_metadata/index";
+
+    }
+
 }

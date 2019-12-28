@@ -9,6 +9,27 @@ import java.util.List;
  */
 public interface SchemaTablesDao {
 
+    /**
+     * 所有表
+     *
+     * @return
+     */
     List<Tables> list();
+
+    /**
+     * 部分tableName
+     *
+     * @param tableNames
+     * @return
+     */
+    List<Tables> list(String[] tableNames);
+
+    /**
+     * 部分tableName
+     *
+     * @param tableName
+     * @return
+     */
+    Tables one(String tableName);
 
 }

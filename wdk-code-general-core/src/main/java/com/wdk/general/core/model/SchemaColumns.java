@@ -1,5 +1,8 @@
 package com.wdk.general.core.model;
 
+import ch.qos.logback.classic.db.names.ColumnName;
+import com.alibaba.druid.util.StringUtils;
+
 import java.io.Serializable;
 
 public class SchemaColumns implements Serializable {
@@ -67,6 +70,24 @@ public class SchemaColumns implements Serializable {
 
     public String getColumnName() {
         return columnName;
+    }
+
+
+    public String objName(){
+
+        if(StringUtils.isEmpty(columnName)){
+            return "";
+        }
+        String[] cols=columnName.split("_");
+        StringBuffer col=new StringBuffer();
+        for(int i=0;i<cols.length;i++){
+            if(i==0){
+                col.append(cols[i].toLowerCase());
+            }else{
+                col.append(cols[i].substring(0,1).toUpperCase()+cols[i].substring(1).toLowerCase());
+            }
+        }
+        return col.toString();
     }
 
     public void setColumnName(String columnName) {

@@ -2,9 +2,9 @@ package com.wdk.general.core.service.impl;
 
 import com.wdk.general.core.model.BaseParam;
 import com.wdk.general.core.service.ModelService;
-import com.wdk.general.core.utills.FileUtil;
-import com.wdk.general.core.utills.TableColumnsHandlerUtil;
-import org.springframework.beans.factory.annotation.Value;
+import com.wdk.general.core.utils.FileUtil;
+import com.wdk.general.core.utils.TableColumnsHandlerUtil;
+import com.wdk.general.core.web.Interceptor.UserContext;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,14 +18,11 @@ import java.util.Date;
 @Service
 public class ModelServiceImpl implements ModelService {
 
-    @Value("${filePath}")
-    private String filePath;
-
 
     @Override
     public void init(BaseParam param, String packages) {
 
-        String file = filePath + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/model/" + param.getModelName() + ".java";
+        String file = UserContext.current().getProjectServerRoot() + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/model/" + param.getModelName() + ".java";
 
         String model = "package " + packages + ".model;\n\n" + lombokModel(param);
 
@@ -35,6 +32,16 @@ public class ModelServiceImpl implements ModelService {
             e.printStackTrace();
         }
 
+
+        file = UserContext.current().getProjectServerRoot() + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/web/args/" + param.getModelName() + "Args.java";
+
+        model = "package " + packages + ".web.args;\n\n" + lombokModelParam(param);
+
+        try {
+            FileUtil.write(file, model);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -51,6 +58,7 @@ public class ModelServiceImpl implements ModelService {
         model.append("import lombok.Data;\n")
                 .append("import java.util.Date;\n")
                 .append("import com.fasterxml.jackson.annotation.JsonInclude;\n")
+                .append("import org.springframework.format.annotation.DateTimeFormat;")
                 .append("import java.io.Serializable;\n\n")
                 .append("/**\n")
                 .append(" * ").append(param.getTableComment()).append("\n")
@@ -121,6 +129,7 @@ public class ModelServiceImpl implements ModelService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH");
         model.append("import lombok.Data;\n");
         model.append("import java.util.Date;\n");
+        model.append("import org.springframework.format.annotation.DateTimeFormat;\n");
         model.append("import com.fasterxml.jackson.annotation.JsonInclude;\n");
         model.append("import java.io.Serializable;\n\n");
         model.append("/**\n");
@@ -132,12 +141,12 @@ public class ModelServiceImpl implements ModelService {
         model.append(" */\n");
         model.append("@Data\n");
         model.append("@JsonInclude(JsonInclude.Include.NON_NULL)\n");
-        model.append("public class ").append(param.getModelName()).append("Param implements Serializable {\n\n");
+        model.append("public class ").append(param.getModelName()).append("Args implements Serializable {\n\n");
         String colimns = TableColumnsHandlerUtil.typeColumns(param.getColumns(), 1, null);
         model.append(colimns);
         model.append("\n\n");
-        String getter = TableColumnsHandlerUtil.typeColumns(param.getColumns(), 5, null);
-        model.append(getter);
+//        String getter = TableColumnsHandlerUtil.typeColumns(param.getColumns(), 5, null);
+//        model.append(getter);
         model.append("\n\n}\n\n");
 
         return model.toString();

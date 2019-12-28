@@ -1,7 +1,12 @@
 server:
-  port: 8806
+  port: 8888
+  servlet:
+    context-path: /generalCore
 spring:
   application:
     name: general-core #指定服务名
   profiles:
     active: dev
+
+    logging:
+      config: classpath:logback.xml

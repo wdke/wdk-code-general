@@ -13,9 +13,13 @@ package com.wdk.general.core.web.Interceptor;
 
 import com.alibaba.druid.util.StringUtils;
 import com.wdk.general.core.model.DbMessage;
+import com.wdk.general.core.model.ProjectMetadata;
+import com.wdk.general.core.storage.redis.RedisStringDao;
 import com.wdk.general.core.web.param.LoginParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +33,12 @@ import java.io.IOException;
  */
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
+
+    @Value("${filePath}")
+    private String filePath;
+
+    @Autowired
+    private RedisStringDao redisStringDao;
 
     private static final Logger logger = LoggerFactory.getLogger(TokenInterceptor.class);
 
@@ -54,12 +64,15 @@ public class TokenInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         logger.info("requestURI->{}", requestURI);
         if (StringUtils.isEmpty(requestURI)) {
-            response.sendRedirect("/login");
+            response.sendRedirect("/tologin");
             return false;
         }
 
-        if (requestURI.startsWith("/login")
-                || requestURI.startsWith("/index")
+        if (requestURI.startsWith("/generalCore/login")
+                || requestURI.startsWith("/generalCore/wechat")
+                || requestURI.startsWith("/generalCore/tologin")
+//                || requestURI.startsWith("/generalCore/index")
+                || requestURI.startsWith("/generalCore/static")
                 || requestURI.startsWith("/static")) {
             return true;
         } else {
@@ -85,31 +98,47 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     private boolean preHandleService(HttpServletRequest request, HttpServletResponse response) {
 
-        LoginParam userInfo = (LoginParam) request.getSession().getAttribute("userInfo");
+        String username = (String) request.getSession().getAttribute("username");
 
-        if (null == userInfo || StringUtils.isEmpty(userInfo.getUsername())) {
-
+        if (StringUtils.isEmpty(username)) {
             try {
-                response.sendRedirect("/login");
+                if (null == request.getSession().getAttribute("redirect")) {
+                    request.getSession().setAttribute("redirect", request.getRequestURI());
+                }
+                response.sendRedirect("/generalCore/tologin");
                 return false;
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
         }
-        DbMessage dbMessage = (DbMessage) request.getSession().getAttribute("dbMessage");
 
-        if (null == dbMessage && !request.getRequestURI().startsWith("/tables")) {
+        UserContext.current().setUsername(username);
 
+        if (null != request.getSession().getAttribute("redirect")) {
+            String redirect = (String) request.getSession().getAttribute("redirect");
+            request.getSession().setAttribute("redirect", null);
             try {
-                response.sendRedirect("/tables/index");
+                response.sendRedirect(redirect);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return false;
         }
+        DbMessage dbMessage = (DbMessage) redisStringDao.get("db_" + username);
 
-        UserContext.current().setDbMessage(dbMessage);
+        if (null != dbMessage) {
+            UserContext.current().setDbMessage(dbMessage);
+        }
+
+        ProjectMetadata projectMetadata = (ProjectMetadata) redisStringDao.get("pm_" + username);
+
+        if (null != projectMetadata) {
+            UserContext.current().setProjectMetadata(projectMetadata);
+            UserContext.current().setProjectRoot(filePath + "/" + projectMetadata.getName());
+        }
+
+
         return true;
     }
 
