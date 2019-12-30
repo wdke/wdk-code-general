@@ -12,6 +12,7 @@
 package com.wdk.general.core.web.Interceptor;
 
 import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.JSON;
 import com.wdk.general.core.model.DbMessage;
 import com.wdk.general.core.model.ProjectMetadata;
 import com.wdk.general.core.storage.redis.RedisStringDao;
@@ -125,13 +126,13 @@ public class TokenInterceptor implements HandlerInterceptor {
             }
             return false;
         }
-        DbMessage dbMessage = (DbMessage) redisStringDao.get("db_" + username);
+        DbMessage dbMessage = JSON.parseObject(redisStringDao.get("db_" + UserContext.current().getUsername()),DbMessage.class);
 
         if (null != dbMessage) {
             UserContext.current().setDbMessage(dbMessage);
         }
 
-        ProjectMetadata projectMetadata = (ProjectMetadata) redisStringDao.get("pm_" + username);
+        ProjectMetadata projectMetadata = JSON.parseObject(redisStringDao.get("pm_"+UserContext.current().getUsername()),ProjectMetadata.class);
 
         if (null != projectMetadata) {
             UserContext.current().setProjectMetadata(projectMetadata);

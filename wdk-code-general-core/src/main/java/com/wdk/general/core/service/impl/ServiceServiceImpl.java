@@ -86,6 +86,9 @@ public class ServiceServiceImpl implements ServiceService {
         //获取查询列表
         selectList(service, serviceImpl, param, packages);
 
+        //统计接口
+        count(service, serviceImpl, param, packages);
+
         //根据主键查询数据列表
         selectByPrimaryKey(service, serviceImpl, param, packages);
 
@@ -367,23 +370,12 @@ public class ServiceServiceImpl implements ServiceService {
         //生成头部
         serviceImpl.append("\t@Override\n");
         //生成方法体
-        serviceImpl.append("\tpublic List<Map<String,Object>> selectListByMapReturnMap(Map<String,Object> param){\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->selectListByMapReturnMap start。param->{}\",JSON.toJSONString(param));\n");
-        }
-        //纪录开始时间,作为计算方法用时
-        serviceImpl.append("\t\t//纪录开始时间\n");
-        serviceImpl.append("\t\tlong startTimes=System.currentTimeMillis();\n");
+        serviceImpl.append("\tpublic List<Map<String,Object>> selectListByMapReturnMap(Map<String,Object> param){\n\n");
+
         //生成查询数据库方法
         serviceImpl.append("\t\tList<Map<String,Object>> result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.selectListByMapReturnMap(param);\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->selectListByMapReturnMap end。result size->{},selectListByMapReturnMap use times->{}\",result.size(),TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-        }
+
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
 
     }
@@ -423,22 +415,11 @@ public class ServiceServiceImpl implements ServiceService {
         serviceImpl.append("\t@Override\n");
         //生成方法体
         serviceImpl.append("\tpublic List<").append(param.getModelName()).append("> selectListByMap(Map<String,Object> param){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->selectListByMap start。param->{}\",JSON.toJSONString(param));\n");
-        }
-        //纪录开始时间,作为计算方法用时
-        serviceImpl.append("\t\t//纪录开始时间\n");
-        serviceImpl.append("\t\tlong startTimes=System.currentTimeMillis();\n");
+
         //生成查询数据库方法
         serviceImpl.append("\t\tList<").append(param.getModelName()).append("> result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.selectListByMap(param);\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->selectListByMap end。result size->{},selectListByMap use times->{}\",result.size(),TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-        }
+
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
 
     }
@@ -462,7 +443,7 @@ public class ServiceServiceImpl implements ServiceService {
                 .append("\t* @author ").append(param.getAuthor()).append("\n")
                 .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
                 .append("\t*/\n");
-        service.append("\tList<").append(param.getModelName()).append("> list(").append(param.getModelName()).append(" param);\n\n");
+        service.append("\tList<").append(param.getModelName()).append("> list(").append(param.getModelName()).append("Args param);\n\n");
 
 
         //生成service，实现类
@@ -476,23 +457,67 @@ public class ServiceServiceImpl implements ServiceService {
         //生成头部
         serviceImpl.append("\t@Override\n");
         //生成方法体
-        serviceImpl.append("\tpublic List<").append(param.getModelName()).append("> list(").append(param.getModelName()).append(" param){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->list start。param->{}\",JSON.toJSONString(param));\n");
-        }
-        //纪录开始时间,作为计算方法用时
-        serviceImpl.append("\t\t//纪录开始时间\n");
-        serviceImpl.append("\t\tlong startTimes=System.currentTimeMillis();\n");
-        //生成查询数据库方法
-        serviceImpl.append("\t\tList<").append(param.getModelName()).append("> result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.list(param);\n");
+        serviceImpl.append("\tpublic List<").append(param.getModelName()).append("> list(").append(param.getModelName()).append("Args param){\n\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->list end。result size->{},list use times->{}\",result.size(),TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-        }
+
+        serviceImpl.append("\t\t//参数类型转化\n")
+                .append("\t\t").append(param.getModelName())
+                .append(" ").append(param.objName())
+                .append(" = new ").append(param.getModelName()).append("();\n\n")
+                .append("\t\tBeanUtils.copyProperties(param,").append(param.objName()).append(");\n\n");
+
+        //生成查询数据库方法
+        serviceImpl.append("\t\tList<").append(param.getModelName()).append("> result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.list(").append(param.objName()).append(");\n\n");
+
+
+        serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
+    }
+
+    /**
+     * 统计接口
+     *
+     * @param service
+     * @param serviceImpl
+     * @param param
+     * @param packages
+     */
+    @Override
+    public void count(StringBuffer service, StringBuffer serviceImpl, BaseParam param, String packages) {
+
+        //生成service方法
+        service.append("\t/**\n")
+                .append("\t* 统计接口\n\n")
+                .append("\t* @param param\n")
+                .append("\t* @return Integer\n")
+                .append("\t* @author ").append(param.getAuthor()).append("\n")
+                .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
+                .append("\t*/\n");
+        service.append("\tInteger count(").append(param.getModelName()).append("Args param);\n\n");
+
+
+        //生成service，实现类
+        serviceImpl.append("\t/**\n")
+                .append("\t* 统计接口\n\n")
+                .append("\t* @param param\n")
+                .append("\t* @return Integer\n")
+                .append("\t* @author ").append(param.getAuthor()).append("\n")
+                .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
+                .append("\t*/\n");
+        //生成头部
+        serviceImpl.append("\t@Override\n");
+        //生成方法体
+        serviceImpl.append("\tpublic Integer count(").append(param.getModelName()).append("Args param){\n\n");
+
+        serviceImpl.append("\t\t//参数类型转化\n")
+                .append("\t\t").append(param.getModelName())
+                .append(" ").append(param.objName())
+                .append(" = new ").append(param.getModelName()).append("();\n\n")
+                .append("\t\tBeanUtils.copyProperties(param,").append(param.objName()).append(");\n\n");
+
+        //生成查询数据库方法
+        serviceImpl.append("\t\tInteger result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.count(").append(param.objName()).append(");\n\n");
+
+
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
     }
 
@@ -534,24 +559,12 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("\tpublic ").append(param.getModelName()).append(" selectByPrimaryKey(")
                     .append(paramCommonService.keyParam(param))
                     .append("){\n\n");
-            //生成参数日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\">selectByPrimaryKey start。").append(paramCommonService.keyMapperParam(param).replaceAll(",", "->{}")).append("->{}").append("\",").append(paramCommonService.keyMapperParam(param)).append(");\n");
-            }
-            //纪录开始时间,作为计算方法用时
-            serviceImpl.append("\t\t//纪录开始时间\n")
-                    .append("\t\tlong startTimes=System.currentTimeMillis();\n")
-                    .append("\t\t").append(param.getModelName()).append(" result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
+
+            serviceImpl.append("\t\t").append(param.getModelName()).append(" result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
                     .append("Mapper.selectByPrimaryKey(")
                     .append(paramCommonService.keyMapperParam(param))
                     .append(");\n");
 
-            //生成返回值日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->selectByPrimaryKey end。result->{}, use times->{}\",result,TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-            }
             serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
         }
     }
@@ -592,15 +605,8 @@ public class ServiceServiceImpl implements ServiceService {
         serviceImpl.append("\t@Override\n");
         //生成方法体
         serviceImpl.append("\tpublic PageInfo<").append(param.getModelName()).append("> pageInfo(").append(param.getModelName()).append("Args param,PageParam pageParam){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->list start。param->{},pageParam->{}\",JSON.toJSONString(param),JSON.toJSONString(pageParam));\n\n");
-        }
-        //纪录开始时间,作为计算方法用时
-        serviceImpl.append("\t\t//纪录开始时间\n");
-        serviceImpl.append("\t\tlong startTimes=System.currentTimeMillis();\n\n")
-                .append("\t\t//参数类型转化\n")
+
+        serviceImpl.append("\t\t//参数类型转化\n")
                 .append("\t\t").append(param.getModelName())
                 .append(" ").append(param.objName())
                 .append(" = new ").append(param.getModelName()).append("();\n")
@@ -611,11 +617,6 @@ public class ServiceServiceImpl implements ServiceService {
         //生成查询数据库方法
         serviceImpl.append("\t\tList<").append(param.getModelName()).append("> result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.list(").append(param.objName()).append(");\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->list end。result size->{},list use times->{}\",result.size(),TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-        }
         serviceImpl.append("\t\treturn new PageInfo(result);\n").append("\t}\n\n");
     }
 
@@ -653,22 +654,10 @@ public class ServiceServiceImpl implements ServiceService {
         serviceImpl.append("\t@Override\n");
         //生成方法体
         serviceImpl.append("\tpublic int insert(").append(param.getModelName()).append(" param){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->insert start。param->{}\",JSON.toJSONString(param));\n");
-        }
-        //纪录开始时间,作为计算方法用时
-        serviceImpl.append("\t\t//纪录开始时间\n");
-        serviceImpl.append("\t\tlong startTimes=System.currentTimeMillis();\n");
+
         //生成查询数据库方法
         serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.insert(param);\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->insert end。insert num->{},insert use times->{}\",result,TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-        }
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
     }
 
@@ -706,15 +695,8 @@ public class ServiceServiceImpl implements ServiceService {
         serviceImpl.append("\t@Override\n");
         //生成方法体
         serviceImpl.append("\tpublic int insertSelective(").append(param.getModelName()).append("Args param){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->insertSelective start。param->{}\",JSON.toJSONString(param));\n\n");
-        }
-        //纪录开始时间,作为计算方法用时
-        serviceImpl.append("\t\t//纪录开始时间\n");
-        serviceImpl.append("\t\tlong startTimes=System.currentTimeMillis();\n\n")
-                .append("\t\t//参数类型转化\n")
+
+        serviceImpl.append("\t\t//参数类型转化\n")
                 .append("\t\t").append(param.getModelName())
                 .append(" ").append(param.objName())
                 .append(" = new ").append(param.getModelName()).append("();\n")
@@ -722,11 +704,6 @@ public class ServiceServiceImpl implements ServiceService {
         //生成查询数据库方法
         serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.insertSelective(").append(param.objName()).append(");\n\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->insertSelective end。insert num->{},insertSelective use times->{}\",result,TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-        }
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
     }
 
@@ -764,22 +741,10 @@ public class ServiceServiceImpl implements ServiceService {
         serviceImpl.append("\t@Override\n");
         //生成方法体
         serviceImpl.append("\tpublic int batchInsert(List<").append(param.getModelName()).append("> param){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->batchInsert start。param->{}\",JSON.toJSONString(param));\n");
-        }
-        //纪录开始时间,作为计算方法用时
-        serviceImpl.append("\t\t//纪录开始时间\n");
-        serviceImpl.append("\t\tlong startTimes=System.currentTimeMillis();\n");
+
         //生成查询数据库方法
         serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.batchInsert(param);\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->batchInsert end。insert num->{},batchInsert use times->{}\",result,TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-        }
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
     }
 
@@ -820,24 +785,13 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("\tpublic int updateByPrimaryKey(")
                     .append(param.getModelName())
                     .append(" param){\n\n");
-            //生成参数日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->updateByPrimaryKey start。param->{}\",JSON.toJSONString(param));\n");
-            }
+
             //纪录开始时间,作为计算方法用时
-            serviceImpl.append("\t\t//纪录开始时间\n")
-                    .append("\t\tlong startTimes=System.currentTimeMillis();\n")
-                    .append("\t\tint result=")
+            serviceImpl.append("\t\tint result=")
                     .append(ColumnsUtil.columns(param.getModelName(), "objName"))
                     .append("Mapper.updateByPrimaryKey(")
                     .append("param);\n");
 
-            //生成返回值日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->updateByPrimaryKey end。insert num->{},updateByPrimaryKey use times->{}\",result,TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-            }
             serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
         }
     }
@@ -878,15 +832,8 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("\tpublic int updateSelectiveByPrimaryKey(")
                     .append(param.getModelName())
                     .append("Args param){\n\n");
-            //生成参数日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->updateSelectiveByPrimaryKey start。param->{}\",JSON.toJSONString(param));\n\n");
-            }
-            //纪录开始时间,作为计算方法用时
-            serviceImpl.append("\t\t//纪录开始时间\n")
-                    .append("\t\tlong startTimes=System.currentTimeMillis();\n\n")
-                    .append("\t\t//参数类型转化\n")
+
+            serviceImpl.append("\t\t//参数类型转化\n")
                     .append("\t\t").append(param.getModelName())
                     .append(" ").append(param.objName())
                     .append(" = new ").append(param.getModelName()).append("();\n")
@@ -896,11 +843,6 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("Mapper.updateSelectiveByPrimaryKey(")
                     .append(" ").append(param.objName()).append(");\n\n");
 
-            //生成返回值日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->updateSelectiveByPrimaryKey end。insert num->{},updateByPrimaryKey use times->{}\",result,TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-            }
             serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
         }
     }
@@ -941,23 +883,11 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("\tpublic int batchInsertUpdate(List<")
                     .append(param.getModelName())
                     .append("> param){\n\n");
-            //生成参数日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->batchInsertUpdate start。param->{}\",JSON.toJSONString(param));\n");
-            }
-            //纪录开始时间,作为计算方法用时
-            serviceImpl.append("\t\t//纪录开始时间\n")
-                    .append("\t\tlong startTimes=System.currentTimeMillis();\n")
-                    .append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
+
+            serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
                     .append("Mapper.batchInsertUpdate(")
                     .append("param);\n");
 
-            //生成返回值日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->batchInsertUpdate end。insert num->{},updateByPrimaryKey use times->{}\",result,TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-            }
             serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
         }
     }
@@ -998,23 +928,12 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("\tpublic int batchUpdate(List<")
                     .append(param.getModelName())
                     .append("> param){\n\n");
-            //生成参数日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->batchUpdate start。param->{}\",JSON.toJSONString(param));\n");
-            }
+
             //纪录开始时间,作为计算方法用时
-            serviceImpl.append("\t\t//纪录开始时间\n")
-                    .append("\t\tlong startTimes=System.currentTimeMillis();\n")
-                    .append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
+            serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
                     .append("Mapper.batchUpdate(")
                     .append("param);\n");
 
-            //生成返回值日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->batchUpdate end。insert num->{},updateByPrimaryKey use times->{}\",result,TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-            }
             serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
         }
     }
@@ -1055,24 +974,13 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("\tpublic int deleteByPrimaryKey(")
                     .append(paramCommonService.keyParam(param))
                     .append("){\n\n");
-            //生成参数日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->deleteByPrimaryKey start。").append(paramCommonService.keyMapperParam(param).replaceAll(",", "->{}")).append("->{}").append("\",").append(paramCommonService.keyMapperParam(param)).append(");\n");
-            }
+
             //纪录开始时间,作为计算方法用时
-            serviceImpl.append("\t\t//纪录开始时间\n")
-                    .append("\t\tlong startTimes=System.currentTimeMillis();\n")
-                    .append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
+            serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
                     .append("Mapper.deleteByPrimaryKey(")
                     .append(paramCommonService.keyMapperParam(param))
                     .append(");\n");
 
-            //生成返回值日志
-            if (param.isLogger()) {
-                serviceImpl.append("\t\t//打印方法开始参数\n")
-                        .append("\t\tlogger.info(\"method->deleteByPrimaryKey end。insert num->{},updateByPrimaryKey use times->{}\",result,TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-            }
             serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
         }
     }
@@ -1103,22 +1011,10 @@ public class ServiceServiceImpl implements ServiceService {
                 .append("\tpublic int deleteBySelect(")
                 .append(param.getModelName())
                 .append(" param){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->deleteBySelect start。param->{}").append("\",JSON.toJSONString(param));\n");
-        }
-        //纪录开始时间,作为计算方法用时
-        serviceImpl.append("\t\t//纪录开始时间\n")
-                .append("\t\tlong startTimes=System.currentTimeMillis();\n")
-                .append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
+
+        serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
                 .append("Mapper.deleteBySelect(param);\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            serviceImpl.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"method->deleteBySelect end。insert num->{},updateByPrimaryKey use times->{}\",result,TimeUtils.format(System.currentTimeMillis()-startTimes));\n");
-        }
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
     }
 

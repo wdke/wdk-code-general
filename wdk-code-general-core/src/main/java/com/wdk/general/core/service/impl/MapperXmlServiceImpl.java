@@ -61,6 +61,7 @@ public class MapperXmlServiceImpl implements MapperXmlService {
         selectListByMapReturnMap(param, "java.util.Map", root);
         selectListByMap(param, "java.util.Map", root);
         selectList(param, packages + ".model", root);
+        count(param, packages + ".model", root);
         insert(param, packages + ".model", root);
         insertSelective(param, packages + ".model", root);
         batchInsert(param, packages + ".model", root);
@@ -288,6 +289,34 @@ public class MapperXmlServiceImpl implements MapperXmlService {
                 .addText("\n\t\tselect");
         select.addElement("include")
                 .addAttribute("refid", "Base_Column_Sql");
+        select.addText("\n\t\tfrom ");
+        select.addElement("include").addAttribute("refid", "Base_Tables_Sql");
+        Element where = select.addElement("where");
+        where.addElement("include")
+                .addAttribute("refid", "Base_Where_Sql");
+
+
+        root.addComment("根据条件查询列表结束");
+        return select.asXML();
+    }
+
+    /**
+     * 统计接口
+     *
+     * @param param
+     * @param packages
+     * @param root
+     * @return
+     */
+    @Override
+    public String count(BaseParam param, String packages, Element root) {
+
+        root.addComment("根据条件查询列表开始");
+        Element select = root.addElement("select")
+                .addAttribute("id", "count")
+                .addAttribute("parameterType", packages + "." + param.getModelName())
+                .addAttribute("resultType", "java.lang.Integer")
+                .addText("\n\t\tselect count(*)\n");
         select.addText("\n\t\tfrom ");
         select.addElement("include").addAttribute("refid", "Base_Tables_Sql");
         Element where = select.addElement("where");

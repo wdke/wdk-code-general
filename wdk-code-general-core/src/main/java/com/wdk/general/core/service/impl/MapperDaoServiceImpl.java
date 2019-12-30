@@ -22,20 +22,21 @@ public class MapperDaoServiceImpl implements MapperDaoService {
 
     /**
      * 初始化生成dao
+     *
      * @param param
      * @param packages
      */
     @Override
     public void initDao(BaseParam param, String packages) {
 
-        String file= UserContext.current().getProjectServerRoot()+"/src/main/java/"+packages.replaceAll("\\.","/")+"/dao/"+param.getModelName()+"Mapper.java";
+        String file = UserContext.current().getProjectServerRoot() + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/dao/" + param.getModelName() + "Mapper.java";
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd");
-        StringBuffer mapper=new StringBuffer();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        StringBuffer mapper = new StringBuffer();
         mapper.append("package ").append(packages).append(".dao;\n");
-        imports(mapper,param,packages);
+        imports(mapper, param, packages);
 
-        mapper.append("/**\n" )
+        mapper.append("/**\n")
                 .append(param.getTableComment()).append("\n")
                 .append(" * @author wdke\n")
                 .append(" * @date ").append(sdf.format(new Date())).append("\n")
@@ -67,6 +68,13 @@ public class MapperDaoServiceImpl implements MapperDaoService {
         mapper.append("\tList<").append(param.getModelName()).append("> list(").append(param.getModelName()).append(" param);\n\n");
 
         mapper.append("\t/**\n")
+                .append("\t * 统计接口\n")
+                .append("\t * @param param ：不为空的属性\n")
+                .append("\t * @return\n")
+                .append("\t */\n");
+        mapper.append("\tInteger count(").append(param.getModelName()).append(" param);\n\n");
+
+        mapper.append("\t/**\n")
                 .append("\t * 全量新增\n")
                 .append("\t * @param param\n")
                 .append("\t * @return\n")
@@ -87,16 +95,16 @@ public class MapperDaoServiceImpl implements MapperDaoService {
                 .append("\t */\n");
         mapper.append("\tint batchInsert(List<").append(param.getModelName()).append("> param);\n\n");
 
-        if(null!=param.getKeys()&&!param.getKeys().isEmpty()) {
-            StringBuffer params=new StringBuffer();
-            for(int i=0;i<param.getKeys().size();i++){
-                SchemaColumns obj=param.getKeys().get(i);
-                String column= ColumnsUtil.columns(obj.getColumnName(),"java");
-                JdbcTypeEnums dataType=JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
+        if (null != param.getKeys() && !param.getKeys().isEmpty()) {
+            StringBuffer params = new StringBuffer();
+            for (int i = 0; i < param.getKeys().size(); i++) {
+                SchemaColumns obj = param.getKeys().get(i);
+                String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
-                if (i==0) {
+                if (i == 0) {
                     params.append("@Param(\"").append(column).append("\") ").append(dataType.getJavaType()).append(" param");
-                }else{
+                } else {
                     params.append(",@Param(\"").append(column).append("\") ").append(dataType.getJavaType()).append(" param").append(i);
                 }
 
@@ -121,7 +129,7 @@ public class MapperDaoServiceImpl implements MapperDaoService {
                     .append("\t * @param param\n")
                     .append("\t * @return\n")
                     .append("\t */\n");
-            mapper.append("\tint updateSelectiveByPrimaryKey(" ).append(param.getModelName()).append( " param);\n\n");
+            mapper.append("\tint updateSelectiveByPrimaryKey(").append(param.getModelName()).append(" param);\n\n");
 
             mapper.append("\t/**\n")
                     .append("\t * 批量存在就更新，不存在就新增\n")
@@ -154,7 +162,7 @@ public class MapperDaoServiceImpl implements MapperDaoService {
                 .append("\t */\n");
         mapper.append("\tint deleteBySelect(").append(param.getModelName()).append(" param);\n\n}");
         try {
-            FileUtil.write(file,mapper.toString());
+            FileUtil.write(file, mapper.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -162,6 +170,7 @@ public class MapperDaoServiceImpl implements MapperDaoService {
 
     /**
      * 生成 import
+     *
      * @param mapper
      */
     @Override

@@ -26,13 +26,30 @@ public interface RestControllerService {
 
 
     /**
-     * 返回列表页
+     * 生成统计方法
+     *
+     * @param sb
+     * @param param
+     */
+    void count(StringBuilder sb, BaseParam param);
+
+
+    /**
+     * 查询分页数据
      *
      * @param sb
      * @param param
      */
     void index(StringBuilder sb, BaseParam param);
 
+
+    /**
+     * 查询列表
+     *
+     * @param sb
+     * @param param
+     */
+    void list(StringBuilder sb, BaseParam param);
 
     /**
      * 新增一条纪录
@@ -53,7 +70,6 @@ public interface RestControllerService {
     void batchInsert(StringBuilder sb, BaseParam param, String packages);
 
 
-
     /**
      * 更新一条纪录
      *
@@ -69,5 +85,13 @@ public interface RestControllerService {
      * @return
      */
     void remove(StringBuilder sb, BaseParam baseParam);
+
+    /**
+     * 详情
+     *
+     * @param baseParam
+     * @return
+     */
+    void detail(StringBuilder sb, BaseParam baseParam);
 
 }

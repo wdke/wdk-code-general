@@ -84,6 +84,16 @@ public interface MapperXmlService {
     String selectList(BaseParam param, String packages, Element root);
 
     /**
+     * 统计接口
+     *
+     * @param param
+     * @param packages
+     * @param root
+     * @return
+     */
+    String count(BaseParam param, String packages, Element root);
+
+    /**
      * 根据主键查询一条记录
      *
      * @param param

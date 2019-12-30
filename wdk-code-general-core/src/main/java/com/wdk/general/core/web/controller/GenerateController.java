@@ -89,13 +89,7 @@ public class GenerateController {
     public String save(Model model, HttpServletRequest request) {
         logger.info("保存数据源信息");
 
-        DbMessage dbMessage = (DbMessage) request.getSession().getAttribute("dbMessage");
-        List<Tables> list = new ArrayList<>();
-        if (dbMessage == null) {
-
-            return "redirect:tables/index";
-        }
-        list = schemaTablesDao.list();
+        List<Tables> list = schemaTablesDao.list();
 //
         model.addAttribute("list", list);
 

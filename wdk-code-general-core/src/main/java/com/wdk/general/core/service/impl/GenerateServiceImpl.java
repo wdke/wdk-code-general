@@ -151,7 +151,7 @@ public class GenerateServiceImpl implements GenerateService {
             baseParam.setColumns(entry.getValue());
             baseParam.setModelName(ColumnsUtil.columns(entry.getKey(), "getter"));
             baseParam.setTableComment(collect.get(entry.getKey()).getTableComment());
-            baseParam.setLogger(true);
+            baseParam.setLogger(false);
 
             //生成实体
             modelService.init(baseParam, projectMetadata.getPackages());

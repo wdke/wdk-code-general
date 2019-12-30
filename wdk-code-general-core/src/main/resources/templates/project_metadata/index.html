@@ -22,7 +22,7 @@
                 </th>
                 <td>
                     <input type="text" oninput="packagesChange()" class="form-control" name="group" id="group"
-                           placeholder="www.com" th:value="${group}"/>
+                           placeholder="www.com" th:value="${pm.group}"/>
                 </td>
             </tr>
 
@@ -33,7 +33,7 @@
                 <td>
                     <input type="text" onchange="packagesChange()" class="form-control" name="artifact"
                            id="artifact"
-                           placeholder="springboot-demo" th:value="${artifact}">
+                           placeholder="springboot-demo" th:value="${pm.artifact}">
                 </td>
             </tr>
 
@@ -42,7 +42,7 @@
                     <label for="type" class="col-sm-2 control-label">Type</label>
                 </th>
                 <td>
-                    <select class="form-control" name="type" id="type" th:value="${type}">
+                    <select class="form-control" name="type" id="type" th:value="${pm.type}">
                         <option selected="selected" value="Maven Project">Maven Project</option>
                     </select>
                 </td>
@@ -53,7 +53,7 @@
                     <label for="language" class="col-sm-2 control-label">Language</label>
                 </th>
                 <td>
-                    <select class="form-control" name="language" id="language" th:value="${language}">
+                    <select class="form-control" name="language" id="language" th:value="${pm.language}">
                         <option selected="selected" value="java">java</option>
                     </select>
                 </td>
@@ -64,7 +64,7 @@
                     <label for="packaging" class="col-sm-2 control-label">Packaging</label>
                 </th>
                 <td>
-                    <select class="form-control" name="packaging" id="packaging" th:value="${packaging}">
+                    <select class="form-control" name="packaging" id="packaging" th:value="${pm.packaging}">
                         <option selected="selected" value="jar">jar</option>
                     </select>
                 </td>
@@ -75,7 +75,7 @@
                     <label for="javaVersion" class="col-sm-2 control-label">java version</label>
                 </th>
                 <td>
-                    <select class="form-control" name="javaVersion" id="javaVersion" th:value="${javaVersion}">
+                    <select class="form-control" name="javaVersion" id="javaVersion" th:value="${pm.javaVersion}">
                         <option selected="selected" value="8">8</option>
                     </select>
                 </td>
@@ -87,7 +87,7 @@
                 </th>
                 <td>
                     <input type="text" class="form-control" name="version" id="version"
-                           placeholder="0.0.1-SNAPSHOT" th:value="${version}">
+                           placeholder="0.0.1-SNAPSHOT" th:value="${pm.version}">
                 </td>
             </tr>
 
@@ -97,7 +97,7 @@
                 </th>
                 <td>
                     <input type="text" class="form-control" name="name" id="name"
-                           placeholder="springboot-demo" th:value="${name}">
+                           placeholder="springboot-demo" th:value="${pm.name}">
                 </td>
             </tr>
 
@@ -107,7 +107,7 @@
                 </th>
                 <td>
                 <textarea rows="5" class="form-control" name="description" id="description"
-                          placeholder="Demo project for Spring Boot" th:value="${description}"></textarea>
+                          placeholder="Demo project for Spring Boot" th:value="${pm.description}" th:text="${pm.description}"></textarea>
                 </td>
             </tr>
 
@@ -117,13 +117,13 @@
                 </th>
                 <td>
                     <input type="text" class="form-control" name="packages" id="packages"
-                           placeholder="www.com.springboot.demo" th:value="${packages}">
+                           placeholder="www.com.springboot.demo" th:value="${pm.packages}">
                 </td>
             </tr>
 
             <tr>
                 <td colspan="2" style="text-align: right;">
-                    <button type="submit" class="btn btn-default">下一步</button>
+                    <button type="submit" class="btn btn-default">提交</button>
                 </td>
             </tr>
             </tbody>

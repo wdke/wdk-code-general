@@ -1,5 +1,6 @@
 package com.wdk.general.core.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.wdk.general.core.common.constant.RedisConstant;
 import com.wdk.general.core.model.ProjectMetadata;
 import com.wdk.general.core.storage.redis.RedisStringDao;
@@ -37,13 +38,23 @@ public class ProjectMetadataController {
     @GetMapping("index")
     public String index(Model model) {
 
-        ProjectMetadata projectMetadata = (ProjectMetadata) redisStringDao.get(UserContext.current().getUsername());
+        ProjectMetadata projectMetadata = JSON.parseObject( redisStringDao.get(UserContext.current().getUsername()),ProjectMetadata.class);
 
         if (projectMetadata == null) {
             projectMetadata = new ProjectMetadata();
+            projectMetadata.setGroup("com.wdk");
+            projectMetadata.setArtifact("nideshop");
+            projectMetadata.setType("Maven Project");
+            projectMetadata.setLanguage("java");
+            projectMetadata.setPackaging("jar");
+            projectMetadata.setJavaVersion("8");
+            projectMetadata.setVersion("0.0.1-SNAPSHOT");
+            projectMetadata.setName("nideshop");
+            projectMetadata.setDescription("Demo project for Spring Boot");
+            projectMetadata.setPackages("com.wdk.nideshop");
         }
 
-        model.addAttribute("pm_", projectMetadata);
+        model.addAttribute("pm", projectMetadata);
 
         return "project_metadata/index";
 
@@ -60,9 +71,9 @@ public class ProjectMetadataController {
     @PostMapping("save")
     public String save(Model model, ProjectMetadata projectMetadata, HttpServletRequest request) {
 
-        redisStringDao.set("pm_" + UserContext.current().getUsername(), projectMetadata, RedisConstant.PROJECT_TIME);
+        redisStringDao.set("pm_" + UserContext.current().getUsername(), JSON.toJSONString(projectMetadata), RedisConstant.PROJECT_TIME);
 
-        model.addAttribute("pm_", projectMetadata);
+        model.addAttribute("pm", projectMetadata);
 
         return "project_metadata/index";
 

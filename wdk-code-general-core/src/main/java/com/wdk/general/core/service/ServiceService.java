@@ -74,6 +74,15 @@ public interface ServiceService {
     void selectList(StringBuffer service, StringBuffer serviceImpl, BaseParam param, String packages);
 
     /**
+     * 统计接口
+     *
+     * @param param
+     * @param packages
+     * @return
+     */
+    void count(StringBuffer service, StringBuffer serviceImpl, BaseParam param, String packages);
+
+    /**
      * 根据主键查询数据
      *
      * @param param

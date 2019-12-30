@@ -75,6 +75,13 @@ public class RestControllerServiceImpl implements RestControllerService {
         index(controller, param);
 
 
+        //生成列表接口
+        list(controller, param);
+
+        //生成统计接口
+        count(controller, param);
+
+
         //新增保存页面
         insert(controller, param);
 
@@ -84,6 +91,10 @@ public class RestControllerServiceImpl implements RestControllerService {
 
         //删除方法
         remove(controller, param);
+
+
+        //详情方法
+        detail(controller, param);
 
 
         //生成结束标记
@@ -125,7 +136,39 @@ public class RestControllerServiceImpl implements RestControllerService {
                 .append("import org.springframework.ui.Model;\n")
                 .append("import org.springframework.beans.factory.annotation.Autowired;\n")
                 .append("import org.springframework.web.bind.annotation.*;\n")
+                .append("import java.util.List;\n")
                 .append("\n\n\n");
+    }
+
+    /**
+     * 统计数据
+     *
+     * @param sb
+     * @param param
+     */
+    @Override
+    public void count(StringBuilder sb, BaseParam param) {
+
+        //生成service，实现类
+        sb.append("\t/**\n")
+                .append("\t* 根据条件统计总量接口\n")
+                .append("\t*\n")
+                .append("\t* @param ").append(param.objName()).append("\n")
+                .append("\t* @author ").append(param.getAuthor()).append("\n")
+                .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
+                .append("\t*/\n")
+                .append("\t@RequestMapping(value = \"count\",name = \"根据条件统计总量接口\")\n")
+                .append("\tpublic ResponseVo<Integer> count(")
+                .append(param.getModelName())
+                .append("Args ").append(param.objName()).append("){\n\n");
+
+        sb.append("\t\t//调用业务逻辑\n")
+                .append("\t\tInteger result = ")
+                .append(ColumnsUtil.columns(param.getModelName(), "objName"))
+                .append("Service.count(").append(param.objName()).append(");\n\n");
+
+        sb.append("\t\treturn new ResponseVo(ResponseStatusEnum.SUCCESS, result);\n")
+                .append("\t}\n\n");
     }
 
     /**
@@ -139,20 +182,18 @@ public class RestControllerServiceImpl implements RestControllerService {
 
         //生成service，实现类
         controller.append("\t/**\n")
-                .append("\t* 首页接口\n")
+                .append("\t* 分页查询接口\n")
                 .append("\t*\n")
                 .append("\t* @param ").append(param.objName()).append("\n")
                 .append("\t* @author ").append(param.getAuthor()).append("\n")
                 .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
                 .append("\t*/\n")
-                .append("\t@RequestMapping(value = \"\",name = \"首页接口\")\n")
+                .append("\t@RequestMapping(value = \"\",name = \"分页查询接口\")\n")
                 .append("\tpublic ResponseVo<PageInfo<").append(param.getModelName()).append(">> index(")
                 .append(param.getModelName())
                 .append("Args ").append(param.objName()).append(", PageParam pageParam){\n\n");
 
-        //纪录开始时间,作为计算方法用时
-        controller
-                .append("\t\t//调用业务逻辑\n")
+        controller.append("\t\t//调用业务逻辑\n")
                 .append("\t\tPageInfo<").append(param.getModelName()).append("> result = ")
                 .append(ColumnsUtil.columns(param.getModelName(), "objName"))
                 .append("Service.pageInfo(").append(param.objName()).append(", pageParam);\n\n");
@@ -160,6 +201,37 @@ public class RestControllerServiceImpl implements RestControllerService {
         controller.append("\t\treturn new ResponseVo(ResponseStatusEnum.SUCCESS, result);\n")
                 .append("\t}\n\n");
 
+    }
+
+    /**
+     * 查询数据列表接口
+     *
+     * @param sb
+     * @param param
+     */
+    @Override
+    public void list(StringBuilder sb, BaseParam param) {
+
+        //生成service，实现类
+        sb.append("\t/**\n")
+                .append("\t* 查询数据列表接口\n")
+                .append("\t*\n")
+                .append("\t* @param ").append(param.objName()).append("\n")
+                .append("\t* @author ").append(param.getAuthor()).append("\n")
+                .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
+                .append("\t*/\n")
+                .append("\t@RequestMapping(value = \"list\",name = \"查询数据列表接口\")\n")
+                .append("\tpublic ResponseVo<List<").append(param.getModelName()).append(">> list(")
+                .append(param.getModelName())
+                .append("Args ").append(param.objName()).append("){\n\n");
+
+        sb.append("\t\t//调用业务逻辑\n")
+                .append("\t\tList<").append(param.getModelName()).append("> result = ")
+                .append(ColumnsUtil.columns(param.getModelName(), "objName"))
+                .append("Service.list(").append(param.objName()).append(");\n\n");
+
+        sb.append("\t\treturn new ResponseVo(ResponseStatusEnum.SUCCESS, result);\n")
+                .append("\t}\n\n");
     }
 
     /**
@@ -208,6 +280,7 @@ public class RestControllerServiceImpl implements RestControllerService {
 
     /**
      * 更新数据
+     *
      * @param sb
      * @param param
      */
@@ -258,8 +331,8 @@ public class RestControllerServiceImpl implements RestControllerService {
         sb.append("\t * @return\n")
                 .append("\t */\n")
                 .append("\t@PostMapping(value = \"remove").append(keyMap.get("path")).append("\", name = \"移除方法\")\n")
-                .append("\tpublic ResponseVo<Integer> remove(HttpServletRequest request")
-                .append(StringUtils.isEmpty(keyMap.get("args")) ? "" : ", " + keyMap.get("args"))
+                .append("\tpublic ResponseVo<Integer> remove(")
+                .append(keyMap.get("args"))
                 .append(") {\n");
 
         //纪录开始时间,作为计算方法用时
@@ -267,6 +340,41 @@ public class RestControllerServiceImpl implements RestControllerService {
                 .append("\t\tInteger result = ")
                 .append(ColumnsUtil.columns(baseParam.getModelName(), "objName"))
                 .append("Service.deleteByPrimaryKey(").append(keyMap.get("value")).append(");\n\n");
+
+        sb.append("\t\treturn new ResponseVo(ResponseStatusEnum.SUCCESS, result);\n")
+                .append("\t}\n\n");
+    }
+
+    /**
+     * 详情
+     *
+     * @param sb
+     * @param baseParam
+     */
+    @Override
+    public void detail(StringBuilder sb, BaseParam baseParam) {
+        if (null == baseParam || null == baseParam.getKeys() || baseParam.getKeys().size() == 0) {
+            return;
+        }
+        Map<String, String> keyMap = paramCommonService.keyPathParam(baseParam);
+        sb.append("\t/**\n")
+                .append("\t * 详情\n")
+                .append("\t *\n");
+        for (SchemaColumns col : baseParam.getKeys()) {
+            sb.append("\t * @param ").append(col.objName()).append("\n");
+        }
+        sb.append("\t * @return\n")
+                .append("\t */\n")
+                .append("\t@PostMapping(value = \"detail").append(keyMap.get("path")).append("\", name = \"详情方法\")\n")
+                .append("\tpublic ResponseVo<").append(baseParam.getModelName()).append("> detail(")
+                .append(keyMap.get("args"))
+                .append(") {\n");
+
+        //纪录开始时间,作为计算方法用时
+        sb.append("\t\t//调用业务逻辑\n")
+                .append("\t\t").append(baseParam.getModelName()).append(" result = ")
+                .append(ColumnsUtil.columns(baseParam.getModelName(), "objName"))
+                .append("Service.selectByPrimaryKey(").append(keyMap.get("value")).append(");\n\n");
 
         sb.append("\t\treturn new ResponseVo(ResponseStatusEnum.SUCCESS, result);\n")
                 .append("\t}\n\n");

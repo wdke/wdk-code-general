@@ -158,26 +158,15 @@ public class MvcControllerServiceImpl implements MvcControllerService {
                 .append("\tpublic String index(")
                 .append(param.getModelName())
                 .append("Args ").append(param.objName()).append(", PageParam pageParam, Model model){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            controller.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"index start。param:【").append(param.objName()).append("->{},pageParam->{}】").append("\", JSON.toJSONString(").append(param.objName()).append("), JSON.toJSONString(pageParam));\n\n");
-        }
+
         //纪录开始时间,作为计算方法用时
-        controller.append("\t\t//纪录开始时间\n")
-                .append("\t\tlong startTimes = System.currentTimeMillis();\n\n")
-                .append("\t\t//调用业务逻辑\n")
+        controller.append("\t\t//调用业务逻辑\n")
                 .append("\t\tPageInfo<").append(param.getModelName()).append("> result = ")
                 .append(ColumnsUtil.columns(param.getModelName(), "objName"))
                 .append("Service.pageInfo(").append(param.objName()).append(", pageParam);\n\n")
                 .append("\t\t//数据返回jsp\n")
                 .append("\t\tmodel.addAttribute(\"datas\", result);\n\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            controller.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"index end。result:【data->{},times->{}】\", JSON.toJSONString(result), TimeUtils.format(System.currentTimeMillis() - startTimes));\n");
-        }
         controller.append("\t\treturn \"/")
                 .append(ColumnsUtil.columns(param.getModelName(), "objName"))
                 .append("/index\";\n")
@@ -206,24 +195,13 @@ public class MvcControllerServiceImpl implements MvcControllerService {
                 .append("\tpublic String insert(")
                 .append(param.getModelName())
                 .append("Args ").append(param.objName()).append("){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            sb.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"insert start。param:【").append(param.objName()).append("->{}】").append("\", JSON.toJSONString(").append(param.objName()).append("));\n\n");
-        }
+
         //纪录开始时间,作为计算方法用时
-        sb.append("\t\t//纪录开始时间\n")
-                .append("\t\tlong startTimes = System.currentTimeMillis();\n\n")
-                .append("\t\t//调用业务逻辑\n")
+        sb.append("\t\t//调用业务逻辑\n")
                 .append("\t\tInteger").append(" result = ")
                 .append(ColumnsUtil.columns(param.getModelName(), "objName"))
                 .append("Service.insertSelective(").append(param.objName()).append(");\n\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            sb.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"insert end。result:【data->{},times->{}】\", JSON.toJSONString(result), TimeUtils.format(System.currentTimeMillis() - startTimes));\n");
-        }
         sb.append("\t\treturn \"redirect:/")
                 .append(param.getTableName().replaceAll("_", "/"))
                 .append("\";\n")
@@ -276,16 +254,10 @@ public class MvcControllerServiceImpl implements MvcControllerService {
                 .append("\tpublic String updatePage(")
                 .append(paramCommonService.keyParam(param))
                 .append(", Model model){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            sb.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"selectByPrimaryKey start。param【").append(paramCommonService.keyMapperParam(param).replaceAll(",", "->{}")).append("->{}").append("】\", ").append(paramCommonService.keyMapperParam(param)).append(");\n\n");
-        }
+
         //纪录开始时间,作为计算方法用时
         //纪录开始时间,作为计算方法用时
-        sb.append("\t\t//纪录开始时间\n")
-                .append("\t\tlong startTimes=System.currentTimeMillis();\n\n")
-                .append("\t\t//根据主键查询数据\n")
+        sb.append("\t\t//根据主键查询数据\n")
                 .append("\t\t").append(param.getModelName()).append(" result = ").append(ColumnsUtil.columns(param.getModelName(), "objName"))
                 .append("Service.selectByPrimaryKey(")
                 .append(paramCommonService.keyMapperParam(param))
@@ -293,11 +265,6 @@ public class MvcControllerServiceImpl implements MvcControllerService {
                 .append("\t\t//数据返回html\n")
                 .append("\t\tmodel.addAttribute(\"data\", result);\n\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            sb.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"selectByPrimaryKey end。result【data->{},times->{}】\", result, TimeUtils.format(System.currentTimeMillis() - startTimes));\n\n");
-        }
         sb.append("\t\t//返回页面路径\n")
                 .append("\t\treturn \"/")
                 .append(ColumnsUtil.columns(param.getModelName(), "objName"))
@@ -326,24 +293,13 @@ public class MvcControllerServiceImpl implements MvcControllerService {
                 .append("\tpublic String update(")
                 .append(param.getModelName())
                 .append("Args ").append(param.objName()).append("){\n\n");
-        //生成参数日志
-        if (param.isLogger()) {
-            sb.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"update start。param:【").append(param.objName()).append("->{}】").append("\", JSON.toJSONString(").append(param.objName()).append("));\n\n");
-        }
+
         //纪录开始时间,作为计算方法用时
-        sb.append("\t\t//纪录开始时间\n")
-                .append("\t\tlong startTimes = System.currentTimeMillis();\n\n")
-                .append("\t\t//调用业务逻辑\n")
+        sb.append("\t\t//调用业务逻辑\n")
                 .append("\t\tInteger").append(" result = ")
                 .append(ColumnsUtil.columns(param.getModelName(), "objName"))
                 .append("Service.updateSelectiveByPrimaryKey(").append(param.objName()).append(");\n\n");
 
-        //生成返回值日志
-        if (param.isLogger()) {
-            sb.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"update end。result:【data->{},times->{}】\", JSON.toJSONString(result), TimeUtils.format(System.currentTimeMillis() - startTimes));\n");
-        }
         sb.append("\t\treturn \"redirect:/")
                 .append(param.getTableName().replaceAll("_", "/"))
                 .append("\";\n")
@@ -375,36 +331,15 @@ public class MvcControllerServiceImpl implements MvcControllerService {
                 .append("\tpublic ResponseVo<Integer> remove(HttpServletRequest request")
                 .append(StringUtils.isEmpty(baseParam.keyTypeAndParam()) ? "" : ", " + baseParam.keyTypeAndParam())
                 .append(") {\n");
-        //生成参数日志
-        if (baseParam.isLogger()) {
-            sb.append("\t\t//打印方法开始参数\n");
-            sb.append("\t\tlogger.info(\"remove start。param:【");
-            for (int i = 0; i < baseParam.getKeys().size(); i++) {
-                SchemaColumns col = baseParam.getKeys().get(i);
-                if (i == 0) {
-                    sb.append(col.objName()).append("->{}");
-                } else {
-                    sb.append(", ").append(col.objName()).append("->{}");
-                }
-            }
-            sb.append("】\", ").append(baseParam.keyParam()).append(");\n\n");
-        }
 
         verifyService.verify(sb, baseParam.getKeys());
 
         //纪录开始时间,作为计算方法用时
-        sb.append("\t\t//纪录开始时间\n")
-                .append("\t\tlong startTimes = System.currentTimeMillis();\n\n")
-                .append("\t\t//调用业务逻辑\n")
+        sb.append("\t\t//调用业务逻辑\n")
                 .append("\t\tInteger result = ")
                 .append(ColumnsUtil.columns(baseParam.getModelName(), "objName"))
                 .append("Service.deleteByPrimaryKey(").append(baseParam.keyParam()).append(");\n\n");
 
-        //生成返回值日志
-        if (baseParam.isLogger()) {
-            sb.append("\t\t//打印方法开始参数\n")
-                    .append("\t\tlogger.info(\"remove end。result【data->{},times-{}】\", result, TimeUtils.format(System.currentTimeMillis() - startTimes));\n");
-        }
         sb.append("\n")
                 .append("\n")
                 .append("\t\treturn new ResponseVo<>(ResponseStatusEnum.SUCCESS, result);\n")
@@ -430,8 +365,6 @@ public class MvcControllerServiceImpl implements MvcControllerService {
                 .append("\t */\n")
                 .append("\t@GetMapping(value = \"").append(root).append("/pages\", name = \"").append(title).append("页面路由\")\n")
                 .append("\tpublic String ").append(root).append("Page() {\n\n")
-                .append("\t\t//生成日志\n")
-                .append("\t\tlogger.info(\"").append(root).append("Page start \");\n\n")
                 .append("\t\treturn \"/").append(baseParam.objName()).append("/").append(root).append("\";\n")
                 .append("\t}\n\n");
 

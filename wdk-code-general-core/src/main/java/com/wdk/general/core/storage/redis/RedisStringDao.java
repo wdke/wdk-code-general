@@ -64,7 +64,7 @@ public class RedisStringDao {
      * @param key
      * @return
      */
-    public Object get(String key) {
-        return valueOperations.get(key);
+    public String get(String key) {
+        return (String)valueOperations.get(key);
     }
 }

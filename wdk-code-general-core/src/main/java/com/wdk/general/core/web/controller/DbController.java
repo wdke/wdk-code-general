@@ -1,5 +1,6 @@
 package com.wdk.general.core.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.wdk.general.core.common.constant.RedisConstant;
 import com.wdk.general.core.dao.SchemaTablesDao;
 import com.wdk.general.core.model.DbMessage;
@@ -37,12 +38,18 @@ public class DbController {
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String index(Model model) {
         logger.info("进入数据源录入页面");
-        DbMessage dbMessage = (DbMessage) redisStringDao.get("db_" + UserContext.current().getUsername());
+        DbMessage dbMessage = JSON.parseObject(redisStringDao.get("db_" + UserContext.current().getUsername()),DbMessage.class);
 
         if (null == dbMessage) {
             dbMessage = new DbMessage();
+            dbMessage.setUserId(1000);
+            dbMessage.setHost("49.233.195.134");
+            dbMessage.setDbname("nideshop");
+            dbMessage.setDbuser("root");
+            dbMessage.setDbpassword("root1234");
+            dbMessage.setDbport(3306);
         }
-        model.addAttribute("dbMessage", dbMessage);
+        model.addAttribute("db", dbMessage);
 
         return "db/index";
     }
@@ -59,12 +66,12 @@ public class DbController {
     public String save(Model model, DbMessage dbMessage, HttpServletRequest request) {
         logger.info("保存数据源信息");
 
-        redisStringDao.set("db_" + UserContext.current().getUsername(), dbMessage, RedisConstant.DB_TIME);
+        redisStringDao.set("db_" + UserContext.current().getUsername(), JSON.toJSONString(dbMessage), RedisConstant.DB_TIME);
 
 
         logger.info("进入数据源录入页面");
 
-        model.addAttribute("dbMessage", dbMessage);
+        model.addAttribute("db", dbMessage);
 
         return "db/index";
     }
