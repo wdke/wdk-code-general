@@ -1,8 +1,0 @@
-11:23:52 [http-nio-8888-exec-7] INFO  c.w.g.c.c.l.TalStopWatch  INFO [,,]   StopWatch:start[1577503424087] tag[pom] total[8648]
-11:23:53 [http-nio-8888-exec-7] INFO  c.w.g.c.c.l.TalStopWatch  INFO [,,]   StopWatch:start[1577503432743] tag[init] total[393]
-11:34:57 [http-nio-8888-exec-5] INFO  c.w.g.c.c.l.TalStopWatch  INFO [,,]   StopWatch:start[1577504097466] tag[init] total[317]
-11:36:42 [http-nio-8888-exec-6] INFO  c.w.g.c.c.l.TalStopWatch  INFO [,,]   StopWatch:start[1577504201871] tag[init] total[334]
-11:37:17 [http-nio-8888-exec-6] INFO  c.w.g.c.c.l.TalStopWatch  INFO [,,]   StopWatch:start[1577504236786] tag[init] total[297]
-11:38:54 [http-nio-8888-exec-6] INFO  c.w.g.c.c.l.TalStopWatch  INFO [,,]   StopWatch:start[1577504334317] tag[init] total[315]
-11:40:29 [http-nio-8888-exec-5] INFO  c.w.g.c.c.l.TalStopWatch  INFO [,,]   StopWatch:start[1577504428940] tag[init] total[326]
-11:41:40 [http-nio-8888-exec-8] INFO  c.w.g.c.c.l.TalStopWatch  INFO [,,]   StopWatch:start[1577504500299] tag[init] total[322]
