@@ -3,11 +3,14 @@ package com.wdk.general.core.dao.impl;
 import com.wdk.general.core.dao.SchemaColumnsDao;
 import com.wdk.general.core.dao.template.JdbcTemplates;
 import com.wdk.general.core.handle.impl.BeanHandler;
+import com.wdk.general.core.model.ProjectMetadata;
 import com.wdk.general.core.model.SchemaColumns;
+import com.wdk.general.core.utils.StringConversionUtil;
 import com.wdk.general.core.web.Interceptor.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +21,7 @@ import java.util.List;
 @Service
 public class SchemaColumnsDaoImpl implements SchemaColumnsDao {
 
-    private Logger logger= LoggerFactory.getLogger(SchemaColumnsDao.class);
+    private Logger logger = LoggerFactory.getLogger(SchemaColumnsDao.class);
 
 
     /**
@@ -52,7 +55,9 @@ public class SchemaColumnsDaoImpl implements SchemaColumnsDao {
                 .append("column_comment as columnComment")
                 .append(" from FROM COLUMNS where TABLE_SCHEMA='")
                 .append(UserContext.current().getDbMessage().getDbname()).append("'");
-        return JdbcTemplates.query(sql.toString(), new BeanHandler<>(SchemaColumns.class));
+        List<SchemaColumns> columns = JdbcTemplates.query(sql.toString(), new BeanHandler<>(SchemaColumns.class));
+        conversion(columns);
+        return columns;
     }
 
     /**
@@ -93,13 +98,55 @@ public class SchemaColumnsDaoImpl implements SchemaColumnsDao {
                 .append("column_comment as columnComment")
                 .append(" from COLUMNS \n where  TABLE_SCHEMA='")
                 .append(UserContext.current().getDbMessage().getDbname()).append("' and table_name in (");
-        for(String table:tableName){
+        for (String table : tableName) {
             sql.append("'").append(table).append("',");
         }
-        sql.replace(sql.length()-1,sql.length(),")");
+        sql.replace(sql.length() - 1, sql.length(), ")");
+        List<SchemaColumns> columns = JdbcTemplates.query(sql.toString(), new BeanHandler<>(SchemaColumns.class));
 
-        System.out.println(sql.toString());
+        conversion(columns);
 
-        return JdbcTemplates.query(sql.toString(), new BeanHandler<>(SchemaColumns.class));
+        return columns;
+    }
+
+    /**
+     * 类型转换
+     *
+     * @param columns
+     */
+    private void conversion(List<SchemaColumns> columns) {
+        ProjectMetadata projectMetadata = UserContext.current().getProjectMetadata();
+        if (null == projectMetadata || columns.size() == 0) {
+
+            columns = new ArrayList<>();
+        }
+        //转换
+        if (projectMetadata.getUseActualColumnNames()) {
+            columns.forEach(obj -> {
+
+                obj.setColumnName(obj.getColumnName().toLowerCase());
+                obj.setModelName(obj.getColumnName().substring(0, 1).toUpperCase() + obj.getColumnName().substring(1));
+                obj.setModelObjName(obj.getColumnName());
+
+                if (StringUtils.isEmpty(obj.getColumnComment())) {
+                    obj.setColumnComment(obj.getModelObjName());
+                } else if (obj.getColumnComment().length() > 8) {
+                    obj.setColumnComment(obj.getColumnComment().substring(0,4)+"...");
+                }
+            });
+        } else {
+
+            columns.forEach(obj -> {
+                obj.setColumnName(obj.getColumnName().toLowerCase());
+                obj.setModelName(StringConversionUtil.splitStitching(obj.getColumnName(), "_"));
+                obj.setModelObjName(obj.getModelName().substring(0, 1).toLowerCase() + obj.getModelName().substring(1));
+
+                if (StringUtils.isEmpty(obj.getColumnComment())) {
+                    obj.setColumnComment(obj.getModelObjName());
+                } else if (obj.getColumnComment().length() > 8) {
+                    obj.setColumnComment(obj.getColumnComment().substring(0,4)+"...");
+                }
+            });
+        }
     }
 }

@@ -22,7 +22,7 @@ public class MapperXmlUtils {
                         continue;
                     }
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if ("String".equals(dataType.getJavaType())) {
@@ -49,7 +49,7 @@ public class MapperXmlUtils {
 //                        continue;
 //                    }
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if ("String".equals(dataType.getJavaType())) {
@@ -103,7 +103,7 @@ public class MapperXmlUtils {
                         continue;
                     }
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if ("String".equals(dataType.getJavaType())) {
@@ -131,7 +131,7 @@ public class MapperXmlUtils {
                         continue;
                     }
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if ("String".equals(dataType.getJavaType())) {
@@ -155,8 +155,7 @@ public class MapperXmlUtils {
                 if (null != param.getKeys() && param.getKeys().size() > 0) {
 
                     for (SchemaColumns obj : param.getKeys()) {
-
-                        String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                        String column = obj.getModelObjName();
                         JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                         root.addElement("id")
@@ -168,7 +167,7 @@ public class MapperXmlUtils {
 
                 for (SchemaColumns obj : param.getColumns()) {
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if ("PRI".equals(obj.getColumnKey())) {
@@ -190,7 +189,7 @@ public class MapperXmlUtils {
                         continue;
                     }
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     Element trims = root.addComment(obj.getColumnComment())
@@ -208,7 +207,7 @@ public class MapperXmlUtils {
                         ifs.addText(before + "\t\t\twhen ");
                         for (int i = 0; i < param.getKeys().size(); i++) {
                             SchemaColumns schemaColumns = param.getKeys().get(i);
-                            String cols = ColumnsUtil.columns(schemaColumns.getColumnName(), "java");
+                            String cols = obj.getModelObjName();
                             JdbcTypeEnums dataTypes = JdbcTypeEnums.jdbcTypeEnumsByDbType(schemaColumns.getDataType());
 
                             if (i == 0) {

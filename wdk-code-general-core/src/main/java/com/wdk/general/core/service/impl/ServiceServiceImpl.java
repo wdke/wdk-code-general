@@ -6,7 +6,7 @@ import com.wdk.general.core.model.BaseParam;
 import com.wdk.general.core.model.SchemaColumns;
 import com.wdk.general.core.service.ParamCommonService;
 import com.wdk.general.core.service.ServiceService;
-import com.wdk.general.core.utils.ColumnsUtil;
+import com.wdk.general.core.utils.StringConversionUtil;
 import com.wdk.general.core.utils.DateUtils;
 import com.wdk.general.core.utils.FileUtil;
 import com.wdk.general.core.web.Interceptor.UserContext;
@@ -74,7 +74,7 @@ public class ServiceServiceImpl implements ServiceService {
                 .append("\tprivate ")
                 .append(param.getModelName())
                 .append("Mapper ")
-                .append(ColumnsUtil.columns(param.getModelName(), "objName"))
+                .append(param.getModelObjName())
                 .append("Mapper;\n\n\n\n");
 
         //根据map获取查询Map列表
@@ -210,7 +210,7 @@ public class ServiceServiceImpl implements ServiceService {
             StringBuffer params = new StringBuffer();
             for (int i = 0; i < param.getKeys().size(); i++) {
                 SchemaColumns obj = param.getKeys().get(i);
-                String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                String column = obj.getModelObjName();
                 JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                 if (i == 0) {
@@ -298,7 +298,8 @@ public class ServiceServiceImpl implements ServiceService {
     public void imports(StringBuffer service, BaseParam param, String packages) {
 
         service.append("\n")
-                .append("import ").append(packages).append(".model.").append(param.getModelName()).append(";\n")
+                .append("import ").append(packages).append(".storage.entity.").append(param.getModelName()).append(";\n")
+                .append("import ").append(packages).append(".web.vo.").append(param.getModelName()).append("Vo;\n")
                 .append("import ").append(packages).append(".web.args.").append(param.getModelName()).append("Args;\n")
                 .append("\n")
                 .append("import com.github.pagehelper.PageInfo;\n")
@@ -321,10 +322,11 @@ public class ServiceServiceImpl implements ServiceService {
                 .append("import com.github.pagehelper.PageHelper;\n")
                 .append("import com.github.pagehelper.PageInfo;\n")
                 .append("import ").append(packages).append(".common.model.PageParam;\n")
-                .append("import ").append(packages).append(".model.").append(param.getModelName()).append(";\n")
+                .append("import ").append(packages).append(".storage.entity.").append(param.getModelName()).append(";\n")
                 .append("import ").append(packages).append(".web.args.").append(param.getModelName()).append("Args;\n")
+                .append("import ").append(packages).append(".web.vo.").append(param.getModelName()).append("Vo;\n")
                 .append("import ").append(packages).append(".service.").append(param.getModelName()).append("Service;\n")
-                .append("import ").append(packages).append(".dao.").append(param.getModelName()).append("Mapper;\n")
+                .append("import ").append(packages).append(".storage.dao.").append(param.getModelName()).append("Mapper;\n")
                 .append("import ").append(packages).append(".utils.").append("TimeUtils;\n")
                 .append("import com.alibaba.fastjson.JSON;\n")
                 .append("import org.springframework.beans.BeanUtils;\n")
@@ -373,7 +375,7 @@ public class ServiceServiceImpl implements ServiceService {
         serviceImpl.append("\tpublic List<Map<String,Object>> selectListByMapReturnMap(Map<String,Object> param){\n\n");
 
         //生成查询数据库方法
-        serviceImpl.append("\t\tList<Map<String,Object>> result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.selectListByMapReturnMap(param);\n");
+        serviceImpl.append("\t\tList<Map<String,Object>> result=").append(param.getModelObjName()).append("Mapper.selectListByMapReturnMap(param);\n");
 
 
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
@@ -417,7 +419,7 @@ public class ServiceServiceImpl implements ServiceService {
         serviceImpl.append("\tpublic List<").append(param.getModelName()).append("> selectListByMap(Map<String,Object> param){\n\n");
 
         //生成查询数据库方法
-        serviceImpl.append("\t\tList<").append(param.getModelName()).append("> result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.selectListByMap(param);\n");
+        serviceImpl.append("\t\tList<").append(param.getModelName()).append("> result=").append(param.getModelObjName()).append("Mapper.selectListByMap(param);\n");
 
 
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
@@ -443,33 +445,33 @@ public class ServiceServiceImpl implements ServiceService {
                 .append("\t* @author ").append(param.getAuthor()).append("\n")
                 .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
                 .append("\t*/\n");
-        service.append("\tList<").append(param.getModelName()).append("> list(").append(param.getModelName()).append("Args param);\n\n");
+        service.append("\tList<").append(param.getModelName()).append("Vo> list(").append(param.getModelName()).append("Args param);\n\n");
 
 
         //生成service，实现类
         serviceImpl.append("\t/**\n")
                 .append("\t* 获取查询列表\n")
                 .append("\t* @param param\n")
-                .append("\t* @return ：List<").append(param.getModelName()).append("\n")
+                .append("\t* @return ：List<").append(param.getModelName()).append("Vo>\n")
                 .append("\t* @author ").append(param.getAuthor()).append("\n")
                 .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
                 .append("\t*/\n");
         //生成头部
         serviceImpl.append("\t@Override\n");
         //生成方法体
-        serviceImpl.append("\tpublic List<").append(param.getModelName()).append("> list(").append(param.getModelName()).append("Args param){\n\n");
+        serviceImpl.append("\tpublic List<").append(param.getModelName()).append("Vo> list(").append(param.getModelName()).append("Args param){\n\n");
 
 
         serviceImpl.append("\t\t//参数类型转化\n")
                 .append("\t\t").append(param.getModelName())
-                .append(" ").append(param.objName())
+                .append(" ").append(param.getModelObjName())
                 .append(" = new ").append(param.getModelName()).append("();\n\n")
-                .append("\t\tBeanUtils.copyProperties(param,").append(param.objName()).append(");\n\n");
+                .append("\t\tBeanUtils.copyProperties(param,").append(param.getModelObjName()).append(");\n\n");
 
         //生成查询数据库方法
-        serviceImpl.append("\t\tList<").append(param.getModelName()).append("> result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.list(").append(param.objName()).append(");\n\n");
+        serviceImpl.append("\t\t//访问数据库\n").append("\t\tList<").append(param.getModelName()).append("> data = ").append(param.getModelObjName()).append("Mapper.list(").append(param.getModelObjName()).append(");\n\n");
 
-
+        serviceImpl.append("\t\t//类型转化\n").append("\t\tList<").append(param.getModelName()).append("Vo> result = JSON.parseArray(JSON.toJSONString(data), ").append(param.getModelName()).append("Vo.class);\n\n");
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
     }
 
@@ -510,12 +512,12 @@ public class ServiceServiceImpl implements ServiceService {
 
         serviceImpl.append("\t\t//参数类型转化\n")
                 .append("\t\t").append(param.getModelName())
-                .append(" ").append(param.objName())
+                .append(" ").append(param.getModelObjName())
                 .append(" = new ").append(param.getModelName()).append("();\n\n")
-                .append("\t\tBeanUtils.copyProperties(param,").append(param.objName()).append(");\n\n");
+                .append("\t\tBeanUtils.copyProperties(param,").append(param.getModelObjName()).append(");\n\n");
 
         //生成查询数据库方法
-        serviceImpl.append("\t\tInteger result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.count(").append(param.objName()).append(");\n\n");
+        serviceImpl.append("\t\tInteger result=").append(param.getModelObjName()).append("Mapper.count(").append(param.getModelObjName()).append(");\n\n");
 
 
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
@@ -542,7 +544,7 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("\t* @author ").append(param.getAuthor()).append("\n")
                     .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
                     .append("\t*/\n")
-                    .append("\t").append(param.getModelName()).append(" selectByPrimaryKey(")
+                    .append("\t").append(param.getModelName()).append("Vo selectByPrimaryKey(")
                     .append(paramCommonService.keyParam(param))
                     .append(");\n\n");
 
@@ -556,14 +558,20 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
                     .append("\t*/\n")
                     .append("\t@Override\n")
-                    .append("\tpublic ").append(param.getModelName()).append(" selectByPrimaryKey(")
+                    .append("\tpublic ").append(param.getModelName()).append("Vo selectByPrimaryKey(")
                     .append(paramCommonService.keyParam(param))
                     .append("){\n\n");
 
-            serviceImpl.append("\t\t").append(param.getModelName()).append(" result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
+            serviceImpl.append("\t\t//查询数据库\n").append("\t\t").append(param.getModelName()).append(" data = ").append(param.getModelObjName())
                     .append("Mapper.selectByPrimaryKey(")
                     .append(paramCommonService.keyMapperParam(param))
-                    .append(");\n");
+                    .append(");\n\n");
+            serviceImpl.append("\t\t//判断是否查询到数据\n")
+                    .append("\t\tif (null == data) {\n")
+                    .append("\t\t\treturn null;\n")
+                    .append("\t\t}");
+            serviceImpl.append("\t\t//类型转化\n").append("\t\t").append(param.getModelName()).append("Vo result = new ").append(param.getModelName()).append("Vo();\n")
+                    .append("\t\tBeanUtils.copyProperties(data, result);\n\n");
 
             serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
         }
@@ -589,7 +597,7 @@ public class ServiceServiceImpl implements ServiceService {
                 .append("\t* @author ").append(param.getAuthor()).append("\n")
                 .append("\t* @date ").append(DateUtils.nowFormat("yyyy/MM/dd HH:mm")).append("\n")
                 .append("\t*/\n");
-        service.append("\tPageInfo<").append(param.getModelName()).append("> pageInfo(").append(param.getModelName()).append("Args param,PageParam pageParam);\n\n");
+        service.append("\tPageInfo<").append(param.getModelName()).append("Vo> pageInfo(").append(param.getModelName()).append("Args param,PageParam pageParam);\n\n");
 
 
         //生成service，实现类
@@ -604,20 +612,27 @@ public class ServiceServiceImpl implements ServiceService {
         //生成头部
         serviceImpl.append("\t@Override\n");
         //生成方法体
-        serviceImpl.append("\tpublic PageInfo<").append(param.getModelName()).append("> pageInfo(").append(param.getModelName()).append("Args param,PageParam pageParam){\n\n");
+        serviceImpl.append("\tpublic PageInfo<").append(param.getModelName()).append("Vo> pageInfo(").append(param.getModelName()).append("Args param,PageParam pageParam){\n\n");
 
         serviceImpl.append("\t\t//参数类型转化\n")
                 .append("\t\t").append(param.getModelName())
-                .append(" ").append(param.objName())
+                .append(" ").append(param.getModelObjName())
                 .append(" = new ").append(param.getModelName()).append("();\n")
-                .append("\t\tBeanUtils.copyProperties(param,").append(param.objName()).append(");\n\n")
+                .append("\t\tBeanUtils.copyProperties(param,").append(param.getModelObjName()).append(");\n\n")
                 .append("\t\tPageHelper.startPage(pageParam.getPageNum(),pageParam.getPageSize());\n\n");
 
 
         //生成查询数据库方法
-        serviceImpl.append("\t\tList<").append(param.getModelName()).append("> result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.list(").append(param.objName()).append(");\n");
+        serviceImpl.append("\t\t//分页查询\n").append("\t\tList<").append(param.getModelName()).append("> data = ").append(param.getModelObjName()).append("Mapper.list(").append(param.getModelObjName()).append(");\n\n");
 
-        serviceImpl.append("\t\treturn new PageInfo(result);\n").append("\t}\n\n");
+
+        serviceImpl.append("\t\t//类型转化\n")
+                .append("\t\tList<").append(param.getModelName())
+                .append("Vo> result = JSON.parseArray(JSON.toJSONString(data), ")
+                .append(param.getModelName()).append("Vo.class);\n\n")
+                .append("\t\tPageInfo pageInfo=new PageInfo(data);\n")
+                .append("\t\tpageInfo.setList(result);\n\n");
+        serviceImpl.append("\t\treturn pageInfo;\n").append("\t}\n\n");
     }
 
     /**
@@ -656,7 +671,7 @@ public class ServiceServiceImpl implements ServiceService {
         serviceImpl.append("\tpublic int insert(").append(param.getModelName()).append(" param){\n\n");
 
         //生成查询数据库方法
-        serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.insert(param);\n");
+        serviceImpl.append("\t\tint result=").append(param.getModelObjName()).append("Mapper.insert(param);\n");
 
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
     }
@@ -698,11 +713,11 @@ public class ServiceServiceImpl implements ServiceService {
 
         serviceImpl.append("\t\t//参数类型转化\n")
                 .append("\t\t").append(param.getModelName())
-                .append(" ").append(param.objName())
+                .append(" ").append(param.getModelObjName())
                 .append(" = new ").append(param.getModelName()).append("();\n")
-                .append("\t\tBeanUtils.copyProperties(param,").append(param.objName()).append(");\n\n");
+                .append("\t\tBeanUtils.copyProperties(param,").append(param.getModelObjName()).append(");\n\n");
         //生成查询数据库方法
-        serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.insertSelective(").append(param.objName()).append(");\n\n");
+        serviceImpl.append("\t\tint result=").append(param.getModelObjName()).append("Mapper.insertSelective(").append(param.getModelObjName()).append(");\n\n");
 
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
     }
@@ -743,7 +758,7 @@ public class ServiceServiceImpl implements ServiceService {
         serviceImpl.append("\tpublic int batchInsert(List<").append(param.getModelName()).append("> param){\n\n");
 
         //生成查询数据库方法
-        serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName")).append("Mapper.batchInsert(param);\n");
+        serviceImpl.append("\t\tint result=").append(param.getModelObjName()).append("Mapper.batchInsert(param);\n");
 
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
     }
@@ -788,7 +803,7 @@ public class ServiceServiceImpl implements ServiceService {
 
             //纪录开始时间,作为计算方法用时
             serviceImpl.append("\t\tint result=")
-                    .append(ColumnsUtil.columns(param.getModelName(), "objName"))
+                    .append(param.getModelObjName())
                     .append("Mapper.updateByPrimaryKey(")
                     .append("param);\n");
 
@@ -835,13 +850,13 @@ public class ServiceServiceImpl implements ServiceService {
 
             serviceImpl.append("\t\t//参数类型转化\n")
                     .append("\t\t").append(param.getModelName())
-                    .append(" ").append(param.objName())
+                    .append(" ").append(param.getModelObjName())
                     .append(" = new ").append(param.getModelName()).append("();\n")
-                    .append("\t\tBeanUtils.copyProperties(param,").append(param.objName()).append(");\n\n")
+                    .append("\t\tBeanUtils.copyProperties(param,").append(param.getModelObjName()).append(");\n\n")
                     .append("\t\tint result=")
-                    .append(ColumnsUtil.columns(param.getModelName(), "objName"))
+                    .append(param.getModelObjName())
                     .append("Mapper.updateSelectiveByPrimaryKey(")
-                    .append(" ").append(param.objName()).append(");\n\n");
+                    .append(" ").append(param.getModelObjName()).append(");\n\n");
 
             serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");
         }
@@ -884,7 +899,7 @@ public class ServiceServiceImpl implements ServiceService {
                     .append(param.getModelName())
                     .append("> param){\n\n");
 
-            serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
+            serviceImpl.append("\t\tint result=").append(param.getModelObjName())
                     .append("Mapper.batchInsertUpdate(")
                     .append("param);\n");
 
@@ -930,7 +945,7 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("> param){\n\n");
 
             //纪录开始时间,作为计算方法用时
-            serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
+            serviceImpl.append("\t\tint result=").append(param.getModelObjName())
                     .append("Mapper.batchUpdate(")
                     .append("param);\n");
 
@@ -976,7 +991,7 @@ public class ServiceServiceImpl implements ServiceService {
                     .append("){\n\n");
 
             //纪录开始时间,作为计算方法用时
-            serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
+            serviceImpl.append("\t\tint result=").append(param.getModelObjName())
                     .append("Mapper.deleteByPrimaryKey(")
                     .append(paramCommonService.keyMapperParam(param))
                     .append(");\n");
@@ -1012,7 +1027,7 @@ public class ServiceServiceImpl implements ServiceService {
                 .append(param.getModelName())
                 .append(" param){\n\n");
 
-        serviceImpl.append("\t\tint result=").append(ColumnsUtil.columns(param.getModelName(), "objName"))
+        serviceImpl.append("\t\tint result=").append(param.getModelObjName())
                 .append("Mapper.deleteBySelect(param);\n");
 
         serviceImpl.append("\t\treturn result;\n").append("\t}\n\n");

@@ -3,9 +3,13 @@ package com.wdk.general.core.dao.impl;
 import com.wdk.general.core.dao.SchemaTablesDao;
 import com.wdk.general.core.dao.template.JdbcTemplates;
 import com.wdk.general.core.handle.impl.BeanHandler;
+import com.wdk.general.core.model.ProjectMetadata;
+import com.wdk.general.core.model.SchemaColumns;
 import com.wdk.general.core.model.Tables;
+import com.wdk.general.core.utils.StringConversionUtil;
 import com.wdk.general.core.web.Interceptor.UserContext;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +28,9 @@ public class SchemaTablesDaoImpl implements SchemaTablesDao {
     @Override
     public List<Tables> list() {
         String sql = "SELECT TABLE_SCHEMA as tablSchema, TABLE_NAME as tableName, TABLE_COMMENT as tableComment FROM TABLES where TABLE_SCHEMA='" + UserContext.current().getDbMessage().getDbname() + "'";
-        return JdbcTemplates.query(sql, new BeanHandler<>(Tables.class));
+        List<Tables> query = JdbcTemplates.query(sql, new BeanHandler<>(Tables.class));
+        conversion(query);
+        return query;
     }
 
 
@@ -57,8 +63,9 @@ public class SchemaTablesDaoImpl implements SchemaTablesDao {
 
         }
 
-
-        return JdbcTemplates.query(sql.toString(), new BeanHandler<>(Tables.class));
+        List<Tables> query = JdbcTemplates.query(sql.toString(), new BeanHandler<>(Tables.class));
+        conversion(query);
+        return query;
     }
 
     /**
@@ -76,9 +83,37 @@ public class SchemaTablesDaoImpl implements SchemaTablesDao {
                 .append(UserContext.current().getDbMessage().getDbname())
                 .append("' and TABLE_NAME in (");
         List<Tables> query = JdbcTemplates.query(sql.toString(), new BeanHandler<>(Tables.class));
+        conversion(query);
         if(query.size()>0){
             return query.get(0);
         }
         return null;
+    }
+
+
+    /**
+     * 类型转换
+     *
+     * @param columns
+     */
+    private void conversion(List<Tables> columns) {
+        ProjectMetadata projectMetadata = UserContext.current().getProjectMetadata();
+        if (null == projectMetadata || columns.size() == 0) {
+
+            columns = new ArrayList<>();
+        }
+        //转换
+
+        columns.forEach(obj -> {
+            obj.setTableName(obj.getTableName().toLowerCase());
+            obj.setModelName(StringConversionUtil.splitStitching(obj.getTableName(), "_"));
+            obj.setModelObjName(obj.getModelName().substring(0, 1).toLowerCase() + obj.getModelName().substring(1));
+            if (StringUtils.isEmpty(obj.getTableComment())) {
+                obj.setTableComment(obj.getModelObjName());
+            } else if (obj.getTableComment().length() > 12) {
+                obj.setTableComment(obj.getTableComment().substring(0,10)+"...");
+            }
+        });
+
     }
 }

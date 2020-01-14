@@ -41,7 +41,13 @@ public class BeanHandler<T> implements IResultSetHandler<List<T>> {
             while (rSet.next()) {
                 T obj = clazz.newInstance();
                 for (PropertyDescriptor descriptor : descriptors) {
-                    Object value = rSet.getObject(descriptor.getName());
+                    Object value =null;
+                    try{
+                        value = rSet.getObject(descriptor.getName());
+                    }catch (Exception e){
+//                        e.printStackTrace();
+                        continue;
+                    }
                     if (null == value) {
                         continue;
                     }

@@ -2,12 +2,14 @@ package com.wdk.general.core.service.impl;
 
 import com.wdk.general.core.common.enums.JdbcTypeEnums;
 import com.wdk.general.core.model.BaseParam;
+import com.wdk.general.core.model.ParamGenerate;
 import com.wdk.general.core.model.SchemaColumns;
 import com.wdk.general.core.service.ParamCommonService;
-import com.wdk.general.core.utils.ColumnsUtil;
+import com.wdk.general.core.utils.StringConversionUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,7 +32,7 @@ public class ParamCommonServiceImpl implements ParamCommonService {
         StringBuffer params = new StringBuffer();
         for (int i = 0; i < param.getKeys().size(); i++) {
             SchemaColumns obj = param.getKeys().get(i);
-            String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+            String column = obj.getModelObjName();
             JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
             if (i == 0) {
@@ -59,7 +61,7 @@ public class ParamCommonServiceImpl implements ParamCommonService {
         StringBuffer params = new StringBuffer();
         for (int i = 0; i < param.getKeys().size(); i++) {
             SchemaColumns obj = param.getKeys().get(i);
-            String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+            String column = obj.getModelObjName();
             if (i == 0) {
                 params.append(column);
             } else {
@@ -74,38 +76,42 @@ public class ParamCommonServiceImpl implements ParamCommonService {
     /**
      * 主键作为路径的参数
      *
-     * @param param
+     * @param keys
      * @return
      */
     @Override
-    public Map<String, String> keyPathParam(BaseParam param) {
+    public ParamGenerate keyPathParam(List<SchemaColumns> keys) {
 
-        if (param.getKeys().isEmpty()) {
-            return new HashMap<>();
+        if (keys.isEmpty()) {
+            return null;
         }
 
         StringBuffer paths = new StringBuffer();
         StringBuffer args = new StringBuffer();
+        StringBuffer pathArgs = new StringBuffer();
         StringBuffer values = new StringBuffer();
 
-        for (int i = 0; i < param.getKeys().size(); i++) {
-            SchemaColumns obj = param.getKeys().get(i);
-            String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+        for (int i = 0; i < keys.size(); i++) {
+            SchemaColumns obj = keys.get(i);
+            String column = obj.getModelObjName();
             JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
             paths.append("/{").append(column).append("}");
             if (i == 0) {
                 args.append(dataType.getJavaType()).append(" ").append(column);
+                pathArgs.append("@PathVariable(\"").append(column).append("\") ").append(dataType.getJavaType()).append(" ").append(column);
                 values.append(column);
             } else {
                 args.append(",").append(dataType.getJavaType()).append(" ").append(column);
+                pathArgs.append(", @PathVariable(\"").append(column).append("\") ").append(dataType.getJavaType()).append(" ").append(column);
                 values.append(",").append(column);
             }
 
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("path",paths.toString());
-        map.put("args",args.toString());
-        map.put("value",values.toString());
-        return map;
+        ParamGenerate paramGenerate = new ParamGenerate();
+        paramGenerate.setPath(paths.toString());
+        paramGenerate.setArgs(args.toString());
+        paramGenerate.setValues(values.toString());
+        paramGenerate.setPathArgs(pathArgs.toString());
+        return paramGenerate;
     }
 }

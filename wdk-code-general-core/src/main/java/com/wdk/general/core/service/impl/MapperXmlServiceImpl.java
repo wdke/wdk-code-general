@@ -48,32 +48,32 @@ public class MapperXmlServiceImpl implements MapperXmlService {
         document.addDocType("mapper", "-//mybatis.org//DTD Mapper 3.0//EN", "http://mybatis.org/dtd/mybatis-3-mapper.dtd");
         document.addComment(param.getTableComment() == null ? "" : param.getTableComment());
         Element root = document.addElement("mapper")
-                .addAttribute("namespace", packages + ".dao." + param.getModelName() + "Mapper");//创建根元素
+                .addAttribute("namespace", packages + ".storage.dao." + param.getModelName() + "Mapper");//创建根元素
 
         /**
          * 开始生成xml内容
          */
-        baseResultMap(param, packages + ".model", root);
+        baseResultMap(param, packages + ".storage.entity", root);
         BaseTablesSql(param, root);
         BaseColumnsSql(param, root);
         BaseWhereSql(param, root);
         BaseWhereDbSql(param, root);
         selectListByMapReturnMap(param, "java.util.Map", root);
         selectListByMap(param, "java.util.Map", root);
-        selectList(param, packages + ".model", root);
-        count(param, packages + ".model", root);
-        insert(param, packages + ".model", root);
-        insertSelective(param, packages + ".model", root);
-        batchInsert(param, packages + ".model", root);
+        selectList(param, packages + ".storage.entity", root);
+        count(param, packages + ".storage.entity", root);
+        insert(param, packages + ".storage.entity", root);
+        insertSelective(param, packages + ".storage.entity", root);
+        batchInsert(param, packages + ".storage.entity", root);
         if (!param.getKeys().isEmpty()) {
-            selectByPrimaryKey(param, packages + ".model", root);
-            updateByPrimaryKey(param, packages + ".model", root);
-            updateSelectiveByPrimaryKey(param, packages + ".model", root);
+            selectByPrimaryKey(param, packages + ".storage.entity", root);
+            updateByPrimaryKey(param, packages + ".storage.entity", root);
+            updateSelectiveByPrimaryKey(param, packages + ".storage.entity", root);
             batchInsertUpdate(param, "java.util.Map", root);
             batchUpdate(param, "java.util.Map", root);
             deleteByPrimaryKey(param, "java.util.Map", root);
         }
-        deleteBySelect(param, packages + ".model", root);
+        deleteBySelect(param, packages + ".storage.entity", root);
         /**
          * 结束生成xml内容
          */
@@ -295,6 +295,9 @@ public class MapperXmlServiceImpl implements MapperXmlService {
         where.addElement("include")
                 .addAttribute("refid", "Base_Where_Sql");
 
+        //生成排序
+        select.addElement("if").addAttribute("test", "orderBy != null").addText("order by ${orderBy}\n");
+
 
         root.addComment("根据条件查询列表结束");
         return select.asXML();
@@ -375,7 +378,7 @@ public class MapperXmlServiceImpl implements MapperXmlService {
 
             SchemaColumns obj = param.getKeys().get(0);
 
-            String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+            String column = obj.getModelObjName();
             JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
             inserts.addElement("selectKey")
                     .addAttribute("keyProperty", column)
@@ -416,7 +419,7 @@ public class MapperXmlServiceImpl implements MapperXmlService {
                 && "auto_increment".equals(param.getKeys().get(0).getExtra())) {
             SchemaColumns obj = param.getKeys().get(0);
             JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
-            String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+            String column = obj.getModelObjName();
             //返回主键
             inserts.addElement("selectKey")
                     .addAttribute("keyProperty", column)
@@ -455,7 +458,7 @@ public class MapperXmlServiceImpl implements MapperXmlService {
                 && param.getKeys().size() == 1
                 && "auto_increment".equals(param.getKeys().get(0).getExtra())) {
             SchemaColumns obj = param.getKeys().get(0);
-            String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+            String column = obj.getModelObjName();
             JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
             //返回主键
             inserts.addElement("selectKey")
@@ -562,7 +565,7 @@ public class MapperXmlServiceImpl implements MapperXmlService {
                 && param.getKeys().size() == 1
                 && "auto_increment".equals(param.getKeys().get(0).getExtra())) {
             SchemaColumns obj = param.getKeys().get(0);
-            String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+            String column = obj.getModelObjName();
             JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
             //返回主键
             insert.addElement("selectKey")
@@ -623,7 +626,7 @@ public class MapperXmlServiceImpl implements MapperXmlService {
         if (param.getKeys().size() > 1) {
             for (int i = 0; i < param.getColumns().size(); i++) {
                 SchemaColumns obj = param.getColumns().get(i);
-                String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                String column = obj.getModelObjName();
                 JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                 if (i == 0) {
                     foreachs.addText("\n\t\t\t\t\t(" + obj.getColumnName() + "=#{item." + column + ",jdbcType=" + dataType.getMybatisType() + "}");
@@ -636,7 +639,7 @@ public class MapperXmlServiceImpl implements MapperXmlService {
         }
         if (param.getKeys().size() == 1) {
             param.getKeys().forEach(obj -> {
-                String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                String column = obj.getModelObjName();
                 JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                 foreachs.addText("\n\t\t\t\t\t" + obj.getColumnName() + "=#{item." + column + ",jdbcType=" + dataType.getMybatisType() + "}");
             });

@@ -1,9 +1,11 @@
 package com.wdk.general.core.service;
 
 import com.wdk.general.core.model.BaseParam;
+import com.wdk.general.core.model.SchemaColumns;
 import com.wdk.general.core.model.Tables;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * created by wdk on 2019/12/17
@@ -53,6 +55,15 @@ public interface HtmlService {
      * @return
      */
     String update(BaseParam baseParam);
+
+
+    /**
+     * 生成详情页面
+     *
+     * @param baseParam
+     * @return
+     */
+    String detail(BaseParam baseParam);
 
 
     /**
@@ -106,4 +117,23 @@ public interface HtmlService {
      * @param operation
      */
     void table(StringBuilder sb, BaseParam baseParam, Boolean operation);
+
+
+    /**
+     * 详情信息
+     *
+     * @param sb
+     * @param baseParam
+     */
+    void detailByDiv(StringBuilder sb, BaseParam baseParam);
+
+
+    /**
+     * 参数拼接
+     *
+     * @param keys
+     */
+    Map<String,String> args(List<SchemaColumns> keys);
+
+
 }

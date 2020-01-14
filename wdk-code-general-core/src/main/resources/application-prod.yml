@@ -29,8 +29,10 @@ spring:
   #redis 数据库的配置
   redis:
     database: 0
-    host: 192.168.1.100
+    host: redis
     port: 6379
+    password: wdke@1216.com
+    timeout: 5000
 
 
 #mybatis配置开始

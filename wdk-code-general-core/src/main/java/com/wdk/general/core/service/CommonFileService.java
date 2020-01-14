@@ -24,7 +24,7 @@ public interface CommonFileService {
      * @param name
      * @param packages
      */
-    void mainApplication(String name, String packages);
+    String mainApplication(String name, String packages);
 
 
     /**
@@ -54,24 +54,36 @@ public interface CommonFileService {
     /**
      * 生成登陆API
      */
-    void loginController();
+    String loginController(String packages);
 
 
     /**
      * 生成登陆Service
      */
-    void loginService();
+    String loginService(String packages);
 
 
     /**
      * 生成登陆ServiceImpl
      */
-    void loginServiceImpl();
+    String loginServiceImpl(String packages);
 
 
     /**
      * 生成RedisConstant
+     *
+     * @param packages
+     * @return
      */
-    void redisConstant();
+    String redisConstant(String packages);
+
+
+    /**
+     * 生成 indexPages
+     *
+     * @param packages
+     * @return
+     */
+    String indexPages(String packages);
 
 }

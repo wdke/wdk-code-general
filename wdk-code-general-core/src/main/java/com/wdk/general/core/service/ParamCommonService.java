@@ -1,7 +1,10 @@
 package com.wdk.general.core.service;
 
 import com.wdk.general.core.model.BaseParam;
+import com.wdk.general.core.model.ParamGenerate;
+import com.wdk.general.core.model.SchemaColumns;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,7 +32,7 @@ public interface ParamCommonService {
     /**
      * 主键作为路径的参数
      *
-     * @param param
+     * @param keys
      */
-    Map<String, String> keyPathParam(BaseParam param);
+    ParamGenerate keyPathParam(List<SchemaColumns> keys);
 }

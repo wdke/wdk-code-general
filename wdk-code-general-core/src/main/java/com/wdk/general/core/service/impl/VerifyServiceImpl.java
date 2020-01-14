@@ -44,7 +44,7 @@ public class VerifyServiceImpl implements VerifyService {
         if (null == key) {
             return;
         }
-        String column = key.objName();
+        String column = key.getModelObjName();
 
         JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(key.getDataType());
         if (dataType.getJavaType().equals("String")) {

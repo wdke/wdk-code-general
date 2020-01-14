@@ -1,10 +1,11 @@
 package com.wdk.general.core.service.impl;
 
+import com.wdk.general.core.common.constant.FilePathConstant;
 import com.wdk.general.core.common.enums.JdbcTypeEnums;
 import com.wdk.general.core.model.BaseParam;
 import com.wdk.general.core.model.SchemaColumns;
 import com.wdk.general.core.service.MapperDaoService;
-import com.wdk.general.core.utils.ColumnsUtil;
+import com.wdk.general.core.utils.StringConversionUtil;
 import com.wdk.general.core.utils.FileUtil;
 import com.wdk.general.core.web.Interceptor.UserContext;
 import org.springframework.stereotype.Service;
@@ -29,11 +30,9 @@ public class MapperDaoServiceImpl implements MapperDaoService {
     @Override
     public void initDao(BaseParam param, String packages) {
 
-        String file = UserContext.current().getProjectServerRoot() + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/dao/" + param.getModelName() + "Mapper.java";
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         StringBuffer mapper = new StringBuffer();
-        mapper.append("package ").append(packages).append(".dao;\n");
+        mapper.append("package ").append(packages).append(".storage.dao;\n");
         imports(mapper, param, packages);
 
         mapper.append("/**\n")
@@ -99,7 +98,7 @@ public class MapperDaoServiceImpl implements MapperDaoService {
             StringBuffer params = new StringBuffer();
             for (int i = 0; i < param.getKeys().size(); i++) {
                 SchemaColumns obj = param.getKeys().get(i);
-                String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                String column = obj.getModelObjName();
                 JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                 if (i == 0) {
@@ -162,7 +161,7 @@ public class MapperDaoServiceImpl implements MapperDaoService {
                 .append("\t */\n");
         mapper.append("\tint deleteBySelect(").append(param.getModelName()).append(" param);\n\n}");
         try {
-            FileUtil.write(file, mapper.toString());
+            FileUtil.write(FilePathConstant.dao(param.getModelName()), mapper.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,7 +177,7 @@ public class MapperDaoServiceImpl implements MapperDaoService {
 
 
         mapper.append("\n")
-                .append("import ").append(packages).append(".model.").append(param.getModelName()).append(";\n")
+                .append("import ").append(packages).append(".storage.entity.").append(param.getModelName()).append(";\n")
                 .append("import java.util.List;\n")
                 .append("import java.util.Map;\n")
                 .append("import org.apache.ibatis.annotations.Param;\n")

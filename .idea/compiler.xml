@@ -9,7 +9,7 @@
         <module name="wdk-code-general-core" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8">
+    <bytecodeTargetLevel>
       <module name="wdk-code-general" target="1.8" />
       <module name="wdk-code-general-core" target="1.8" />
     </bytecodeTargetLevel>

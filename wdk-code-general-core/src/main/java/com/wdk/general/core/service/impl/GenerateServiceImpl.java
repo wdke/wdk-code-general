@@ -1,14 +1,17 @@
 package com.wdk.general.core.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.wdk.general.core.common.constant.FilePathConstant;
 import com.wdk.general.core.dao.SchemaColumnsDao;
 import com.wdk.general.core.dao.SchemaTablesDao;
 import com.wdk.general.core.model.*;
 import com.wdk.general.core.service.*;
-import com.wdk.general.core.utils.ColumnsUtil;
+import com.wdk.general.core.utils.StringConversionUtil;
 import com.wdk.general.core.utils.CommonFileUtils;
 import com.wdk.general.core.utils.FileUtil;
+import com.wdk.general.core.utils.GeneratorConfigUtil;
 import com.wdk.general.core.web.Interceptor.UserContext;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,6 +120,10 @@ public class GenerateServiceImpl implements GenerateService {
             logger.info("获取表字段为空，生成结束。");
             return;
         }
+        //生成mybatis插件
+//        GeneratorConfigUtil.init(list1, list);
+
+//        FileUtil.runMybatisCoreJar(UserContext.current().getMybatisCorePath(), FilePathConstant.generatorConfig());
 
         //项目生成路径
         String rootPath = UserContext.current().getProjectServerRoot() + "/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/");
@@ -149,24 +156,29 @@ public class GenerateServiceImpl implements GenerateService {
             baseParam.setTableSchema(dbMessage.getDbname());
             baseParam.setTableName(entry.getKey());
             baseParam.setColumns(entry.getValue());
-            baseParam.setModelName(ColumnsUtil.columns(entry.getKey(), "getter"));
+            baseParam.setKeys(entry.getValue().stream().filter(obj -> "PRI".equals(obj.getColumnKey())).collect(Collectors.toList()));
+            baseParam.setModelName(collect.get(entry.getKey()).getModelName());
+            baseParam.setModelObjName(collect.get(entry.getKey()).getModelObjName());
             baseParam.setTableComment(collect.get(entry.getKey()).getTableComment());
             baseParam.setLogger(false);
+            baseParam.setMybatisCore(false);
 
             //生成实体
             modelService.init(baseParam, projectMetadata.getPackages());
 
-            //生成dao
-            mapperDaoService.initDao(baseParam, projectMetadata.getPackages());
+            if (!baseParam.isMybatisCore()) {
+                //生成dao
+                mapperDaoService.initDao(baseParam, projectMetadata.getPackages());
 
-            //生成xml
-            mapperXmlService.mapperXml(baseParam, projectMetadata.getPackages());
+                //生成xml
+                mapperXmlService.mapperXml(baseParam, projectMetadata.getPackages());
+            }
 
             //生成service
             serviceService.init(baseParam, projectMetadata.getPackages());
 
             //生成 PageController
-            mvcControllerService.init(baseParam, projectMetadata.getPackages());
+            mvcControllerService.createFile(baseParam, projectMetadata.getPackages());
 
             //生成 APIController
             restControllerService.init(baseParam, projectMetadata.getPackages());

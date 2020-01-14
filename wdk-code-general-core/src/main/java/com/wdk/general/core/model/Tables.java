@@ -1,5 +1,6 @@
 package com.wdk.general.core.model;
 
+import com.alibaba.druid.util.StringUtils;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,4 +20,11 @@ public class Tables implements Serializable {
 
     //获取表描述
     private String tableComment;
+
+    //model属性
+    private String modelName;
+
+    //model属性
+    private String modelObjName;
+
 }

@@ -29,7 +29,7 @@ public class TableColumnsHandlerUtil {
 
                 columns.forEach(obj -> {
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if ("String".equals(dataType.getJavaType())) {
@@ -47,7 +47,7 @@ public class TableColumnsHandlerUtil {
             }
             case "or": {
                 columns.forEach(obj -> {
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if ("String".equals(dataType.getJavaType())) {
@@ -64,7 +64,7 @@ public class TableColumnsHandlerUtil {
             }
             case ",": {
                 columns.forEach(obj -> {
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                     if ("String".equals(dataType.getJavaType())) {
                         builder.append("\t\t<if test=\"").append(column).append(" != null and ").append(column).append(" != ''\">\n");
@@ -82,7 +82,7 @@ public class TableColumnsHandlerUtil {
                 columns.forEach(obj -> {
 
                     if (!"auto_increment".equals(obj.getExtra())) {
-                        String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                        String column = obj.getModelObjName();
                         JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                         if ("String".equals(dataType.getJavaType())) {
                             builder.append("\t\t<if test=\"").append(column).append(" != null and ").append(column).append(" != ''\">\n");
@@ -100,7 +100,7 @@ public class TableColumnsHandlerUtil {
             case "value": {
                 columns.forEach(obj -> {
                     if (!"auto_increment".equals(obj.getExtra())) {
-                        String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                        String column = obj.getModelObjName();
                         JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                         if ("String".equals(dataType.getJavaType())) {
                             builder.append("\t\t<if test=\"").append(column).append(" != null and ").append(column).append(" != ''\">\n");
@@ -176,7 +176,7 @@ public class TableColumnsHandlerUtil {
                 for (int i = 0, j = 0; i < columns.size(); i++) {
                     SchemaColumns obj = columns.get(i);
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if (builder.length() > 0) {
@@ -197,7 +197,7 @@ public class TableColumnsHandlerUtil {
                     if ("auto_increment".equals(obj.getExtra())) {
                         continue;
                     }
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if (builder.length() > 0) {
@@ -221,7 +221,7 @@ public class TableColumnsHandlerUtil {
                     if ("auto_increment".equals(obj.getExtra())) {
                         continue;
                     }
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if (builder.length() > 0) {
@@ -245,7 +245,7 @@ public class TableColumnsHandlerUtil {
                     if (!"PRI".equals(obj.getColumnKey())) {
                         continue;
                     }
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if (builder.length() > 0) {
@@ -268,7 +268,7 @@ public class TableColumnsHandlerUtil {
                     if ("PRI".equals(obj.getColumnKey())) {
                         continue;
                     }
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if (builder.length() > 0) {
@@ -324,7 +324,7 @@ public class TableColumnsHandlerUtil {
             case 1: {
                 columns.forEach(obj -> {
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                     builder.append("\t//").append(obj.getColumnComment()).append("\n");
                     if (null == dataType || null == dataType.getJavaType()) {
@@ -343,7 +343,7 @@ public class TableColumnsHandlerUtil {
             }
             case 2: {
                 columns.forEach(obj -> {
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if (builder.length() > 0) {
@@ -359,8 +359,8 @@ public class TableColumnsHandlerUtil {
             case 3: {
                 columns.forEach(obj -> {
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
-                    String getter = ColumnsUtil.columns(obj.getColumnName(), "getter");
+                    String column = obj.getModelObjName();
+                    String getter = obj.getModelName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                     builder.append("\t//").append(obj.getColumnComment());
                     builder.append("\tpublic ").append(dataType.getJavaType()).append(" get").append(getter).append("(){\n");
@@ -378,8 +378,8 @@ public class TableColumnsHandlerUtil {
             case 4: {
                 columns.forEach(obj -> {
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
-                    String getter = ColumnsUtil.columns(obj.getColumnName(), "getter");
+                    String column = obj.getModelObjName();
+                    String getter = obj.getModelName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                     if (dataType.getJavaType().equals("Date")) {
 
@@ -399,8 +399,8 @@ public class TableColumnsHandlerUtil {
             case 5: {
                 columns.forEach(obj -> {
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
-                    String getter = ColumnsUtil.columns(obj.getColumnName(), "getter");
+                    String column = obj.getModelObjName();
+                    String getter = obj.getModelName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                     if (dataType.getJavaType().equals("Date")) {
                         builder.append("\t//").append(obj.getColumnComment()).append("\n");
@@ -417,8 +417,8 @@ public class TableColumnsHandlerUtil {
             case 6: {
                 columns.forEach(obj -> {
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
-                    String getter = ColumnsUtil.columns(obj.getColumnName(), "getter");
+                    String column = obj.getModelObjName();
+                    String getter = obj.getModelName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                     if (dataType.getJavaType().equals("Date")) {
 
@@ -455,8 +455,8 @@ public class TableColumnsHandlerUtil {
             case 7: {
                 columns.forEach(obj -> {
 
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
-                    String getter = ColumnsUtil.columns(obj.getColumnName(), "getter");
+                    String column = obj.getModelObjName();
+                    String getter = obj.getModelName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
                     if (dataType.getJavaType().equals("Date")) {
 
@@ -492,7 +492,7 @@ public class TableColumnsHandlerUtil {
             }
             default: {
                 columns.forEach(obj -> {
-                    String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                    String column = obj.getModelObjName();
                     JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                     if (builder.length() > 0) {
@@ -523,7 +523,7 @@ public class TableColumnsHandlerUtil {
         StringBuilder builder = new StringBuilder();
         if (StringUtils.isEmpty(last)) {
             columns.forEach(obj -> {
-                String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                String column = obj.getModelObjName();
                 JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                 if ("PRI".equals(obj.getColumnKey())) {
@@ -535,7 +535,7 @@ public class TableColumnsHandlerUtil {
         } else {
 
             columns.forEach(obj -> {
-                String column = ColumnsUtil.columns(obj.getColumnName(), "java");
+                String column = obj.getModelObjName();
                 JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(obj.getDataType());
 
                 if ("PRI".equals(obj.getColumnKey())) {

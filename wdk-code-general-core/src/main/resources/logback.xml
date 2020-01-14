@@ -117,6 +117,7 @@
     <!--监控所有服务日志-->
     <logger name="com.wdk.general.core" level="INFO" additivity="false">
         <appender-ref ref="ServerLog"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <!--监控数据出参入参-->

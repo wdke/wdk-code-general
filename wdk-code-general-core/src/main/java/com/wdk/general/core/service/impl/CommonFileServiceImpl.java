@@ -28,15 +28,89 @@ public class CommonFileServiceImpl implements CommonFileService {
      */
     @Override
     public void all(String name, String packages) {
-        mainApplication(name, packages);
+        ProjectMetadata projectMetadata = UserContext.current().getProjectMetadata();
 
-        loginController();
 
-        loginService();
+        //生成 LoginController.java 文件
+        String filePath = UserContext.current().getProjectServerRoot() + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/" + name + "ServerApplication.java";
+        //获取文本内容
+        String content = mainApplication(projectMetadata.getProJectJavaName(), projectMetadata.getPackages());
 
-        loginServiceImpl();
 
-        redisConstant();
+        try {
+            FileUtil.write(filePath, content);
+            logger.info("all write success .filename = LoginController.java");
+        } catch (IOException e) {
+            logger.info("all write error .filename = LoginController.java");
+            e.printStackTrace();
+        }
+
+        //生成 LoginController.java 文件
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/web/controller/LoginController.java";
+        //获取文本内容
+        content = loginController(packages);
+
+        try {
+            FileUtil.write(filePath, content);
+            logger.info("all write success .filename = LoginController.java");
+        } catch (IOException e) {
+            logger.info("all write error .filename = LoginController.java");
+            e.printStackTrace();
+        }
+
+        //生成 LoginService.java 文件
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/service/LoginService.java";
+        //获取文本内容
+        content = loginService(packages);
+
+        try {
+            FileUtil.write(filePath, content);
+            logger.info("all write success .filename = LoginService.java");
+        } catch (IOException e) {
+            logger.info("all write error .filename = LoginService.java");
+            e.printStackTrace();
+        }
+
+        //生成 LoginServiceImpl.java 文件
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/service/impl/LoginServiceImpl.java";
+        //获取文本内容
+        content = loginServiceImpl(packages);
+
+        try {
+            FileUtil.write(filePath, content);
+            logger.info("all write success .filename = LoginServiceImpl.java");
+        } catch (IOException e) {
+            logger.info("all write error .filename = LoginServiceImpl.java");
+            e.printStackTrace();
+        }
+
+
+        //生成 RedisConstant.java 文件
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/common/constant/RedisConstant.java";
+        //获取文本内容
+        content = redisConstant(packages + ".common.constant");
+
+        try {
+            FileUtil.write(filePath, content);
+            logger.info("all write success .filename = RedisConstant.java");
+        } catch (IOException e) {
+            logger.info("all write error .filename = RedisConstant.java");
+            e.printStackTrace();
+        }
+
+
+        //生成 IndexPages.java 文件
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/web/pages/IndexPages.java";
+        //获取文本内容
+        content = indexPages(packages + ".web.pages");
+
+        try {
+            FileUtil.write(filePath, content);
+            logger.info("all write success .filename = IndexPages.java");
+        } catch (IOException e) {
+            logger.info("all write error .filename = IndexPages.java");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -63,9 +137,7 @@ public class CommonFileServiceImpl implements CommonFileService {
      * @param packages
      */
     @Override
-    public void mainApplication(String name, String packages) {
-
-        String file = UserContext.current().getProjectServerRoot() + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/" + name + "ServerApplication.java";
+    public String mainApplication(String name, String packages) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -79,7 +151,7 @@ public class CommonFileServiceImpl implements CommonFileService {
                 .append("@SpringBootApplication\n")
                 .append("@EnableDiscoveryClient\n")
                 .append("@EnableTransactionManagement\n")
-                .append("@MapperScan(\"").append(packages).append(".dao\")\n")
+                .append("@MapperScan(\"").append(packages).append(".storage.dao\")\n")
                 .append("public class ").append(name).append("ServerApplication {\n")
                 .append("\n")
                 .append("\tpublic static void main(String[] args) {\n")
@@ -87,11 +159,8 @@ public class CommonFileServiceImpl implements CommonFileService {
                 .append("\t}\n")
                 .append("}\n");
 
-        try {
-            FileUtil.write(file, sb.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        return sb.toString();
 
     }
 
@@ -242,17 +311,15 @@ public class CommonFileServiceImpl implements CommonFileService {
      * 生成登陆API
      */
     @Override
-    public void loginController() {
-        //项目创建信息
-        ProjectMetadata projectMetadata = UserContext.current().getProjectMetadata();
+    public String loginController(String packages) {
 
         StringBuffer sb = new StringBuffer();
-        sb.append("package ").append(projectMetadata.getPackages()).append(".web.controller;\n")
+        sb.append("package ").append(packages).append(".web.controller;\n")
                 .append("\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".common.enums.ResponseStatusEnum;\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".common.model.ResponseVo;\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".service.LoginService;\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".web.args.LoginArgs;\n")
+                .append("import ").append(packages).append(".common.enums.ResponseStatusEnum;\n")
+                .append("import ").append(packages).append(".common.model.ResponseVo;\n")
+                .append("import ").append(packages).append(".service.LoginService;\n")
+                .append("import ").append(packages).append(".web.args.LoginArgs;\n")
                 .append("import org.springframework.beans.factory.annotation.Autowired;\n")
                 .append("import org.springframework.web.bind.annotation.*;\n")
                 .append("import org.springframework.web.bind.annotation.RequestParam;\n")
@@ -294,27 +361,22 @@ public class CommonFileServiceImpl implements CommonFileService {
                 .append("\t}\n\n")
                 .append("}\n");
 
-        String file = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/web/controller/LoginController.java";
-
-
-        try {
-            FileUtil.write(file, sb.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return sb.toString();
     }
 
+    /**
+     * 生成 loginService文件
+     *
+     * @param packages
+     * @return
+     */
     @Override
-    public void loginService() {
-
-        //项目创建信息
-        ProjectMetadata projectMetadata = UserContext.current().getProjectMetadata();
-        String file = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/service/LoginService.java";
+    public String loginService(String packages) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("package ").append(projectMetadata.getPackages()).append(".service;\n")
+        sb.append("package ").append(packages).append(".service;\n")
                 .append("\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".common.model.ResponseVo;\n")
+                .append("import ").append(packages).append(".common.model.ResponseVo;\n")
                 .append("\n")
                 .append("/**\n")
                 .append(" * created by wdk on 2019/12/23\n")
@@ -338,34 +400,31 @@ public class CommonFileServiceImpl implements CommonFileService {
                 .append("\tResponseVo<Boolean> tokenCheck(String tokenValue);\n\n")
                 .append("}\n");
 
-        try {
-            FileUtil.write(file, sb.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return sb.toString();
     }
 
     /**
-     * 生成impl
+     * 生成 loginServiceImpl
+     *
+     * @param packages
+     * @return
      */
     @Override
-    public void loginServiceImpl() {
+    public String loginServiceImpl(String packages) {
 
         //项目创建信息
-        ProjectMetadata projectMetadata = UserContext.current().getProjectMetadata();
-
         StringBuilder sb = new StringBuilder();
-        sb.append("package ").append(projectMetadata.getPackages()).append(".service.impl;\n")
+        sb.append("package ").append(packages).append(".service.impl;\n")
                 .append("\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".common.constant.RedisConstant;\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".redis.RedisStringDao;\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".utils.JwtUtils;\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".common.enums.ResponseStatusEnum;\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".common.model.ResponseVo;\n")
-                .append("//import ").append(projectMetadata.getPackages()).append(".model.SysUser;\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".service.LoginService;\n")
-                .append("//import ").append(projectMetadata.getPackages()).append(".service.SysUserService;\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".utils.PasswordUtil;\n")
+                .append("import ").append(packages).append(".common.constant.RedisConstant;\n")
+                .append("import ").append(packages).append(".redis.RedisStringDao;\n")
+                .append("import ").append(packages).append(".utils.JwtUtils;\n")
+                .append("import ").append(packages).append(".common.enums.ResponseStatusEnum;\n")
+                .append("import ").append(packages).append(".common.model.ResponseVo;\n")
+                .append("//import ").append(packages).append(".model.SysUser;\n")
+                .append("import ").append(packages).append(".service.LoginService;\n")
+                .append("//import ").append(packages).append(".service.SysUserService;\n")
+                .append("import ").append(packages).append(".utils.PasswordUtil;\n")
                 .append("import org.slf4j.Logger;\n")
                 .append("import com.alibaba.druid.util.StringUtils;\n")
                 .append("import org.slf4j.LoggerFactory;\n")
@@ -441,47 +500,76 @@ public class CommonFileServiceImpl implements CommonFileService {
                 .append("\t\treturn new ResponseVo(ResponseStatusEnum.SUCCESS, true);\n")
                 .append("\t}\n\n")
                 .append("}\n");
-        String file = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/service/impl/LoginServiceImpl.java";
 
 
-        try {
-            FileUtil.write(file, sb.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return sb.toString();
     }
 
+    /**
+     * 生成 redis 常量
+     *
+     * @param packages
+     * @return
+     */
     @Override
-    public void redisConstant() {
-
-        //项目创建信息
-        ProjectMetadata projectMetadata = UserContext.current().getProjectMetadata();
+    public String redisConstant(String packages) {
 
 
         StringBuilder sb = new StringBuilder();
-        sb.append("package ").append(projectMetadata.getPackages()).append(".common.constant;\n")
-        .append("\n")
-        .append("/**\n")
-        .append(" * created by wdk on 2019/12/24\n")
-        .append(" */\n")
-        .append("public class RedisConstant {\n")
-        .append("\n")
-        .append("\t//token 的过期时间\n")
-        .append("\tpublic static final Integer TOKEN_TIME = 60 * 60;\n")
-        .append("\n")
-        .append("\t//字符串的默认过期时间\n")
-        .append("\tpublic static final Integer _TIME = 5 * 60;\n")
-        .append("}\n")
-        .append("\n");
+        sb.append("package ").append(packages).append(";\n")
+                .append("\n")
+                .append("/**\n")
+                .append(" * created by wdk on 2019/12/24\n")
+                .append(" */\n")
+                .append("public class RedisConstant {\n")
+                .append("\n")
+                .append("\t//token 的过期时间\n")
+                .append("\tpublic static final Integer TOKEN_TIME = 60 * 60;\n")
+                .append("\n")
+                .append("\t//字符串的默认过期时间\n")
+                .append("\tpublic static final Integer _TIME = 5 * 60;\n")
+                .append("}\n")
+                .append("\n");
 
-        String file = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/common/constant/RedisConstant.java";
+        return sb.toString();
 
+    }
 
-        try {
-            FileUtil.write(file, sb.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    /**
+     * 生成页面主控制类
+     *
+     * @param packages
+     * @return
+     */
+    @Override
+    public String indexPages(String packages) {
+
+        //项目创建信息
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("package ").append(packages).append(";\n")
+                .append("\n")
+                .append("import org.springframework.stereotype.Controller;\n")
+                .append("import org.springframework.web.bind.annotation.RequestMapping;\n")
+                .append("\n")
+                .append("@Controller\n")
+                .append("@RequestMapping(\"pages\")\n")
+                .append("public class IndexPages {\n")
+                .append("\n")
+                .append("\t/**\n")
+                .append("\t * 进入后台管理菜单\n")
+                .append("\t *\n")
+                .append("\t * @return\n")
+                .append("\t */\n")
+                .append("\t@RequestMapping(value = \"menus\",name = \"进入后台管理菜单\")\n")
+                .append("\tpublic String menus() {\n")
+                .append("\n")
+                .append("\n")
+                .append("\t\treturn \"menus\";\n")
+                .append("\t}\n")
+                .append("}\n");
+
+        return sb.toString();
 
     }
 }

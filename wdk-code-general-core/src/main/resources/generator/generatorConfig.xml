@@ -22,7 +22,7 @@
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://49.233.195.134:3306/nideshop?useUnicode=true" userId="root" password="root1234">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://49.233.195.134:3306/auto_code?useUnicode=true" userId="root" password="root1234">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -43,13 +43,8 @@
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
 
 
-        <table tableName="nideshop_order"
-               domainObjectName="NideshopOrder"
-               enableCountByExample="true"
-               enableUpdateByExample="true"
-               enableDeleteByExample="true"
-               enableSelectByExample="true"
-               selectByExampleQueryId="true">
+        <table tableName="general_api"
+               domainObjectName="GeneralApi">
             <property name="useActualColumnNames" value="false" />
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>

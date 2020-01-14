@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class CommonFileUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(ColumnsUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(StringConversionUtil.class);
 
     /**
      * 生成所有的文件
@@ -1353,7 +1353,7 @@ public class CommonFileUtils {
         sb.append("/**\n")
                 .append(" * Created by zhangrui on 2018/3/21 0021.\n")
                 .append(" */\n")
-                .append("package ").append(packages).append(".common.aop;\n")
+                .append("package ").append(packages).append(";\n")
                 .append("\n")
                 .append("import ").append(projectMetadata.getPackages()).append(".common.logger.AccessLog;\n")
                 .append("import ").append(projectMetadata.getPackages()).append(".common.logger.TalStopWatch;\n")

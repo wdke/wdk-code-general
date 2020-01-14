@@ -32,6 +32,7 @@ public class PomServiceImpl implements PomService {
         ProjectMetadata projectMetadata = UserContext.current().getProjectMetadata();
 
         String fileName = UserContext.current().getProjectRoot() + "/pom.xml";
+        System.out.println("pom::" + fileName);
         Document document = DocumentHelper.createDocument();//创建xml文档
         Element root = document.addElement("project");
         root.addAttribute(" xmlns", "http://maven.apache.org/POM/4.0.0")

@@ -12,17 +12,19 @@ public enum JdbcTypeEnums {
     CHAR("CHAR","String","java.lang.String","CHAR"),
     ENUM("ENUM","String","java.lang.String","CHAR"),
     BIGINT("BIGINT","Long","java.lang.Long","BIGINT"),
-    longtext("LONGTEXT","String","java.lang.String","LONGVARCHAR"),
-    DATETIME("DATETIME","Date","java.util.Date","DATETIME"),
+    LONGTEXT("LONGTEXT","String","java.lang.String","LONGVARCHAR"),
+    DATETIME("DATETIME","Date","java.util.Date","TIMESTAMP"),
     INT("INT","Integer","java.lang.Integer","INTEGER"),
     MEDIUMINT("MEDIUMINT","Integer","java.lang.Integer","INTEGER"),
     SMALLINT("SMALLINT","Short","java.lang.Short","SMALLINT"),
-    tinyint("TINYINT","Byte","java.lang.Byte","TINYINT"),
+    TINYINT("TINYINT","Byte","java.lang.Byte","TINYINT"),
     DECIMAL("DECIMAL","Double","java.lang.Double","DECIMAL"),
-    timestamp("TIMESTAMP","Date","java.util.Date","TIMESTAMP"),
+    TIMESTAMP("TIMESTAMP","Date","java.util.Date","TIMESTAMP"),
     TEXT("TEXT","String","java.lang.String","LONGVARCHAR"),
+    MEDIUMTEXT("MEDIUMTEXT","String","java.lang.String","LONGVARCHAR"),
+    TINYTEXT("TINYTEXT","String","java.lang.String","LONGVARCHAR"),
     FLOAT("FLOAT","Float","java.lang.Float","FLOAT"),
-    DATE("DATE","Date","java.util.Date","DATE");
+    DATE("DATE","Date","java.util.Date","TIMESTAMP");
 
 
 //    Decimal

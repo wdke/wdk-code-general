@@ -7,12 +7,19 @@ import com.wdk.general.core.model.Tables;
 import com.wdk.general.core.service.HtmlService;
 import com.wdk.general.core.utils.FileUtil;
 import com.wdk.general.core.web.Interceptor.UserContext;
+import io.jsonwebtoken.lang.Collections;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * created by wdk on 2019/12/17
@@ -33,7 +40,7 @@ public class HtmlServiceImpl implements HtmlService {
     public void all(BaseParam baseParam) {
 
         //生成主页
-        String rootFile = UserContext.current().getProjectServerRoot() + "/src/main/resources/templates/" + baseParam.objName() + "/index.html";
+        String rootFile = UserContext.current().getProjectServerRoot() + "/src/main/resources/templates/" + baseParam.getModelObjName() + "/index.html";
         String fileContent = index(baseParam);
         try {
 
@@ -44,7 +51,7 @@ public class HtmlServiceImpl implements HtmlService {
         }
 
         //生成新增
-        rootFile = UserContext.current().getProjectServerRoot() + "/src/main/resources/templates/" + baseParam.objName() + "/insert.html";
+        rootFile = UserContext.current().getProjectServerRoot() + "/src/main/resources/templates/" + baseParam.getModelObjName() + "/insert.html";
         fileContent = insert(baseParam);
         try {
 
@@ -55,12 +62,24 @@ public class HtmlServiceImpl implements HtmlService {
         }
 
 
-        //生成新增
-        rootFile = UserContext.current().getProjectServerRoot() + "/src/main/resources/templates/" + baseParam.objName() + "/update.html";
+        //生成更新
+        rootFile = UserContext.current().getProjectServerRoot() + "/src/main/resources/templates/" + baseParam.getModelObjName() + "/update.html";
         fileContent = update(baseParam);
         try {
 
             logger.info("生成update.html文件");
+            FileUtil.write(rootFile, fileContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //生成详情
+        rootFile = UserContext.current().getProjectServerRoot() + "/src/main/resources/templates/" + baseParam.getModelObjName() + "/detail.html";
+        fileContent = detail(baseParam);
+        try {
+
+            logger.info("detail.html文件");
             FileUtil.write(rootFile, fileContent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -135,10 +154,28 @@ public class HtmlServiceImpl implements HtmlService {
                 .append("\t\t<thead>\n")
                 .append("\t\t\t<tr>\n")
                 .append("\t\t\t\t<th>序号</th>\n");
+        //处理数据列表显示几个
 
-        for (SchemaColumns columns : baseParam.getColumns()) {
-            sb.append("\t\t\t\t<th>").append(columns.getColumnComment()).append("</th>\n");
+        int times = 0;
+        //开始生成
+        if (baseParam.getColumns().size() < 8) {
+            for (SchemaColumns columns : baseParam.getColumns()) {
+                sb.append("\t\t\t\t<th>").append(columns.getColumnComment()).append("</th>\n");
+            }
+        } else {
+            for (SchemaColumns columns : baseParam.getColumns()) {
+
+                if (times < 8 && "NO".equals(columns.getIsNullable())) {
+                    times++;
+                    sb.append("\t\t\t\t<th>").append(columns.getColumnComment()).append("</th>\n");
+                } else {
+                    sb.append("\t\t\t\t<!--<th>").append(columns.getColumnComment()).append("</th>-->\n");
+
+                }
+            }
         }
+        times = 0;
+        Map<String, String> args = args(baseParam.getKeys());
         sb.append("\t\t\t\t<th>操作</th>\n")
                 .append("\t\t\t</tr>\n")
                 .append("\t\t</thead>\n")
@@ -146,14 +183,43 @@ public class HtmlServiceImpl implements HtmlService {
                 .append("\t\t\t<tr th:each=\"data,dataStat : ${datas.list}\">\n")
                 .append("\t\t\t\t<td th:text=\"${dataStat.index+1}\"></td>\n");
 
-        for (SchemaColumns columns : baseParam.getColumns()) {
-            JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(columns.getDataType());
-            if (dataType.getJavaType().equals("Date")) {
-                sb.append("\t\t\t\t<td th:text=\"${#dates.format(data.").append(columns.objName()).append(",'yyyy-MM-dd HH:mm')}\"></td>\n");
-            } else {
-                sb.append("\t\t\t\t<td th:text=\"${data.").append(columns.objName()).append("}\"></td>\n");
+        if (baseParam.getColumns().size() < 8) {
+            for (SchemaColumns columns : baseParam.getColumns()) {
+                JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(columns.getDataType());
+                if (dataType.getJavaType().equals("Date")) {
+                    sb.append("\t\t\t\t<td th:text=\"${#dates.format(data.").append(columns.getModelObjName()).append(",'yyyy-MM-dd HH:mm')}\"></td>\n");
+                } else if (dataType.getJavaType().equals("String")) {
+                    sb.append("\t\t\t\t<td th:text=\"${#strings.abbreviate(data.").append(columns.getModelObjName()).append(",20)}\"></td>\n");
+                } else {
+                    sb.append("\t\t\t\t<td th:text=\"${data.").append(columns.getModelObjName()).append("}\"></td>\n");
+                }
+            }
+        } else {
+            for (SchemaColumns columns : baseParam.getColumns()) {
+
+                JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(columns.getDataType());
+                if (times < 8 && "NO".equals(columns.getIsNullable())) {
+                    times++;
+                    if (dataType.getJavaType().equals("Date")) {
+                        sb.append("\t\t\t\t<td th:text=\"${#dates.format(data.").append(columns.getModelObjName()).append(",'yyyy-MM-dd HH:mm')}\"></td>\n");
+                    } else if (dataType.getJavaType().equals("String")) {
+                        sb.append("\t\t\t\t<td th:text=\"${#strings.abbreviate(data.").append(columns.getModelObjName()).append(",20)}\"></td>\n");
+                    } else {
+                        sb.append("\t\t\t\t<td th:text=\"${data.").append(columns.getModelObjName()).append("}\"></td>\n");
+                    }
+                } else {
+                    if (dataType.getJavaType().equals("Date")) {
+                        sb.append("\t\t\t\t<!--<td th:text=\"${#dates.format(data.").append(columns.getModelObjName()).append(",'yyyy-MM-dd HH:mm')}\"></td>-->\n");
+                    } else if (dataType.getJavaType().equals("String")) {
+                        sb.append("\t\t\t\t<!--<td th:text=\"${#strings.abbreviate(data.").append(columns.getModelObjName()).append(",20)}\"></td>-->\n");
+                    } else {
+                        sb.append("\t\t\t\t<!--<td th:text=\"${data.").append(columns.getModelObjName()).append("}\"></td>-->\n");
+                    }
+
+                }
             }
         }
+
         if (baseParam.getKeys().size() > 0) {
             sb.append("\t\t\t\t<td>\n")
                     .append("\t\t\t\t\t<a href=\"#\" th:onclick=\"'javascript:remove(");
@@ -161,25 +227,30 @@ public class HtmlServiceImpl implements HtmlService {
 
                 SchemaColumns schemaColumns = baseParam.getKeys().get(i);
                 if (i == 0) {
-                    sb.append("'+${data.").append(schemaColumns.objName()).append("}+'");
+                    sb.append("'+${data.").append(schemaColumns.getModelObjName()).append("}+'");
                 } else {
-                    sb.append(",'+${data.").append(schemaColumns.objName()).append("}+'");
+                    sb.append(",'+${data.").append(schemaColumns.getModelObjName()).append("}+'");
                 }
             }
             sb.append(")'\"><span>删除</span></a>\n")
-                    .append("\t\t\t\t\t<a href=\"#\" th:href=\"@{/pages/").append(baseParam.getTableName().replaceAll("_", "/")).append("/insert/pages}\"><span>新增</span></a>\n")
-                    .append("\t\t\t\t\t<a href=\"#\" th:href=\"@{/pages/").append(baseParam.getTableName().replaceAll("_", "/")).append("/update/pages(");
-            for (int i = 0; i < baseParam.getKeys().size(); i++) {
-                String colunm = baseParam.getKeys().get(i).objName();
-                if (i == 0) {
-                    sb.append(colunm).append("=").append("${data.").append(colunm).append("}");
-                } else {
-                    sb.append(",").append(colunm).append("=").append("${data.").append(colunm).append("}");
-                }
-
-            }
-            sb.append(")}\"><span>修改</span></a>")
-                    .append("</td>\n");
+                    .append("\t\t\t\t\t<a href=\"#\" th:href=\"@{/pages/")
+                    .append(baseParam.getTableName().replaceAll("_", "/"))
+                    .append("/insert/pages}\"><span>新增</span></a>\n")
+                    .append("\t\t\t\t\t<a href=\"#\" th:href=\"@{/pages/")
+                    .append(baseParam.getTableName().replaceAll("_", "/"))
+                    .append("/update/pages")
+                    .append(args.get("path"))
+                    .append("(")
+                    .append(args.get("args"))
+                    .append(")}\"><span>修改</span></a>\n")
+                    .append("\t\t\t\t\t<a href=\"#\" th:href=\"@{/pages/")
+                    .append(baseParam.getTableName().replaceAll("_", "/"))
+                    .append("/detail/pages")
+                    .append(args.get("path"))
+                    .append("(")
+                    .append(args.get("args"))
+                    .append(")}\"><span>详情</span></a>\n")
+                    .append("\t\t\t\t</td>\n");
 
         }
         sb.append("\t\t\t</tr>\n")
@@ -242,9 +313,9 @@ public class HtmlServiceImpl implements HtmlService {
 
                 SchemaColumns schemaColumns = baseParam.getKeys().get(i);
                 if (i == 0) {
-                    sb.append(schemaColumns.objName());
+                    sb.append(schemaColumns.getModelObjName());
                 } else {
-                    sb.append(",").append(schemaColumns.objName());
+                    sb.append(",").append(schemaColumns.getModelObjName());
                 }
             }
         }
@@ -254,21 +325,22 @@ public class HtmlServiceImpl implements HtmlService {
                 .append("\t\t}\n")
                 .append("\t\tvar param={\n");
 
+        String path = "";
         if (baseParam.getKeys().size() > 0) {
             for (int i = 0; i < baseParam.getKeys().size(); i++) {
-
                 SchemaColumns schemaColumns = baseParam.getKeys().get(i);
+                path += " + \"/\" + " + schemaColumns.getModelObjName();
                 if (i == 0) {
-                    sb.append("\t\t\t").append(schemaColumns.objName()).append(":").append(schemaColumns.objName()).append("\n");
+                    sb.append("\t\t\t").append(schemaColumns.getModelObjName()).append(":").append(schemaColumns.getModelObjName()).append("\n");
                 } else {
-                    sb.append(",\n\t\t\t").append(schemaColumns.objName()).append(":").append(schemaColumns.objName()).append("\n");
+                    sb.append(",\n\t\t\t").append(schemaColumns.getModelObjName()).append(":").append(schemaColumns.getModelObjName()).append("\n");
                 }
             }
         }
         sb.append("\n\t\t}\n")
                 .append("\t\t$.ajax({\n")
                 .append("\t\t\ttype:\"POST\",\n")
-                .append("\t\t\turl:\"/pages/").append(baseParam.getTableName().replaceAll("_", "/")).append("/remove\",\n")
+                .append("\t\t\turl:\"/pages/").append(baseParam.getTableName().replaceAll("_", "/")).append("/remove\"").append(path).append(",\n")
                 .append("\t\t\txhrFields: {\n")
                 .append("\t\t\t\twithCredentials: true\n")
                 .append("\t\t\t},\n")
@@ -313,6 +385,41 @@ public class HtmlServiceImpl implements HtmlService {
     @Override
     public String update(BaseParam baseParam) {
         return operation(baseParam, true, "update", "更新");
+    }
+
+    /**
+     * 生成详情页面
+     *
+     * @param baseParam
+     * @return
+     */
+    @Override
+    public String detail(BaseParam baseParam) {
+
+        if (null == baseParam || null == baseParam.getColumns() || baseParam.getColumns().size() == 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!DOCTYPE html>\n")
+                .append("<html xmlns=\"http://www.w3.org/1999/xhtml\"\n")
+                .append("\txmlns:th=\"http://www.thymeleaf.org\">\n");
+        //头文件信息
+        head(sb, baseParam.getTableComment() + "详情");
+
+        //html body
+        sb.append("<body>\n")
+                .append("\n")
+                .append("<div class=\"container\">\n");
+
+        //html form表单
+        detailByDiv(sb, baseParam);
+
+        //html 收尾
+        sb.append("</div>\n\n")
+                .append("</body>\n")
+                .append("</html>");
+
+        return sb.toString();
     }
 
     /**
@@ -399,23 +506,23 @@ public class HtmlServiceImpl implements HtmlService {
                 sb.append("\t\t\t\t<th width=\"50\">\n");
                 width = false;
             }
-            sb.append("\t\t\t\t\t<label for=\"").append(col.objName()).append("\" class=\"col-sm-2 control-label\">").append(col.getColumnComment()).append(":</label>\n")
+            sb.append("\t\t\t\t\t<label for=\"").append(col.getModelObjName()).append("\" class=\"col-sm-2 control-label\">").append(col.getColumnComment()).append(":</label>\n")
                     .append("\t\t\t\t</th>\n")
                     .append("\t\t\t\t<td>\n");
             if (dataType.getJavaType().equals("Date")) {
 
-                sb.append("\t\t\t\t\t<input type=\"datetime\" class=\"form-control\" name=\"").append(col.objName()).append("\" id=\"").append(col.objName()).append("\"\n")
+                sb.append("\t\t\t\t\t<input type=\"datetime\" class=\"form-control\" name=\"").append(col.getModelObjName()).append("\" id=\"").append(col.getModelObjName()).append("\"\n")
                         .append("\t\t\t\t\t\t\tplaceholder=\"请输入").append(col.getColumnComment()).append("\"");
                 if (update) {
-                    sb.append(" th:value=\"${#dates.format(data.").append(col.objName()).append(",'yyyy-MM-dd HH:mm:ss')}\"");
+                    sb.append(" th:value=\"${#dates.format(data.").append(col.getModelObjName()).append(",'yyyy-MM-dd HH:mm:ss')}\"");
                 }
-//                ${#dates.format(data.").append(columns.objName()).append(",'yyyy-MM-dd HH:mm')}
+//                ${#dates.format(data.").append(columns.getModelObjName()).append(",'yyyy-MM-dd HH:mm')}
                 sb.append("/>\n");
             } else {
-                sb.append("\t\t\t\t\t<input type=\"text\" class=\"form-control\" name=\"").append(col.objName()).append("\" id=\"").append(col.objName()).append("\"\n")
+                sb.append("\t\t\t\t\t<input type=\"text\" class=\"form-control\" name=\"").append(col.getModelObjName()).append("\" id=\"").append(col.getModelObjName()).append("\"\n")
                         .append("\t\t\t\t\t\t\tplaceholder=\"请输入").append(col.getColumnComment()).append("\"");
                 if (update) {
-                    sb.append(" th:value=\"${data.").append(col.objName()).append("}\"");
+                    sb.append(" th:value=\"${data.").append(col.getModelObjName()).append("}\"");
                 }
 
                 sb.append("/>\n");
@@ -456,24 +563,24 @@ public class HtmlServiceImpl implements HtmlService {
             if ("Date".equals(dataType.getJavaType())) {
 
                 sb.append("\t\t<div class=\"form-group\">\n")
-                        .append("\t\t\t<label for=\"").append(col.objName()).append("\" class=\"col-sm-2 control-label\">").append(col.getColumnComment()).append(":</label>\n")
+                        .append("\t\t\t<label for=\"").append(col.getModelObjName()).append("\" class=\"col-sm-2 control-label\">").append(col.getColumnComment()).append(":</label>\n")
                         .append("\t\t\t<div class=\"col-sm-10\">\n")
-                        .append("\t\t\t\t<input type=\"datetime\" class=\"form-control\" name=\"").append(col.objName()).append("\" id=\"").append(col.objName()).append("\"\n")
+                        .append("\t\t\t\t<input type=\"datetime\" class=\"form-control\" name=\"").append(col.getModelObjName()).append("\" id=\"").append(col.getModelObjName()).append("\"\n")
                         .append("\t\t\t\t\t\tplaceholder=\"yyyy-MM-dd HH:mm\"");
                 if (update) {
-                    sb.append(" th:value=\"${#dates.format(data.").append(col.objName()).append(",'yyyy-MM-dd HH:mm')}\"");
+                    sb.append(" th:value=\"${#dates.format(data.").append(col.getModelObjName()).append(",'yyyy-MM-dd HH:mm')}\"");
                 }
                 sb.append("/>\n")
                         .append("\t\t\t</div>\n")
                         .append("\t\t</div>\n");
             } else {
                 sb.append("\t\t<div class=\"form-group\">\n")
-                        .append("\t\t\t<label for=\"").append(col.objName()).append("\" class=\"col-sm-2 control-label\">").append(col.getColumnComment()).append(":</label>\n")
+                        .append("\t\t\t<label for=\"").append(col.getModelObjName()).append("\" class=\"col-sm-2 control-label\">").append(col.getColumnComment()).append(":</label>\n")
                         .append("\t\t\t<div class=\"col-sm-10\">\n")
-                        .append("\t\t\t\t<input type=\"text\" class=\"form-control\" name=\"").append(col.objName()).append("\" id=\"").append(col.objName()).append("\"\n")
+                        .append("\t\t\t\t<input type=\"text\" class=\"form-control\" name=\"").append(col.getModelObjName()).append("\" id=\"").append(col.getModelObjName()).append("\"\n")
                         .append("\t\t\t\t\t\tplaceholder=\"请输入").append(col.getColumnComment()).append("\"");
                 if (update) {
-                    sb.append(" th:value=\"${data.").append(col.objName()).append("}\"");
+                    sb.append(" th:value=\"${data.").append(col.getModelObjName()).append("}\"");
                 }
 
                 sb.append("/>\n")
@@ -500,5 +607,72 @@ public class HtmlServiceImpl implements HtmlService {
 
     }
 
+    /**
+     * 表单信息
+     *
+     * @param sb
+     * @param baseParam
+     */
+    @Override
+    public void detailByDiv(StringBuilder sb, BaseParam baseParam) {
 
+        if (null == baseParam || null == baseParam.getColumns() || baseParam.getColumns().size() == 0) {
+            return;
+        }
+        //表单信息
+        sb.append("\t<form class=\"form-horizontal\" action=\"#\" role=\"form\" method=\"post\">\n");
+
+        //生成输入
+        for (SchemaColumns col : baseParam.getColumns()) {
+            JdbcTypeEnums dataType = JdbcTypeEnums.jdbcTypeEnumsByDbType(col.getDataType());
+            if ("Date".equals(dataType.getJavaType())) {
+
+                sb.append("\t\t<div class=\"form-group\">\n")
+                        .append("\t\t\t<label class=\"col-sm-2 control-label\">").append(col.getColumnComment()).append(":</label>\n")
+                        .append("\t\t\t<div class=\"col-sm-10\" ")
+                        .append(" th:text=\"${#dates.format(data.").append(col.getModelObjName()).append(",'yyyy-MM-dd HH:mm')}\">\n")
+                        .append("\t\t\t</div>\n")
+                        .append("\t\t</div>\n");
+            } else {
+                sb.append("\t\t<div class=\"form-group\">\n")
+                        .append("\t\t\t<label  class=\"col-sm-2 control-label\">").append(col.getColumnComment()).append(":</label>\n")
+                        .append("\t\t\t<div class=\"col-sm-10\" ")
+                        .append(" th:text=\"${data.").append(col.getModelObjName()).append("}\">\n")
+                        .append("\t\t\t</div>\n")
+                        .append("\t\t</div>\n");
+            }
+
+        }
+        sb.append("\t</form>\n");
+    }
+
+    /**
+     * 参数拼接
+     *
+     * @param keys
+     */
+    @Override
+    public Map<String,String> args(List<SchemaColumns> keys) {
+        if(null==keys||keys.size()==0){
+            return new HashMap<>();
+        }
+        Map<String, String> map = new HashMap<>();
+        StringBuilder path = new StringBuilder();
+        StringBuilder args = new StringBuilder();
+        for (int i = 0; i < keys.size(); i++) {
+            String colunm = keys.get(i).getModelObjName();
+            path.append("/{").append(colunm).append("}");
+            if (i == 0) {
+                args.append(colunm).append("=").append("${data.").append(colunm).append("}");
+            } else {
+                args.append(",").append(colunm).append("=").append("${data.").append(colunm).append("}");
+            }
+
+        }
+
+        map.put("path",path.toString());
+        map.put("args",args.toString());
+
+        return map;
+    }
 }

@@ -196,4 +196,32 @@ public class FileUtil {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 利用Linux自带命令操作文件
+     *
+     * @param from
+     * @param configPath
+     */
+    public static void runMybatisCoreJar(String from, String configPath) {
+
+
+        logger.info("开始copy文件 from:{} to:{}",from,configPath);
+        List<String> commend = new java.util.ArrayList<String>();
+        commend.add("java");
+        commend.add("-jar");
+        commend.add(from);
+        commend.add("-configfile");
+        commend.add(configPath);
+        ProcessBuilder builder = new ProcessBuilder();
+        builder.command(commend);
+        try {
+            builder.start();
+
+            logger.info("jar包运行结束");
+        } catch (Exception e) {
+            logger.info("jar包运行异常");
+            e.printStackTrace();
+        }
+    }
 }

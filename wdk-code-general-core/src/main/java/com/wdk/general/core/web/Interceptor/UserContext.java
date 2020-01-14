@@ -20,6 +20,7 @@ public class UserContext {
     private DbMessage dbMessage;
     private ProjectMetadata projectMetadata;
     private String projectRoot;
+    private Integer userId;
     private String username;
     private String teamId;
     private Object remarkObj;
@@ -27,6 +28,8 @@ public class UserContext {
     private long startTime;
     private String loginToken;
     private boolean creator;
+
+    private String mybatisCorePath="/Users/wdke/Project/repository/org/mybatis/generator/mybatis-generator-core/1.3.7/mybatis-generator-core-1.3.7.jar";
 
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -173,5 +176,22 @@ public class UserContext {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+
+    public String getMybatisCorePath() {
+        return mybatisCorePath;
+    }
+
+    public void setMybatisCorePath(String mybatisCorePath) {
+        this.mybatisCorePath = mybatisCorePath;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

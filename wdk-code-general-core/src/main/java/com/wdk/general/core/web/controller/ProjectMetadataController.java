@@ -43,15 +43,15 @@ public class ProjectMetadataController {
         if (projectMetadata == null) {
             projectMetadata = new ProjectMetadata();
             projectMetadata.setGroup("com.wdk");
-            projectMetadata.setArtifact("nideshop");
+            projectMetadata.setArtifact("wordpress");
             projectMetadata.setType("Maven Project");
             projectMetadata.setLanguage("java");
             projectMetadata.setPackaging("jar");
             projectMetadata.setJavaVersion("8");
             projectMetadata.setVersion("0.0.1-SNAPSHOT");
-            projectMetadata.setName("nideshop");
+            projectMetadata.setName("wordpress");
             projectMetadata.setDescription("Demo project for Spring Boot");
-            projectMetadata.setPackages("com.wdk.nideshop");
+            projectMetadata.setPackages("com.wdk.wordpress");
         }
 
         model.addAttribute("pm", projectMetadata);

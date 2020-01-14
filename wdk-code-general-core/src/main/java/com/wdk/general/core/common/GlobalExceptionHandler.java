@@ -35,7 +35,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BindException.class)
     public void processValidationError(HttpServletResponse response, BindException ex) {
-        ex.printStackTrace();
         logger.error(ex.getMessage(),ex);
         response.setCharacterEncoding(KeyConstant.KEY_UTF8);
         response.setContentType(KeyConstant.KEY_CONTENT_TYPE);
@@ -49,6 +48,7 @@ public class GlobalExceptionHandler {
             JSONObject json = new JSONObject();
             json.put(KeyConstant.KEY_RESULT_STATUS, ReturnStatusEnum.API_PARAM_INVALID.getValue());
             json.put(KeyConstant.KEY_RESULT_MESSAGE, errors);
+            logger.info("processValidationError msg:{}",ex.getMessage());
             writer.write(json.toJSONString());
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
@@ -68,7 +68,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public void processValidationError(HttpServletResponse response, MethodArgumentNotValidException ex) {
 
-        ex.printStackTrace();
         logger.error(ex.getMessage(),ex);
         response.setCharacterEncoding(KeyConstant.KEY_UTF8);
         response.setContentType(KeyConstant.KEY_CONTENT_TYPE);
@@ -82,6 +81,7 @@ public class GlobalExceptionHandler {
             JSONObject json = new JSONObject();
             json.put(KeyConstant.KEY_RESULT_STATUS, ReturnStatusEnum.API_PARAM_INVALID.getValue());
             json.put(KeyConstant.KEY_RESULT_MESSAGE, errors);
+            logger.info("processValidationError msg:{}",ex.getMessage());
             writer.write(json.toJSONString());
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
@@ -102,7 +102,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public void processIspException(HttpServletResponse response, RuntimeException ex) {
 
-        ex.printStackTrace();
         logger.error(ex.getMessage(), ex);
         response.setCharacterEncoding(KeyConstant.KEY_UTF8);
         response.setContentType(KeyConstant.KEY_CONTENT_TYPE);
@@ -113,6 +112,7 @@ public class GlobalExceptionHandler {
             JSONObject json = new JSONObject();
             json.put(KeyConstant.KEY_RESULT_STATUS, ReturnStatusEnum.SC_INTERNAL_SERVER_ERROR.getValue());
             json.put(KeyConstant.KEY_RESULT_MESSAGE, ex.getMessage());
+            logger.info("processIspException msg:{}",ex.getMessage());
             writer.write(json.toJSONString());
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
@@ -134,7 +134,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MalformedURLException.class)
     public void malformedURLException(HttpServletResponse response, RuntimeException ex) {
 
-        ex.printStackTrace();
         logger.error(ex.getMessage(), ex);
         response.setCharacterEncoding(KeyConstant.KEY_UTF8);
         response.setContentType(KeyConstant.KEY_CONTENT_TYPE);
@@ -145,6 +144,7 @@ public class GlobalExceptionHandler {
             JSONObject json = new JSONObject();
             json.put(KeyConstant.KEY_RESULT_STATUS, ReturnStatusEnum.API_DATA_INVALID.getValue());
             json.put(KeyConstant.KEY_RESULT_MESSAGE, ex.getMessage());
+            logger.info("malformedURLException msg:{}",ex.getMessage());
             writer.write(json.toJSONString());
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
@@ -162,7 +162,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public void processException(HttpServletResponse response, Exception ex) {
-        ex.printStackTrace();
         logger.error(ex.getMessage(), ex);
         response.setCharacterEncoding(KeyConstant.KEY_UTF8);
         response.setContentType(KeyConstant.KEY_CONTENT_TYPE);
@@ -173,6 +172,7 @@ public class GlobalExceptionHandler {
             JSONObject json = new JSONObject();
             json.put(KeyConstant.KEY_RESULT_STATUS, ReturnStatusEnum.SC_INTERNAL_SERVER_ERROR.getValue());
             json.put(KeyConstant.KEY_RESULT_MESSAGE, ex.getMessage());
+            logger.info("processException msg:{}",ex.getMessage());
             writer.write(json.toJSONString());
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
