@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>创建项目信息</title>
+    <link rel="stylesheet" th:href="@{/static/bootstrap/3.3.7/css/bootstrap.min.css}">
+    <script th:src="@{/static/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+</head>
+<body>
+
+<div class="container">
+    <form class="form-horizontal" action="#" role="form" th:action="@{/project/metadata/save}" method="post">
+
+        <table class="table table-striped">
+            <tbody>
+
+            <tr>
+                <th width="50">
+                    <label for="group" class="col-sm-2 control-label">Group:</label>
+                </th>
+                <td>
+                    <input type="text" oninput="packagesChange()" class="form-control" name="group" id="group"
+                           placeholder="www.com" th:value="${pm.group}"/>
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="artifact" class="col-sm-2 control-label">Artifact</label>
+                </th>
+                <td>
+                    <input type="text" onchange="packagesChange()" class="form-control" name="artifact"
+                           id="artifact"
+                           placeholder="springboot-demo" th:value="${pm.artifact}">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="type" class="col-sm-2 control-label">Type</label>
+                </th>
+                <td>
+                    <select class="form-control" name="type" id="type" th:value="${pm.type}">
+                        <option th:selected="${pm.type=='Maven Project'}" value="Maven Project">Maven Project</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="language" class="col-sm-2 control-label">Language</label>
+                </th>
+                <td>
+                    <select class="form-control" name="language" id="language" th:value="${pm.language}">
+                        <option th:selected="${pm.language=='java'}" value="java">java</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="packaging" class="col-sm-2 control-label">Packaging</label>
+                </th>
+                <td>
+                    <select class="form-control" name="packaging" id="packaging" th:value="${pm.packaging}">
+                        <option th:selected="${pm.packaging=='jar'}" value="jar">jar</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="javaVersion" class="col-sm-2 control-label">java version</label>
+                </th>
+                <td>
+                    <select class="form-control" name="javaVersion" id="javaVersion" th:value="${pm.javaVersion}">
+                        <option th:selected="${pm.javaVersion==8}" value="8">8</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="version" class="col-sm-2 control-label">version</label>
+                </th>
+                <td>
+                    <input type="text" class="form-control" name="version" id="version"
+                           placeholder="0.0.1-SNAPSHOT" th:value="${pm.version}">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="name" class="col-sm-2 control-label">Name</label>
+                </th>
+                <td>
+                    <input type="text" class="form-control" name="name" id="name"
+                           placeholder="springboot-demo" th:value="${pm.name}">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="description" class="col-sm-2 control-label">Description</label>
+                </th>
+                <td>
+                <textarea rows="5" class="form-control" name="description" id="description"
+                          placeholder="Demo project for Spring Boot" th:value="${pm.description}"
+                          th:text="${pm.description}"></textarea>
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="packages" class="col-sm-2 control-label">Package</label>
+                </th>
+                <td>
+                    <input type="text" class="form-control" name="packages" id="packages"
+                           placeholder="www.com.springboot.demo" th:value="${pm.packages}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="useActualColumnNames" class="col-sm-2 control-label">驼峰式命名</label>
+                </th>
+                <td>
+                    <select class="form-control" name="useActualColumnNames" id="useActualColumnNames">
+                        <option th:selected="${pm.useActualColumnNames==false}" value="false">true</option>
+                        <option th:selected="${pm.useActualColumnNames==true}" value="true">false</option>
+                    </select>
+                    <!--                    <input type="text" class="form-control" name="useActualColumnNames" id="useActualColumnNames"-->
+                    <!--                           placeholder="true" th:value="${pm.useActualColumnNames}">-->
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="text-align: right;">
+                    <button type="submit" class="btn btn-default">提交</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+
+
+    function packagesChange() {
+        // alert($("#artifact").val());
+        var artifact = $("#artifact").val();
+        var group = $("#group").val();
+        if (null == artifact || "" === artifact) {
+            if (null != group && "" !== group) {
+                $("#packages").val(group);
+            }
+        } else {
+            if (null == group || "" === group) {
+                $("#packages").val(artifact.replace(/-/g, "."));
+            } else {
+                $("#packages").val(group + "." + artifact.replace(/-/g, "."));
+            }
+        }
+
+    }
+</script>
+</body>
+</html>

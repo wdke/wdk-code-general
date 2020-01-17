@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>项目生成信息信息详情</title>
+	<link rel="stylesheet" th:href="@{/static/bootstrap/3.3.7/css/bootstrap.min.css}">
+	<script th:src="@{/static/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+	<script th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+</head>
+<body>
+
+<div class="container">
+	<form class="form-horizontal" action="#" role="form" method="post">
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">id:</label>
+			<div class="col-sm-10"  th:text="${data.id}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">用户ID:</label>
+			<div class="col-sm-10"  th:text="${data.userId}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">项目gr...:</label>
+			<div class="col-sm-10"  th:text="${data.projectGroup}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">artifact:</label>
+			<div class="col-sm-10"  th:text="${data.artifact}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">项目类型:</label>
+			<div class="col-sm-10"  th:text="${data.projectType}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">项目语言:</label>
+			<div class="col-sm-10"  th:text="${data.projectLanguage}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">打包类型:</label>
+			<div class="col-sm-10"  th:text="${data.packaging}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">JDK版本:</label>
+			<div class="col-sm-10"  th:text="${data.javaVersion}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">项目版本:</label>
+			<div class="col-sm-10"  th:text="${data.version}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">项目名称:</label>
+			<div class="col-sm-10"  th:text="${data.projectName}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">项目描述:</label>
+			<div class="col-sm-10"  th:text="${data.description}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">项目包路径:</label>
+			<div class="col-sm-10"  th:text="${data.packages}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">项目端口号:</label>
+			<div class="col-sm-10"  th:text="${data.point}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">创建日期:</label>
+			<div class="col-sm-10"  th:text="${#dates.format(data.createTime,'yyyy-MM-dd HH:mm')}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">更新时间:</label>
+			<div class="col-sm-10"  th:text="${#dates.format(data.updateTime,'yyyy-MM-dd HH:mm')}">
+			</div>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

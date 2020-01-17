@@ -1,14 +1,9 @@
 package com.wdk.general.core.model;
 
-import com.alibaba.druid.util.StringUtils;
-import com.wdk.general.core.common.enums.JdbcTypeEnums;
-import com.wdk.general.core.utils.StringConversionUtil;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author wdke

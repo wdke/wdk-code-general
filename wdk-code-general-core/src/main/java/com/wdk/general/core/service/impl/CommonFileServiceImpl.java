@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.wdk.general.core.model.ProjectMetadata;
 import com.wdk.general.core.service.CommonFileService;
 import com.wdk.general.core.utils.FileUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -86,9 +86,9 @@ public class CommonFileServiceImpl implements CommonFileService {
 
 
         //生成 RedisConstant.java 文件
-        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/common/constant/RedisConstant.java";
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/config/constant/RedisConstant.java";
         //获取文本内容
-        content = redisConstant(packages + ".common.constant");
+        content = redisConstant(packages + ".config.constant");
 
         try {
             FileUtil.write(filePath, content);
@@ -316,8 +316,8 @@ public class CommonFileServiceImpl implements CommonFileService {
         StringBuffer sb = new StringBuffer();
         sb.append("package ").append(packages).append(".web.controller;\n")
                 .append("\n")
-                .append("import ").append(packages).append(".common.enums.ResponseStatusEnum;\n")
-                .append("import ").append(packages).append(".common.model.ResponseVo;\n")
+                .append("import ").append(packages).append(".config.enums.ResponseStatusEnum;\n")
+                .append("import ").append(packages).append(".config.model.ResponseVo;\n")
                 .append("import ").append(packages).append(".service.LoginService;\n")
                 .append("import ").append(packages).append(".web.args.LoginArgs;\n")
                 .append("import org.springframework.beans.factory.annotation.Autowired;\n")
@@ -376,7 +376,7 @@ public class CommonFileServiceImpl implements CommonFileService {
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(packages).append(".service;\n")
                 .append("\n")
-                .append("import ").append(packages).append(".common.model.ResponseVo;\n")
+                .append("import ").append(packages).append(".config.model.ResponseVo;\n")
                 .append("\n")
                 .append("/**\n")
                 .append(" * created by wdk on 2019/12/23\n")
@@ -416,11 +416,11 @@ public class CommonFileServiceImpl implements CommonFileService {
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(packages).append(".service.impl;\n")
                 .append("\n")
-                .append("import ").append(packages).append(".common.constant.RedisConstant;\n")
+                .append("import ").append(packages).append(".config.constant.RedisConstant;\n")
                 .append("import ").append(packages).append(".redis.RedisStringDao;\n")
                 .append("import ").append(packages).append(".utils.JwtUtils;\n")
-                .append("import ").append(packages).append(".common.enums.ResponseStatusEnum;\n")
-                .append("import ").append(packages).append(".common.model.ResponseVo;\n")
+                .append("import ").append(packages).append(".config.enums.ResponseStatusEnum;\n")
+                .append("import ").append(packages).append(".config.model.ResponseVo;\n")
                 .append("//import ").append(packages).append(".model.SysUser;\n")
                 .append("import ").append(packages).append(".service.LoginService;\n")
                 .append("//import ").append(packages).append(".service.SysUserService;\n")

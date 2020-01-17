@@ -1,6 +1,5 @@
 package com.wdk.general.core.model;
 
-import com.alibaba.druid.util.StringUtils;
 import lombok.Data;
 
 import java.io.Serializable;

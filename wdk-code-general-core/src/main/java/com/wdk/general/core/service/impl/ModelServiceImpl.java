@@ -8,10 +8,8 @@ import com.wdk.general.core.service.ModelService;
 import com.wdk.general.core.utils.FileUtil;
 import com.wdk.general.core.utils.StringConversionUtil;
 import com.wdk.general.core.utils.TableColumnsHandlerUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
 import org.springframework.stereotype.Service;
 
-import javax.jnlp.FileContents;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

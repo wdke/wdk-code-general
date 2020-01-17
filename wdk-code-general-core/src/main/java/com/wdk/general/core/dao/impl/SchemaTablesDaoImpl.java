@@ -1,15 +1,14 @@
 package com.wdk.general.core.dao.impl;
 
+import com.wdk.general.core.common.model.UserContext;
 import com.wdk.general.core.dao.SchemaTablesDao;
 import com.wdk.general.core.dao.template.JdbcTemplates;
 import com.wdk.general.core.handle.impl.BeanHandler;
 import com.wdk.general.core.model.ProjectMetadata;
-import com.wdk.general.core.model.SchemaColumns;
 import com.wdk.general.core.model.Tables;
 import com.wdk.general.core.utils.StringConversionUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

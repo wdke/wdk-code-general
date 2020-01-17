@@ -1,6 +1,7 @@
 package com.wdk.general.core.service;
 
-import com.wdk.general.core.web.param.LoginParam;
+
+import com.wdk.general.core.common.model.LoginParam;
 
 /**
  * created by wdk on 2019/12/22

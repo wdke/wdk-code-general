@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--数据源信息-->
+<mapper namespace="com.wdk.code.general.server.storage.dao.DbMessagesMapper">
+	<!--返回值映射-->
+	<resultMap id="BaseResultMap" type="com.wdk.code.general.server.storage.entity.DbMessages">
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="user_id" jdbcType="INTEGER" property="userId"/>
+		<result column="db_type" jdbcType="VARCHAR" property="dbType"/>
+		<result column="host" jdbcType="VARCHAR" property="host"/>
+		<result column="db_name" jdbcType="VARCHAR" property="dbName"/>
+		<result column="db_username" jdbcType="VARCHAR" property="dbUsername"/>
+		<result column="db_password" jdbcType="VARCHAR" property="dbPassword"/>
+		<result column="db_port" jdbcType="INTEGER" property="dbPort"/>
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+	</resultMap>
+	<!--查询数据库表开始-->
+	<sql id="Base_Tables_Sql">
+		db_messages
+	</sql>
+	<!--查询数据库表结束-->
+	<!--查询字段开始-->
+	<sql id="Base_Column_Sql">
+		id,user_id,db_type,host,db_name,db_username,db_password,db_port,create_time,update_time
+	</sql>
+	<!--查询字段结束-->
+	<!--查询条件开始-->
+	<sql id="Base_Where_Sql">
+		<!--id-->
+		<if test="id != null">
+			and id=#{id,jdbcType=INTEGER}
+		</if>
+		<!--用户ID-->
+		<if test="userId != null">
+			and user_id=#{userId,jdbcType=INTEGER}
+		</if>
+		<!--数据库类型-->
+		<if test="dbType != null and dbType != ''">
+			and db_type=#{dbType,jdbcType=VARCHAR}
+		</if>
+		<!--数据库地址-->
+		<if test="host != null and host != ''">
+			and host=#{host,jdbcType=VARCHAR}
+		</if>
+		<!--数据库名称-->
+		<if test="dbName != null and dbName != ''">
+			and db_name=#{dbName,jdbcType=VARCHAR}
+		</if>
+		<!--数据库用户名-->
+		<if test="dbUsername != null and dbUsername != ''">
+			and db_username=#{dbUsername,jdbcType=VARCHAR}
+		</if>
+		<!--数据库密码-->
+		<if test="dbPassword != null and dbPassword != ''">
+			and db_password=#{dbPassword,jdbcType=VARCHAR}
+		</if>
+		<!--数据库端口号-->
+		<if test="dbPort != null">
+			and db_port=#{dbPort,jdbcType=INTEGER}
+		</if>
+		<!--创建日期-->
+		<if test="createTime != null">
+			and create_time=#{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<!--更新时间-->
+		<if test="updateTime != null">
+			and update_time=#{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</sql>
+	<!--查询条件结束-->
+	<!--查询条件开始-->
+	<sql id="Base_Where_Db_Sql">
+		<!--id-->
+		<if test="id != null">
+			and id=#{id,jdbcType=INTEGER}
+		</if>
+		<!--用户ID-->
+		<if test="user_id != null">
+			and user_id=#{user_id,jdbcType=INTEGER}
+		</if>
+		<!--数据库类型-->
+		<if test="db_type != null and db_type != ''">
+			and db_type=#{db_type,jdbcType=VARCHAR}
+		</if>
+		<!--数据库地址-->
+		<if test="host != null and host != ''">
+			and host=#{host,jdbcType=VARCHAR}
+		</if>
+		<!--数据库名称-->
+		<if test="db_name != null and db_name != ''">
+			and db_name=#{db_name,jdbcType=VARCHAR}
+		</if>
+		<!--数据库用户名-->
+		<if test="db_username != null and db_username != ''">
+			and db_username=#{db_username,jdbcType=VARCHAR}
+		</if>
+		<!--数据库密码-->
+		<if test="db_password != null and db_password != ''">
+			and db_password=#{db_password,jdbcType=VARCHAR}
+		</if>
+		<!--数据库端口号-->
+		<if test="db_port != null">
+			and db_port=#{db_port,jdbcType=INTEGER}
+		</if>
+		<!--创建日期-->
+		<if test="create_time != null">
+			and create_time=#{create_time,jdbcType=TIMESTAMP}
+		</if>
+		<!--更新时间-->
+		<if test="update_time != null">
+			and update_time=#{update_time,jdbcType=TIMESTAMP}
+		</if>
+	</sql>
+	<!--查询条件结束-->
+	<!--根据条件查询列表开始-->
+	<select id="selectListByMapReturnMap" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Db_Sql"/>
+		</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据条件查询列表开始-->
+	<select id="selectListByMap" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据条件查询列表开始-->
+	<select id="list" parameterType="com.wdk.code.general.server.storage.entity.DbMessages" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+		<if test="orderBy != null">order by ${orderBy}
+</if>	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据条件查询列表开始-->	<select id="count" parameterType="com.wdk.code.general.server.storage.entity.DbMessages" resultType="java.lang.Integer">
+		select count(*)
+
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--新增表数据开始-->
+	<insert id="insert" parameterType="com.wdk.code.general.server.storage.entity.DbMessages">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		insert into db_messages (
+			user_id,db_type,host,
+			db_name,db_username,db_password,
+			db_port,create_time,update_time
+		)
+		values (
+			
+			#{userId,jdbcType=INTEGER},#{dbType,jdbcType=VARCHAR},#{host,jdbcType=VARCHAR},
+			#{dbName,jdbcType=VARCHAR},#{dbUsername,jdbcType=VARCHAR},#{dbPassword,jdbcType=VARCHAR},
+			#{dbPort,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+		)
+	
+	</insert>
+	<!--新增表数据结束-->
+	<!--新增表不为空数据开始-->
+	<insert id="insertSelective" parameterType="com.wdk.code.general.server.storage.entity.DbMessages">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		insert into db_messages (
+		<!--用户ID-->
+		<if test="userId != null">
+			user_id,
+		</if>
+		<!--数据库类型-->
+		<if test="dbType != null and dbType != ''">
+			db_type=#{dbType,jdbcType=VARCHAR},
+		</if>
+		<!--数据库地址-->
+		<if test="host != null and host != ''">
+			host=#{host,jdbcType=VARCHAR},
+		</if>
+		<!--数据库名称-->
+		<if test="dbName != null and dbName != ''">
+			db_name=#{dbName,jdbcType=VARCHAR},
+		</if>
+		<!--数据库用户名-->
+		<if test="dbUsername != null and dbUsername != ''">
+			db_username=#{dbUsername,jdbcType=VARCHAR},
+		</if>
+		<!--数据库密码-->
+		<if test="dbPassword != null and dbPassword != ''">
+			db_password=#{dbPassword,jdbcType=VARCHAR},
+		</if>
+		<!--数据库端口号-->
+		<if test="dbPort != null">
+			db_port,
+		</if>
+		<!--创建日期-->
+		<if test="createTime != null">
+			create_time,
+		</if>
+		<!--更新时间-->
+		<if test="updateTime != null">
+			update_time,
+		</if>
+		)
+		values (
+		<!--用户ID-->
+		<if test="userId != null">
+			#{userId,jdbcType=INTEGER},
+		</if>
+		<!--数据库类型-->
+		<if test="dbType != null and dbType != ''">
+			db_type=#{dbType,jdbcType=VARCHAR},
+		</if>
+		<!--数据库地址-->
+		<if test="host != null and host != ''">
+			host=#{host,jdbcType=VARCHAR},
+		</if>
+		<!--数据库名称-->
+		<if test="dbName != null and dbName != ''">
+			db_name=#{dbName,jdbcType=VARCHAR},
+		</if>
+		<!--数据库用户名-->
+		<if test="dbUsername != null and dbUsername != ''">
+			db_username=#{dbUsername,jdbcType=VARCHAR},
+		</if>
+		<!--数据库密码-->
+		<if test="dbPassword != null and dbPassword != ''">
+			db_password=#{dbPassword,jdbcType=VARCHAR},
+		</if>
+		<!--数据库端口号-->
+		<if test="dbPort != null">
+			#{dbPort,jdbcType=INTEGER},
+		</if>
+		<!--创建日期-->
+		<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP},
+		</if>
+		<!--更新时间-->
+		<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP},
+		</if>
+		)
+	
+	</insert>
+	<!--新增表不为空数据结束-->
+	<!--批量新增表数据开始-->
+	<insert id="batchInsert" parameterType="java.util.List">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<if test="list != null and list.size != 0">
+			insert into db_messages (
+				user_id,db_type,host,
+				db_name,db_username,db_password,
+				db_port,create_time,update_time
+			)
+			values
+			<foreach collection="list" item="item" index="index" separator=",">
+				(
+				#{item.userId,jdbcType=INTEGER},#{item.dbType,jdbcType=VARCHAR},#{item.host,jdbcType=VARCHAR},
+				#{item.dbName,jdbcType=VARCHAR},#{item.dbUsername,jdbcType=VARCHAR},#{item.dbPassword,jdbcType=VARCHAR},
+				#{item.dbPort,jdbcType=INTEGER},#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP}
+				)
+			</foreach>
+		</if>
+	</insert>
+	<!--批量新增表数据结束-->
+	<!--根据条件查询列表开始-->
+	<select id="selectByPrimaryKey" parameterType="com.wdk.code.general.server.storage.entity.DbMessages" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据主键更新数据开始-->
+	<update id="updateByPrimaryKey" parameterType="com.wdk.code.general.server.storage.entity.DbMessages">
+		update db_messages
+		set  
+			user_id=#{userId,jdbcType=INTEGER},
+			db_type=#{dbType,jdbcType=VARCHAR},
+			host=#{host,jdbcType=VARCHAR},
+			db_name=#{dbName,jdbcType=VARCHAR},
+			db_username=#{dbUsername,jdbcType=VARCHAR},
+			db_password=#{dbPassword,jdbcType=VARCHAR},
+			db_port=#{dbPort,jdbcType=INTEGER},
+			create_time=#{createTime,jdbcType=TIMESTAMP},
+			update_time=#{updateTime,jdbcType=TIMESTAMP}
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</update>
+	<!--根据主键更新数据结束-->
+	<!--根据主键更新不为空数据开始-->
+	<!--数据源信息更新不为空-->
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.wdk.code.general.server.storage.entity.DbMessages">
+		update db_messages
+		<set>
+			<!--用户ID-->
+			<if test="userId != null">
+				user_id=#{userId,jdbcType=INTEGER},
+			</if>
+			<!--数据库类型-->
+			<if test="dbType != null and dbType != ''">
+				db_type=#{dbType,jdbcType=VARCHAR},
+			</if>
+			<!--数据库地址-->
+			<if test="host != null and host != ''">
+				host=#{host,jdbcType=VARCHAR},
+			</if>
+			<!--数据库名称-->
+			<if test="dbName != null and dbName != ''">
+				db_name=#{dbName,jdbcType=VARCHAR},
+			</if>
+			<!--数据库用户名-->
+			<if test="dbUsername != null and dbUsername != ''">
+				db_username=#{dbUsername,jdbcType=VARCHAR},
+			</if>
+			<!--数据库密码-->
+			<if test="dbPassword != null and dbPassword != ''">
+				db_password=#{dbPassword,jdbcType=VARCHAR},
+			</if>
+			<!--数据库端口号-->
+			<if test="dbPort != null">
+				db_port=#{dbPort,jdbcType=INTEGER},
+			</if>
+			<!--创建日期-->
+			<if test="createTime != null">
+				create_time=#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<!--更新时间-->
+			<if test="updateTime != null">
+				update_time=#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		<!--主键查询-->
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</update>
+	<!--根据主键更新不为空数据结束-->
+	<!--根据主键存在就更新，不存在就新增开始-->
+	<!--数据源信息批量新增，存在就更新，不存在就插入-->
+	<insert id="batchInsertUpdate" parameterType="java.util.List">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<if test="list !=null and list.size != 0">
+			insert into  db_messages(
+				user_id,db_type,host,
+				db_name,db_username,db_password,
+				db_port,create_time,update_time
+			)
+			values 
+ 			<foreach collection="list" item="item" index="index" separator=",">
+				(
+				#{item.userId,jdbcType=INTEGER},#{item.dbType,jdbcType=VARCHAR},#{item.host,jdbcType=VARCHAR},
+				#{item.dbName,jdbcType=VARCHAR},#{item.dbUsername,jdbcType=VARCHAR},#{item.dbPassword,jdbcType=VARCHAR},
+				#{item.dbPort,jdbcType=INTEGER},#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP})
+			</foreach>
+				ON DUPLICATE KEY UPDATE
+				user_id=#{userId,jdbcType=INTEGER},
+				db_type=#{dbType,jdbcType=VARCHAR},
+				host=#{host,jdbcType=VARCHAR},
+				db_name=#{dbName,jdbcType=VARCHAR},
+				db_username=#{dbUsername,jdbcType=VARCHAR},
+				db_password=#{dbPassword,jdbcType=VARCHAR},
+				db_port=#{dbPort,jdbcType=INTEGER},
+				create_time=#{createTime,jdbcType=TIMESTAMP},
+				update_time=#{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</insert>
+	<!--根据主键存在就更新，不存在就新增结束-->
+	<!--批量更新开始-->
+	<update id="batchUpdate">
+		<if test="list != null and list.size != 0">
+			update db_messages
+			<trim prefix="set" suffixOverrides=",">
+				<!--用户ID-->
+				<trim prefix=" userId = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.userId!=null">
+							when id=#{item.userId,jdbcType=INTEGER}
+							then #{item.userId,jdbcType=INTEGER}
+						</if>
+					</foreach>
+				</trim>
+				<!--数据库类型-->
+				<trim prefix=" dbType = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.dbType!=null">
+							when id=#{item.dbType,jdbcType=INTEGER}
+							then #{item.dbType,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--数据库地址-->
+				<trim prefix=" host = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.host!=null">
+							when id=#{item.host,jdbcType=INTEGER}
+							then #{item.host,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--数据库名称-->
+				<trim prefix=" dbName = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.dbName!=null">
+							when id=#{item.dbName,jdbcType=INTEGER}
+							then #{item.dbName,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--数据库用户名-->
+				<trim prefix=" dbUsername = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.dbUsername!=null">
+							when id=#{item.dbUsername,jdbcType=INTEGER}
+							then #{item.dbUsername,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--数据库密码-->
+				<trim prefix=" dbPassword = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.dbPassword!=null">
+							when id=#{item.dbPassword,jdbcType=INTEGER}
+							then #{item.dbPassword,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--数据库端口号-->
+				<trim prefix=" dbPort = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.dbPort!=null">
+							when id=#{item.dbPort,jdbcType=INTEGER}
+							then #{item.dbPort,jdbcType=INTEGER}
+						</if>
+					</foreach>
+				</trim>
+				<!--创建日期-->
+				<trim prefix=" createTime = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.createTime!=null">
+							when id=#{item.createTime,jdbcType=INTEGER}
+							then #{item.createTime,jdbcType=TIMESTAMP}
+						</if>
+					</foreach>
+				</trim>
+				<!--更新时间-->
+				<trim prefix=" updateTime = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.updateTime!=null">
+							when id=#{item.updateTime,jdbcType=INTEGER}
+							then #{item.updateTime,jdbcType=TIMESTAMP}
+						</if>
+					</foreach>
+				</trim>
+			</trim>
+			<where>
+				<foreach collection="list" separator="or" item="item" index="index">
+					id=#{item.id,jdbcType=INTEGER}
+				</foreach>
+			</where>
+		</if>
+	</update>
+	<!--批量更新结束-->
+	<!--删除表数据开始-->
+	<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+		delete from db_messages
+		<!--主键查询-->
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</delete>
+	<!--删除表数据结束-->
+	<!--删除表数据开始-->
+	<delete id="deleteBySelect" parameterType="com.wdk.code.general.server.storage.entity.DbMessages">
+		delete from db_messages
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+	</delete>
+	<!--删除表数据结束-->
+</mapper>

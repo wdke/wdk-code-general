@@ -7,7 +7,7 @@ import com.wdk.general.core.model.SchemaColumns;
 import com.wdk.general.core.service.MapperDaoService;
 import com.wdk.general.core.utils.StringConversionUtil;
 import com.wdk.general.core.utils.FileUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package com.wdk.general.core.utils;
 
 import com.wdk.general.core.model.ProjectMetadata;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +23,8 @@ public class CommonFileUtils {
     public static void all(String rootFilePath, String rootPackages) {
 
         //生成AppConfigurer.java文件
-        String fileContent = appConfigurer(rootPackages + ".common.config");
-        String filePath = rootFilePath + "/common/config/AppConfigurer.java";
+        String fileContent = appConfigurer(rootPackages + ".config.config");
+        String filePath = rootFilePath + "/config/config/AppConfigurer.java";
         try {
 
             logger.info("生成appConfigurer.java文件");
@@ -35,8 +35,8 @@ public class CommonFileUtils {
 
 
         //生成PageParam.java文件
-        fileContent = pageParam(rootPackages + ".common.model");
-        filePath = rootFilePath + "/common/model/PageParam.java";
+        fileContent = pageParam(rootPackages + ".config.model");
+        filePath = rootFilePath + "/config/model/PageParam.java";
         try {
 
             logger.info("生成PageParam.java文件");
@@ -47,8 +47,8 @@ public class CommonFileUtils {
 
 
         //生成ResponseVo.java文件
-        fileContent = responseVo(rootPackages + ".common.model", rootPackages + ".common.enums");
-        filePath = rootFilePath + "/common/model/ResponseVo.java";
+        fileContent = responseVo(rootPackages + ".config.model", rootPackages + ".config.enums");
+        filePath = rootFilePath + "/config/model/ResponseVo.java";
         try {
 
             logger.info("生成ResponseVo.java文件");
@@ -58,8 +58,8 @@ public class CommonFileUtils {
         }
 
         //生成ReturnStatusEnum.java文件
-        fileContent = returnStatusEnum(rootPackages + ".common.enums");
-        filePath = rootFilePath + "/common/enums/ReturnStatusEnum.java";
+        fileContent = returnStatusEnum(rootPackages + ".config.enums");
+        filePath = rootFilePath + "/config/enums/ReturnStatusEnum.java";
         try {
 
             logger.info("生成ReturnStatusEnum.java文件");
@@ -70,8 +70,8 @@ public class CommonFileUtils {
 
 
         //生成 ResponseStatusEnum.java文件
-        fileContent = responseStatusEnum(rootPackages + ".common.enums");
-        filePath = rootFilePath + "/common/enums/ResponseStatusEnum.java";
+        fileContent = responseStatusEnum(rootPackages + ".config.enums");
+        filePath = rootFilePath + "/config/enums/ResponseStatusEnum.java";
         try {
 
             logger.info("生成 ResponseStatusEnum.java文件");
@@ -114,8 +114,8 @@ public class CommonFileUtils {
         }
 
         //生成 RedisConfig.java文件
-        fileContent = redisConfig(rootPackages + ".common.config");
-        filePath = rootFilePath + "/common/config/RedisConfig.java";
+        fileContent = redisConfig(rootPackages + ".config.config");
+        filePath = rootFilePath + "/config/config/RedisConfig.java";
         try {
 
             logger.info("生成 RedisConfig.java文件");
@@ -149,8 +149,8 @@ public class CommonFileUtils {
 
 
         //生成 AccessLog.java文件
-        fileContent = accessLog(rootPackages + ".common.logger");
-        filePath = rootFilePath + "/common/logger/AccessLog.java";
+        fileContent = accessLog(rootPackages + ".config.logger");
+        filePath = rootFilePath + "/config/logger/AccessLog.java";
         try {
 
             logger.info("生成 AccessLog.java文件");
@@ -161,8 +161,8 @@ public class CommonFileUtils {
 
 
         //生成 TalStopWatch.java文件
-        fileContent = talStopWatch(rootPackages + ".common.logger");
-        filePath = rootFilePath + "/common/logger/TalStopWatch.java";
+        fileContent = talStopWatch(rootPackages + ".config.logger");
+        filePath = rootFilePath + "/config/logger/TalStopWatch.java";
         try {
 
             logger.info("生成 TalStopWatch.java文件");
@@ -173,8 +173,8 @@ public class CommonFileUtils {
 
 
         //生成 EventLog.java文件
-        fileContent = eventLog(rootPackages + ".common.logger");
-        filePath = rootFilePath + "/common/logger/EventLog.java";
+        fileContent = eventLog(rootPackages + ".config.logger");
+        filePath = rootFilePath + "/config/logger/EventLog.java";
         try {
 
             logger.info("生成 EventLog.java文件");
@@ -183,8 +183,8 @@ public class CommonFileUtils {
             e.printStackTrace();
         }
         //生成 ActionAop.java文件
-        fileContent = actionAop(rootPackages + ".common.aop");
-        filePath = rootFilePath + "/common/aop/ActionAop.java";
+        fileContent = actionAop(rootPackages + ".config.aop");
+        filePath = rootFilePath + "/config/aop/ActionAop.java";
         try {
 
             logger.info("生成 ActionAop.java文件");
@@ -194,8 +194,8 @@ public class CommonFileUtils {
         }
 
         //生成 WebAppConfig.java文件
-        fileContent = webAppConfig(rootPackages + ".common.config");
-        filePath = rootFilePath + "/common/config/WebAppConfig.java";
+        fileContent = webAppConfig(rootPackages + ".config.config");
+        filePath = rootFilePath + "/config/config/WebAppConfig.java";
         try {
 
             logger.info("生成 WebAppConfig.java文件");
@@ -1355,8 +1355,8 @@ public class CommonFileUtils {
                 .append(" */\n")
                 .append("package ").append(packages).append(";\n")
                 .append("\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".common.logger.AccessLog;\n")
-                .append("import ").append(projectMetadata.getPackages()).append(".common.logger.TalStopWatch;\n")
+                .append("import ").append(projectMetadata.getPackages()).append(".config.logger.AccessLog;\n")
+                .append("import ").append(projectMetadata.getPackages()).append(".config.logger.TalStopWatch;\n")
                 .append("import org.aspectj.lang.JoinPoint;\n")
                 .append("import org.aspectj.lang.ProceedingJoinPoint;\n")
                 .append("import org.aspectj.lang.annotation.*;\n")

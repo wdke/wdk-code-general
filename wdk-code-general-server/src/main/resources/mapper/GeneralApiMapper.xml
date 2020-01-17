@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--API信息维护表-->
+<mapper namespace="com.wdk.code.general.server.storage.dao.GeneralApiMapper">
+	<!--返回值映射-->
+	<resultMap id="BaseResultMap" type="com.wdk.code.general.server.storage.entity.GeneralApi">
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="path" jdbcType="VARCHAR" property="path"/>
+		<result column="args" jdbcType="VARCHAR" property="args"/>
+		<result column="vo" jdbcType="VARCHAR" property="vo"/>
+		<result column="froms" jdbcType="VARCHAR" property="froms"/>
+		<result column="wheres" jdbcType="VARCHAR" property="wheres"/>
+		<result column="orderbys" jdbcType="VARCHAR" property="orderbys"/>
+		<result column="limits" jdbcType="VARCHAR" property="limits"/>
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+	</resultMap>
+	<!--查询数据库表开始-->
+	<sql id="Base_Tables_Sql">
+		general_api
+	</sql>
+	<!--查询数据库表结束-->
+	<!--查询字段开始-->
+	<sql id="Base_Column_Sql">
+		id,path,args,vo,froms,wheres,orderbys,limits,create_time,update_time
+	</sql>
+	<!--查询字段结束-->
+	<!--查询条件开始-->
+	<sql id="Base_Where_Sql">
+		<!--ID 唯一值-->
+		<if test="id != null">
+			and id=#{id,jdbcType=INTEGER}
+		</if>
+		<!--系统路径-->
+		<if test="path != null and path != ''">
+			and path=#{path,jdbcType=VARCHAR}
+		</if>
+		<!--参数-->
+		<if test="args != null and args != ''">
+			and args=#{args,jdbcType=VARCHAR}
+		</if>
+		<!--查询结果集-->
+		<if test="vo != null and vo != ''">
+			and vo=#{vo,jdbcType=VARCHAR}
+		</if>
+		<!--数据库表-->
+		<if test="froms != null and froms != ''">
+			and froms=#{froms,jdbcType=VARCHAR}
+		</if>
+		<!--查询条件-->
+		<if test="wheres != null and wheres != ''">
+			and wheres=#{wheres,jdbcType=VARCHAR}
+		</if>
+		<!--排序-->
+		<if test="orderbys != null and orderbys != ''">
+			and orderbys=#{orderbys,jdbcType=VARCHAR}
+		</if>
+		<!--分页数据-->
+		<if test="limits != null and limits != ''">
+			and limits=#{limits,jdbcType=VARCHAR}
+		</if>
+		<!--创建时间-->
+		<if test="createTime != null">
+			and create_time=#{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<!--更新时间-->
+		<if test="updateTime != null">
+			and update_time=#{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</sql>
+	<!--查询条件结束-->
+	<!--查询条件开始-->
+	<sql id="Base_Where_Db_Sql">
+		<!--ID 唯一值-->
+		<if test="id != null">
+			and id=#{id,jdbcType=INTEGER}
+		</if>
+		<!--系统路径-->
+		<if test="path != null and path != ''">
+			and path=#{path,jdbcType=VARCHAR}
+		</if>
+		<!--参数-->
+		<if test="args != null and args != ''">
+			and args=#{args,jdbcType=VARCHAR}
+		</if>
+		<!--查询结果集-->
+		<if test="vo != null and vo != ''">
+			and vo=#{vo,jdbcType=VARCHAR}
+		</if>
+		<!--数据库表-->
+		<if test="froms != null and froms != ''">
+			and froms=#{froms,jdbcType=VARCHAR}
+		</if>
+		<!--查询条件-->
+		<if test="wheres != null and wheres != ''">
+			and wheres=#{wheres,jdbcType=VARCHAR}
+		</if>
+		<!--排序-->
+		<if test="orderbys != null and orderbys != ''">
+			and orderbys=#{orderbys,jdbcType=VARCHAR}
+		</if>
+		<!--分页数据-->
+		<if test="limits != null and limits != ''">
+			and limits=#{limits,jdbcType=VARCHAR}
+		</if>
+		<!--创建时间-->
+		<if test="create_time != null">
+			and create_time=#{create_time,jdbcType=TIMESTAMP}
+		</if>
+		<!--更新时间-->
+		<if test="update_time != null">
+			and update_time=#{update_time,jdbcType=TIMESTAMP}
+		</if>
+	</sql>
+	<!--查询条件结束-->
+	<!--根据条件查询列表开始-->
+	<select id="selectListByMapReturnMap" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Db_Sql"/>
+		</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据条件查询列表开始-->
+	<select id="selectListByMap" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据条件查询列表开始-->
+	<select id="list" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+		<if test="orderBy != null">order by ${orderBy}
+</if>	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据条件查询列表开始-->	<select id="count" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi" resultType="java.lang.Integer">
+		select count(*)
+
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--新增表数据开始-->
+	<insert id="insert" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		insert into general_api (
+			path,args,vo,
+			froms,wheres,orderbys,
+			limits,create_time,update_time
+		)
+		values (
+			
+			#{path,jdbcType=VARCHAR},#{args,jdbcType=VARCHAR},#{vo,jdbcType=VARCHAR},
+			#{froms,jdbcType=VARCHAR},#{wheres,jdbcType=VARCHAR},#{orderbys,jdbcType=VARCHAR},
+			#{limits,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+		)
+	
+	</insert>
+	<!--新增表数据结束-->
+	<!--新增表不为空数据开始-->
+	<insert id="insertSelective" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		insert into general_api (
+		<!--系统路径-->
+		<if test="path != null and path != ''">
+			path=#{path,jdbcType=VARCHAR},
+		</if>
+		<!--参数-->
+		<if test="args != null and args != ''">
+			args=#{args,jdbcType=VARCHAR},
+		</if>
+		<!--查询结果集-->
+		<if test="vo != null and vo != ''">
+			vo=#{vo,jdbcType=VARCHAR},
+		</if>
+		<!--数据库表-->
+		<if test="froms != null and froms != ''">
+			froms=#{froms,jdbcType=VARCHAR},
+		</if>
+		<!--查询条件-->
+		<if test="wheres != null and wheres != ''">
+			wheres=#{wheres,jdbcType=VARCHAR},
+		</if>
+		<!--排序-->
+		<if test="orderbys != null and orderbys != ''">
+			orderbys=#{orderbys,jdbcType=VARCHAR},
+		</if>
+		<!--分页数据-->
+		<if test="limits != null and limits != ''">
+			limits=#{limits,jdbcType=VARCHAR},
+		</if>
+		<!--创建时间-->
+		<if test="createTime != null">
+			create_time,
+		</if>
+		<!--更新时间-->
+		<if test="updateTime != null">
+			update_time,
+		</if>
+		)
+		values (
+		<!--系统路径-->
+		<if test="path != null and path != ''">
+			path=#{path,jdbcType=VARCHAR},
+		</if>
+		<!--参数-->
+		<if test="args != null and args != ''">
+			args=#{args,jdbcType=VARCHAR},
+		</if>
+		<!--查询结果集-->
+		<if test="vo != null and vo != ''">
+			vo=#{vo,jdbcType=VARCHAR},
+		</if>
+		<!--数据库表-->
+		<if test="froms != null and froms != ''">
+			froms=#{froms,jdbcType=VARCHAR},
+		</if>
+		<!--查询条件-->
+		<if test="wheres != null and wheres != ''">
+			wheres=#{wheres,jdbcType=VARCHAR},
+		</if>
+		<!--排序-->
+		<if test="orderbys != null and orderbys != ''">
+			orderbys=#{orderbys,jdbcType=VARCHAR},
+		</if>
+		<!--分页数据-->
+		<if test="limits != null and limits != ''">
+			limits=#{limits,jdbcType=VARCHAR},
+		</if>
+		<!--创建时间-->
+		<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP},
+		</if>
+		<!--更新时间-->
+		<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP},
+		</if>
+		)
+	
+	</insert>
+	<!--新增表不为空数据结束-->
+	<!--批量新增表数据开始-->
+	<insert id="batchInsert" parameterType="java.util.List">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<if test="list != null and list.size != 0">
+			insert into general_api (
+				path,args,vo,
+				froms,wheres,orderbys,
+				limits,create_time,update_time
+			)
+			values
+			<foreach collection="list" item="item" index="index" separator=",">
+				(
+				#{item.path,jdbcType=VARCHAR},#{item.args,jdbcType=VARCHAR},#{item.vo,jdbcType=VARCHAR},
+				#{item.froms,jdbcType=VARCHAR},#{item.wheres,jdbcType=VARCHAR},#{item.orderbys,jdbcType=VARCHAR},
+				#{item.limits,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP}
+				)
+			</foreach>
+		</if>
+	</insert>
+	<!--批量新增表数据结束-->
+	<!--根据条件查询列表开始-->
+	<select id="selectByPrimaryKey" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据主键更新数据开始-->
+	<update id="updateByPrimaryKey" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi">
+		update general_api
+		set  
+			path=#{path,jdbcType=VARCHAR},
+			args=#{args,jdbcType=VARCHAR},
+			vo=#{vo,jdbcType=VARCHAR},
+			froms=#{froms,jdbcType=VARCHAR},
+			wheres=#{wheres,jdbcType=VARCHAR},
+			orderbys=#{orderbys,jdbcType=VARCHAR},
+			limits=#{limits,jdbcType=VARCHAR},
+			create_time=#{createTime,jdbcType=TIMESTAMP},
+			update_time=#{updateTime,jdbcType=TIMESTAMP}
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</update>
+	<!--根据主键更新数据结束-->
+	<!--根据主键更新不为空数据开始-->
+	<!--API信息维护表更新不为空-->
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi">
+		update general_api
+		<set>
+			<!--系统路径-->
+			<if test="path != null and path != ''">
+				path=#{path,jdbcType=VARCHAR},
+			</if>
+			<!--参数-->
+			<if test="args != null and args != ''">
+				args=#{args,jdbcType=VARCHAR},
+			</if>
+			<!--查询结果集-->
+			<if test="vo != null and vo != ''">
+				vo=#{vo,jdbcType=VARCHAR},
+			</if>
+			<!--数据库表-->
+			<if test="froms != null and froms != ''">
+				froms=#{froms,jdbcType=VARCHAR},
+			</if>
+			<!--查询条件-->
+			<if test="wheres != null and wheres != ''">
+				wheres=#{wheres,jdbcType=VARCHAR},
+			</if>
+			<!--排序-->
+			<if test="orderbys != null and orderbys != ''">
+				orderbys=#{orderbys,jdbcType=VARCHAR},
+			</if>
+			<!--分页数据-->
+			<if test="limits != null and limits != ''">
+				limits=#{limits,jdbcType=VARCHAR},
+			</if>
+			<!--创建时间-->
+			<if test="createTime != null">
+				create_time=#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<!--更新时间-->
+			<if test="updateTime != null">
+				update_time=#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		<!--主键查询-->
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</update>
+	<!--根据主键更新不为空数据结束-->
+	<!--根据主键存在就更新，不存在就新增开始-->
+	<!--API信息维护表批量新增，存在就更新，不存在就插入-->
+	<insert id="batchInsertUpdate" parameterType="java.util.List">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<if test="list !=null and list.size != 0">
+			insert into  general_api(
+				path,args,vo,
+				froms,wheres,orderbys,
+				limits,create_time,update_time
+			)
+			values 
+ 			<foreach collection="list" item="item" index="index" separator=",">
+				(
+				#{item.path,jdbcType=VARCHAR},#{item.args,jdbcType=VARCHAR},#{item.vo,jdbcType=VARCHAR},
+				#{item.froms,jdbcType=VARCHAR},#{item.wheres,jdbcType=VARCHAR},#{item.orderbys,jdbcType=VARCHAR},
+				#{item.limits,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP})
+			</foreach>
+				ON DUPLICATE KEY UPDATE
+				path=#{path,jdbcType=VARCHAR},
+				args=#{args,jdbcType=VARCHAR},
+				vo=#{vo,jdbcType=VARCHAR},
+				froms=#{froms,jdbcType=VARCHAR},
+				wheres=#{wheres,jdbcType=VARCHAR},
+				orderbys=#{orderbys,jdbcType=VARCHAR},
+				limits=#{limits,jdbcType=VARCHAR},
+				create_time=#{createTime,jdbcType=TIMESTAMP},
+				update_time=#{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</insert>
+	<!--根据主键存在就更新，不存在就新增结束-->
+	<!--批量更新开始-->
+	<update id="batchUpdate">
+		<if test="list != null and list.size != 0">
+			update general_api
+			<trim prefix="set" suffixOverrides=",">
+				<!--系统路径-->
+				<trim prefix=" path = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.path!=null">
+							when id=#{item.path,jdbcType=INTEGER}
+							then #{item.path,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--参数-->
+				<trim prefix=" args = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.args!=null">
+							when id=#{item.args,jdbcType=INTEGER}
+							then #{item.args,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--查询结果集-->
+				<trim prefix=" vo = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.vo!=null">
+							when id=#{item.vo,jdbcType=INTEGER}
+							then #{item.vo,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--数据库表-->
+				<trim prefix=" froms = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.froms!=null">
+							when id=#{item.froms,jdbcType=INTEGER}
+							then #{item.froms,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--查询条件-->
+				<trim prefix=" wheres = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.wheres!=null">
+							when id=#{item.wheres,jdbcType=INTEGER}
+							then #{item.wheres,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--排序-->
+				<trim prefix=" orderbys = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.orderbys!=null">
+							when id=#{item.orderbys,jdbcType=INTEGER}
+							then #{item.orderbys,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--分页数据-->
+				<trim prefix=" limits = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.limits!=null">
+							when id=#{item.limits,jdbcType=INTEGER}
+							then #{item.limits,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--创建时间-->
+				<trim prefix=" createTime = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.createTime!=null">
+							when id=#{item.createTime,jdbcType=INTEGER}
+							then #{item.createTime,jdbcType=TIMESTAMP}
+						</if>
+					</foreach>
+				</trim>
+				<!--更新时间-->
+				<trim prefix=" updateTime = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.updateTime!=null">
+							when id=#{item.updateTime,jdbcType=INTEGER}
+							then #{item.updateTime,jdbcType=TIMESTAMP}
+						</if>
+					</foreach>
+				</trim>
+			</trim>
+			<where>
+				<foreach collection="list" separator="or" item="item" index="index">
+					id=#{item.id,jdbcType=INTEGER}
+				</foreach>
+			</where>
+		</if>
+	</update>
+	<!--批量更新结束-->
+	<!--删除表数据开始-->
+	<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+		delete from general_api
+		<!--主键查询-->
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</delete>
+	<!--删除表数据结束-->
+	<!--删除表数据开始-->
+	<delete id="deleteBySelect" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi">
+		delete from general_api
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+	</delete>
+	<!--删除表数据结束-->
+</mapper>

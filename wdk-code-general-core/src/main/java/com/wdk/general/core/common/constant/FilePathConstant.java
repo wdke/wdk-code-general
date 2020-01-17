@@ -1,6 +1,6 @@
 package com.wdk.general.core.common.constant;
 
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 
 /**
  * created by wdk on 2019/12/30

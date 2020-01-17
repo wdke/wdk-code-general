@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>API信息维护表详情</title>
+	<link rel="stylesheet" th:href="@{/static/bootstrap/3.3.7/css/bootstrap.min.css}">
+	<script th:src="@{/static/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+	<script th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+</head>
+<body>
+
+<div class="container">
+	<form class="form-horizontal" action="#" role="form" method="post">
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">ID 唯一值:</label>
+			<div class="col-sm-10"  th:text="${data.id}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">系统路径:</label>
+			<div class="col-sm-10"  th:text="${data.path}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">参数:</label>
+			<div class="col-sm-10"  th:text="${data.args}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">查询结果集:</label>
+			<div class="col-sm-10"  th:text="${data.vo}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">数据库表:</label>
+			<div class="col-sm-10"  th:text="${data.froms}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">查询条件:</label>
+			<div class="col-sm-10"  th:text="${data.wheres}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">排序:</label>
+			<div class="col-sm-10"  th:text="${data.orderbys}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">分页数据:</label>
+			<div class="col-sm-10"  th:text="${data.limits}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">创建时间:</label>
+			<div class="col-sm-10"  th:text="${#dates.format(data.createTime,'yyyy-MM-dd HH:mm')}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">更新时间:</label>
+			<div class="col-sm-10"  th:text="${#dates.format(data.updateTime,'yyyy-MM-dd HH:mm')}">
+			</div>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

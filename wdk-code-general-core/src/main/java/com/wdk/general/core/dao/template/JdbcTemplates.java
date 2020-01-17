@@ -2,7 +2,7 @@ package com.wdk.general.core.dao.template;
 
 import com.wdk.general.core.handle.IResultSetHandler;
 import com.wdk.general.core.utils.DruidUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

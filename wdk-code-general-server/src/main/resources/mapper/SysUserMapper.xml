@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--用户管理-->
+<mapper namespace="com.wdk.code.general.server.storage.dao.SysUserMapper">
+	<!--返回值映射-->
+	<resultMap id="BaseResultMap" type="com.wdk.code.general.server.storage.entity.SysUser">
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="username" jdbcType="VARCHAR" property="username"/>
+		<result column="password" jdbcType="VARCHAR" property="password"/>
+		<result column="password_key" jdbcType="VARCHAR" property="passwordKey"/>
+		<result column="phone" jdbcType="BIGINT" property="phone"/>
+		<result column="email" jdbcType="VARCHAR" property="email"/>
+		<result column="address" jdbcType="VARCHAR" property="address"/>
+		<result column="sex" jdbcType="VARCHAR" property="sex"/>
+		<result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
+		<result column="description" jdbcType="VARCHAR" property="description"/>
+		<result column="role_id" jdbcType="BIGINT" property="roleId"/>
+		<result column="head_images" jdbcType="VARCHAR" property="headImages"/>
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+	</resultMap>
+	<!--查询数据库表开始-->
+	<sql id="Base_Tables_Sql">
+		sys_user
+	</sql>
+	<!--查询数据库表结束-->
+	<!--查询字段开始-->
+	<sql id="Base_Column_Sql">
+		id,username,password,password_key,phone,email,address,sex,birthday,description,role_id,head_images,create_time,
+		update_time
+	</sql>
+	<!--查询字段结束-->
+	<!--查询条件开始-->
+	<sql id="Base_Where_Sql">
+		<!--id-->
+		<if test="id != null">
+			and id=#{id,jdbcType=INTEGER}
+		</if>
+		<!--用户名-->
+		<if test="username != null and username != ''">
+			and username=#{username,jdbcType=VARCHAR}
+		</if>
+		<!--用户密码-->
+		<if test="password != null and password != ''">
+			and password=#{password,jdbcType=VARCHAR}
+		</if>
+		<!--加密密钥-->
+		<if test="passwordKey != null and passwordKey != ''">
+			and password_key=#{passwordKey,jdbcType=VARCHAR}
+		</if>
+		<!--电话-->
+		<if test="phone != null">
+			and phone=#{phone,jdbcType=BIGINT}
+		</if>
+		<!--邮箱-->
+		<if test="email != null and email != ''">
+			and email=#{email,jdbcType=VARCHAR}
+		</if>
+		<!--地址-->
+		<if test="address != null and address != ''">
+			and address=#{address,jdbcType=VARCHAR}
+		</if>
+		<!--性别-->
+		<if test="sex != null and sex != ''">
+			and sex=#{sex,jdbcType=VARCHAR}
+		</if>
+		<!--出生年月-->
+		<if test="birthday != null">
+			and birthday=#{birthday,jdbcType=TIMESTAMP}
+		</if>
+		<!--描述-->
+		<if test="description != null and description != ''">
+			and description=#{description,jdbcType=VARCHAR}
+		</if>
+		<!--角色ID-->
+		<if test="roleId != null">
+			and role_id=#{roleId,jdbcType=BIGINT}
+		</if>
+		<!--用户头像-->
+		<if test="headImages != null and headImages != ''">
+			and head_images=#{headImages,jdbcType=VARCHAR}
+		</if>
+		<!--创建日期-->
+		<if test="createTime != null">
+			and create_time=#{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<!--更新日期-->
+		<if test="updateTime != null">
+			and update_time=#{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</sql>
+	<!--查询条件结束-->
+	<!--查询条件开始-->
+	<sql id="Base_Where_Db_Sql">
+		<!--id-->
+		<if test="id != null">
+			and id=#{id,jdbcType=INTEGER}
+		</if>
+		<!--用户名-->
+		<if test="username != null and username != ''">
+			and username=#{username,jdbcType=VARCHAR}
+		</if>
+		<!--用户密码-->
+		<if test="password != null and password != ''">
+			and password=#{password,jdbcType=VARCHAR}
+		</if>
+		<!--加密密钥-->
+		<if test="password_key != null and password_key != ''">
+			and password_key=#{password_key,jdbcType=VARCHAR}
+		</if>
+		<!--电话-->
+		<if test="phone != null">
+			and phone=#{phone,jdbcType=BIGINT}
+		</if>
+		<!--邮箱-->
+		<if test="email != null and email != ''">
+			and email=#{email,jdbcType=VARCHAR}
+		</if>
+		<!--地址-->
+		<if test="address != null and address != ''">
+			and address=#{address,jdbcType=VARCHAR}
+		</if>
+		<!--性别-->
+		<if test="sex != null and sex != ''">
+			and sex=#{sex,jdbcType=VARCHAR}
+		</if>
+		<!--出生年月-->
+		<if test="birthday != null">
+			and birthday=#{birthday,jdbcType=TIMESTAMP}
+		</if>
+		<!--描述-->
+		<if test="description != null and description != ''">
+			and description=#{description,jdbcType=VARCHAR}
+		</if>
+		<!--角色ID-->
+		<if test="role_id != null">
+			and role_id=#{role_id,jdbcType=BIGINT}
+		</if>
+		<!--用户头像-->
+		<if test="head_images != null and head_images != ''">
+			and head_images=#{head_images,jdbcType=VARCHAR}
+		</if>
+		<!--创建日期-->
+		<if test="create_time != null">
+			and create_time=#{create_time,jdbcType=TIMESTAMP}
+		</if>
+		<!--更新日期-->
+		<if test="update_time != null">
+			and update_time=#{update_time,jdbcType=TIMESTAMP}
+		</if>
+	</sql>
+	<!--查询条件结束-->
+	<!--根据条件查询列表开始-->
+	<select id="selectListByMapReturnMap" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Db_Sql"/>
+		</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据条件查询列表开始-->
+	<select id="selectListByMap" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据条件查询列表开始-->
+	<select id="list" parameterType="com.wdk.code.general.server.storage.entity.SysUser" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+		<if test="orderBy != null">order by ${orderBy}
+</if>	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据条件查询列表开始-->	<select id="count" parameterType="com.wdk.code.general.server.storage.entity.SysUser" resultType="java.lang.Integer">
+		select count(*)
+
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--新增表数据开始-->
+	<insert id="insert" parameterType="com.wdk.code.general.server.storage.entity.SysUser">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		insert into sys_user (
+			username,password,password_key,
+			phone,email,address,
+			sex,birthday,description,
+			role_id,head_images,create_time,
+			update_time
+		)
+		values (
+			
+			#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{passwordKey,jdbcType=VARCHAR},
+			#{phone,jdbcType=BIGINT},#{email,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},
+			#{sex,jdbcType=VARCHAR},#{birthday,jdbcType=TIMESTAMP},#{description,jdbcType=VARCHAR},
+			#{roleId,jdbcType=BIGINT},#{headImages,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
+			#{updateTime,jdbcType=TIMESTAMP}
+		)
+	
+	</insert>
+	<!--新增表数据结束-->
+	<!--新增表不为空数据开始-->
+	<insert id="insertSelective" parameterType="com.wdk.code.general.server.storage.entity.SysUser">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		insert into sys_user (
+		<!--用户名-->
+		<if test="username != null and username != ''">
+			username=#{username,jdbcType=VARCHAR},
+		</if>
+		<!--用户密码-->
+		<if test="password != null and password != ''">
+			password=#{password,jdbcType=VARCHAR},
+		</if>
+		<!--加密密钥-->
+		<if test="passwordKey != null and passwordKey != ''">
+			password_key=#{passwordKey,jdbcType=VARCHAR},
+		</if>
+		<!--电话-->
+		<if test="phone != null">
+			phone,
+		</if>
+		<!--邮箱-->
+		<if test="email != null and email != ''">
+			email=#{email,jdbcType=VARCHAR},
+		</if>
+		<!--地址-->
+		<if test="address != null and address != ''">
+			address=#{address,jdbcType=VARCHAR},
+		</if>
+		<!--性别-->
+		<if test="sex != null and sex != ''">
+			sex=#{sex,jdbcType=VARCHAR},
+		</if>
+		<!--出生年月-->
+		<if test="birthday != null">
+			birthday,
+		</if>
+		<!--描述-->
+		<if test="description != null and description != ''">
+			description=#{description,jdbcType=VARCHAR},
+		</if>
+		<!--角色ID-->
+		<if test="roleId != null">
+			role_id,
+		</if>
+		<!--用户头像-->
+		<if test="headImages != null and headImages != ''">
+			head_images=#{headImages,jdbcType=VARCHAR},
+		</if>
+		<!--创建日期-->
+		<if test="createTime != null">
+			create_time,
+		</if>
+		<!--更新日期-->
+		<if test="updateTime != null">
+			update_time,
+		</if>
+		)
+		values (
+		<!--用户名-->
+		<if test="username != null and username != ''">
+			username=#{username,jdbcType=VARCHAR},
+		</if>
+		<!--用户密码-->
+		<if test="password != null and password != ''">
+			password=#{password,jdbcType=VARCHAR},
+		</if>
+		<!--加密密钥-->
+		<if test="passwordKey != null and passwordKey != ''">
+			password_key=#{passwordKey,jdbcType=VARCHAR},
+		</if>
+		<!--电话-->
+		<if test="phone != null">
+			#{phone,jdbcType=BIGINT},
+		</if>
+		<!--邮箱-->
+		<if test="email != null and email != ''">
+			email=#{email,jdbcType=VARCHAR},
+		</if>
+		<!--地址-->
+		<if test="address != null and address != ''">
+			address=#{address,jdbcType=VARCHAR},
+		</if>
+		<!--性别-->
+		<if test="sex != null and sex != ''">
+			sex=#{sex,jdbcType=VARCHAR},
+		</if>
+		<!--出生年月-->
+		<if test="birthday != null">
+			#{birthday,jdbcType=TIMESTAMP},
+		</if>
+		<!--描述-->
+		<if test="description != null and description != ''">
+			description=#{description,jdbcType=VARCHAR},
+		</if>
+		<!--角色ID-->
+		<if test="roleId != null">
+			#{roleId,jdbcType=BIGINT},
+		</if>
+		<!--用户头像-->
+		<if test="headImages != null and headImages != ''">
+			head_images=#{headImages,jdbcType=VARCHAR},
+		</if>
+		<!--创建日期-->
+		<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP},
+		</if>
+		<!--更新日期-->
+		<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP},
+		</if>
+		)
+	
+	</insert>
+	<!--新增表不为空数据结束-->
+	<!--批量新增表数据开始-->
+	<insert id="batchInsert" parameterType="java.util.List">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<if test="list != null and list.size != 0">
+			insert into sys_user (
+				username,password,password_key,
+				phone,email,address,
+				sex,birthday,description,
+				role_id,head_images,create_time,
+				update_time
+			)
+			values
+			<foreach collection="list" item="item" index="index" separator=",">
+				(
+				#{item.username,jdbcType=VARCHAR},#{item.password,jdbcType=VARCHAR},#{item.passwordKey,jdbcType=VARCHAR},
+				#{item.phone,jdbcType=BIGINT},#{item.email,jdbcType=VARCHAR},#{item.address,jdbcType=VARCHAR},
+				#{item.sex,jdbcType=VARCHAR},#{item.birthday,jdbcType=TIMESTAMP},#{item.description,jdbcType=VARCHAR},
+				#{item.roleId,jdbcType=BIGINT},#{item.headImages,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIMESTAMP},
+				#{item.updateTime,jdbcType=TIMESTAMP}
+				)
+			</foreach>
+		</if>
+	</insert>
+	<!--批量新增表数据结束-->
+	<!--根据条件查询列表开始-->
+	<select id="selectByPrimaryKey" parameterType="com.wdk.code.general.server.storage.entity.SysUser" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_Sql"/>
+		from  
+		<include refid="Base_Tables_Sql"/>
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</select>
+	<!--根据条件查询列表结束-->
+	<!--根据主键更新数据开始-->
+	<update id="updateByPrimaryKey" parameterType="com.wdk.code.general.server.storage.entity.SysUser">
+		update sys_user
+		set  
+			username=#{username,jdbcType=VARCHAR},
+			password=#{password,jdbcType=VARCHAR},
+			password_key=#{passwordKey,jdbcType=VARCHAR},
+			phone=#{phone,jdbcType=BIGINT},
+			email=#{email,jdbcType=VARCHAR},
+			address=#{address,jdbcType=VARCHAR},
+			sex=#{sex,jdbcType=VARCHAR},
+			birthday=#{birthday,jdbcType=TIMESTAMP},
+			description=#{description,jdbcType=VARCHAR},
+			role_id=#{roleId,jdbcType=BIGINT},
+			head_images=#{headImages,jdbcType=VARCHAR},
+			create_time=#{createTime,jdbcType=TIMESTAMP},
+			update_time=#{updateTime,jdbcType=TIMESTAMP}
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</update>
+	<!--根据主键更新数据结束-->
+	<!--根据主键更新不为空数据开始-->
+	<!--用户管理更新不为空-->
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.wdk.code.general.server.storage.entity.SysUser">
+		update sys_user
+		<set>
+			<!--用户名-->
+			<if test="username != null and username != ''">
+				username=#{username,jdbcType=VARCHAR},
+			</if>
+			<!--用户密码-->
+			<if test="password != null and password != ''">
+				password=#{password,jdbcType=VARCHAR},
+			</if>
+			<!--加密密钥-->
+			<if test="passwordKey != null and passwordKey != ''">
+				password_key=#{passwordKey,jdbcType=VARCHAR},
+			</if>
+			<!--电话-->
+			<if test="phone != null">
+				phone=#{phone,jdbcType=BIGINT},
+			</if>
+			<!--邮箱-->
+			<if test="email != null and email != ''">
+				email=#{email,jdbcType=VARCHAR},
+			</if>
+			<!--地址-->
+			<if test="address != null and address != ''">
+				address=#{address,jdbcType=VARCHAR},
+			</if>
+			<!--性别-->
+			<if test="sex != null and sex != ''">
+				sex=#{sex,jdbcType=VARCHAR},
+			</if>
+			<!--出生年月-->
+			<if test="birthday != null">
+				birthday=#{birthday,jdbcType=TIMESTAMP},
+			</if>
+			<!--描述-->
+			<if test="description != null and description != ''">
+				description=#{description,jdbcType=VARCHAR},
+			</if>
+			<!--角色ID-->
+			<if test="roleId != null">
+				role_id=#{roleId,jdbcType=BIGINT},
+			</if>
+			<!--用户头像-->
+			<if test="headImages != null and headImages != ''">
+				head_images=#{headImages,jdbcType=VARCHAR},
+			</if>
+			<!--创建日期-->
+			<if test="createTime != null">
+				create_time=#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<!--更新日期-->
+			<if test="updateTime != null">
+				update_time=#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		<!--主键查询-->
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</update>
+	<!--根据主键更新不为空数据结束-->
+	<!--根据主键存在就更新，不存在就新增开始-->
+	<!--用户管理批量新增，存在就更新，不存在就插入-->
+	<insert id="batchInsertUpdate" parameterType="java.util.List">
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<if test="list !=null and list.size != 0">
+			insert into  sys_user(
+				username,password,password_key,
+				phone,email,address,
+				sex,birthday,description,
+				role_id,head_images,create_time,
+				update_time
+			)
+			values 
+ 			<foreach collection="list" item="item" index="index" separator=",">
+				(
+				#{item.username,jdbcType=VARCHAR},#{item.password,jdbcType=VARCHAR},#{item.passwordKey,jdbcType=VARCHAR},
+				#{item.phone,jdbcType=BIGINT},#{item.email,jdbcType=VARCHAR},#{item.address,jdbcType=VARCHAR},
+				#{item.sex,jdbcType=VARCHAR},#{item.birthday,jdbcType=TIMESTAMP},#{item.description,jdbcType=VARCHAR},
+				#{item.roleId,jdbcType=BIGINT},#{item.headImages,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIMESTAMP},
+				#{item.updateTime,jdbcType=TIMESTAMP})
+			</foreach>
+				ON DUPLICATE KEY UPDATE
+				username=#{username,jdbcType=VARCHAR},
+				password=#{password,jdbcType=VARCHAR},
+				password_key=#{passwordKey,jdbcType=VARCHAR},
+				phone=#{phone,jdbcType=BIGINT},
+				email=#{email,jdbcType=VARCHAR},
+				address=#{address,jdbcType=VARCHAR},
+				sex=#{sex,jdbcType=VARCHAR},
+				birthday=#{birthday,jdbcType=TIMESTAMP},
+				description=#{description,jdbcType=VARCHAR},
+				role_id=#{roleId,jdbcType=BIGINT},
+				head_images=#{headImages,jdbcType=VARCHAR},
+				create_time=#{createTime,jdbcType=TIMESTAMP},
+				update_time=#{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</insert>
+	<!--根据主键存在就更新，不存在就新增结束-->
+	<!--批量更新开始-->
+	<update id="batchUpdate">
+		<if test="list != null and list.size != 0">
+			update sys_user
+			<trim prefix="set" suffixOverrides=",">
+				<!--用户名-->
+				<trim prefix=" username = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.username!=null">
+							when id=#{item.username,jdbcType=INTEGER}
+							then #{item.username,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--用户密码-->
+				<trim prefix=" password = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.password!=null">
+							when id=#{item.password,jdbcType=INTEGER}
+							then #{item.password,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--加密密钥-->
+				<trim prefix=" passwordKey = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.passwordKey!=null">
+							when id=#{item.passwordKey,jdbcType=INTEGER}
+							then #{item.passwordKey,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--电话-->
+				<trim prefix=" phone = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.phone!=null">
+							when id=#{item.phone,jdbcType=INTEGER}
+							then #{item.phone,jdbcType=BIGINT}
+						</if>
+					</foreach>
+				</trim>
+				<!--邮箱-->
+				<trim prefix=" email = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.email!=null">
+							when id=#{item.email,jdbcType=INTEGER}
+							then #{item.email,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--地址-->
+				<trim prefix=" address = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.address!=null">
+							when id=#{item.address,jdbcType=INTEGER}
+							then #{item.address,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--性别-->
+				<trim prefix=" sex = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.sex!=null">
+							when id=#{item.sex,jdbcType=INTEGER}
+							then #{item.sex,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--出生年月-->
+				<trim prefix=" birthday = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.birthday!=null">
+							when id=#{item.birthday,jdbcType=INTEGER}
+							then #{item.birthday,jdbcType=TIMESTAMP}
+						</if>
+					</foreach>
+				</trim>
+				<!--描述-->
+				<trim prefix=" description = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.description!=null">
+							when id=#{item.description,jdbcType=INTEGER}
+							then #{item.description,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--角色ID-->
+				<trim prefix=" roleId = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.roleId!=null">
+							when id=#{item.roleId,jdbcType=INTEGER}
+							then #{item.roleId,jdbcType=BIGINT}
+						</if>
+					</foreach>
+				</trim>
+				<!--用户头像-->
+				<trim prefix=" headImages = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.headImages!=null">
+							when id=#{item.headImages,jdbcType=INTEGER}
+							then #{item.headImages,jdbcType=VARCHAR}
+						</if>
+					</foreach>
+				</trim>
+				<!--创建日期-->
+				<trim prefix=" createTime = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.createTime!=null">
+							when id=#{item.createTime,jdbcType=INTEGER}
+							then #{item.createTime,jdbcType=TIMESTAMP}
+						</if>
+					</foreach>
+				</trim>
+				<!--更新日期-->
+				<trim prefix=" updateTime = case " suffix="end,">
+					<foreach collection="list" item="item" index="index">
+						<if test="item.updateTime!=null">
+							when id=#{item.updateTime,jdbcType=INTEGER}
+							then #{item.updateTime,jdbcType=TIMESTAMP}
+						</if>
+					</foreach>
+				</trim>
+			</trim>
+			<where>
+				<foreach collection="list" separator="or" item="item" index="index">
+					id=#{item.id,jdbcType=INTEGER}
+				</foreach>
+			</where>
+		</if>
+	</update>
+	<!--批量更新结束-->
+	<!--删除表数据开始-->
+	<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+		delete from sys_user
+		<!--主键查询-->
+		<where>id=#{id,jdbcType=INTEGER}</where>
+	</delete>
+	<!--删除表数据结束-->
+	<!--删除表数据开始-->
+	<delete id="deleteBySelect" parameterType="com.wdk.code.general.server.storage.entity.SysUser">
+		delete from sys_user
+		<where>
+			<include refid="Base_Where_Sql"/>
+		</where>
+	</delete>
+	<!--删除表数据结束-->
+</mapper>

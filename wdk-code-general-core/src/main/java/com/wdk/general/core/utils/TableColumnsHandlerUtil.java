@@ -1,9 +1,9 @@
 package com.wdk.general.core.utils;
 
 
-import com.alibaba.druid.util.StringUtils;
 import com.wdk.general.core.common.enums.JdbcTypeEnums;
 import com.wdk.general.core.model.SchemaColumns;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -294,8 +294,8 @@ public class TableColumnsHandlerUtil {
      *                3 getter,
      *                4 lombox vo,
      *                5 lombox param,
-     *                6 common vo,
-     *                7 common param,
+     *                6 config vo,
+     *                7 config param,
      *                默认 mybatis全更新
      * @param last    字段后缀名字
      * @return

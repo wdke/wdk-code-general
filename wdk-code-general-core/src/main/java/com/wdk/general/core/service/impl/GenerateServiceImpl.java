@@ -10,7 +10,7 @@ import com.wdk.general.core.utils.StringConversionUtil;
 import com.wdk.general.core.utils.CommonFileUtils;
 import com.wdk.general.core.utils.FileUtil;
 import com.wdk.general.core.utils.GeneratorConfigUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -190,6 +190,16 @@ public class GenerateServiceImpl implements GenerateService {
 
         }
         logger.info("循环生成各个表对应的文件结束");
+
+    }
+
+    /**
+     * 生成dao层次
+     *
+     * @param tableName
+     */
+    @Override
+    public void autoMybatis(String[] tableName) {
 
     }
 }

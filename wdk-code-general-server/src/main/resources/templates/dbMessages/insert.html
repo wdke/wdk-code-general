@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>数据源信息新增</title>
+	<link rel="stylesheet" th:href="@{/static/bootstrap/3.3.7/css/bootstrap.min.css}">
+	<script th:src="@{/static/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+	<script th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+</head>
+<body>
+
+<div class="container">
+	<form class="form-horizontal" action="#" role="form" th:action="@{/pages/db/messages/insert}" method="post">
+		<div class="form-group">
+			<label for="id" class="col-sm-2 control-label">id:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="id" id="id"
+						placeholder="请输入id"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="userId" class="col-sm-2 control-label">用户ID:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="userId" id="userId"
+						placeholder="请输入用户ID"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="dbType" class="col-sm-2 control-label">数据库类型:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="dbType" id="dbType"
+						placeholder="请输入数据库类型"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="host" class="col-sm-2 control-label">数据库地址:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="host" id="host"
+						placeholder="请输入数据库地址"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="dbName" class="col-sm-2 control-label">数据库名称:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="dbName" id="dbName"
+						placeholder="请输入数据库名称"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="dbUsername" class="col-sm-2 control-label">数据库用户名:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="dbUsername" id="dbUsername"
+						placeholder="请输入数据库用户名"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="dbPassword" class="col-sm-2 control-label">数据库密码:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="dbPassword" id="dbPassword"
+						placeholder="请输入数据库密码"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="dbPort" class="col-sm-2 control-label">数据库端口号:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="dbPort" id="dbPort"
+						placeholder="请输入数据库端口号"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="createTime" class="col-sm-2 control-label">创建日期:</label>
+			<div class="col-sm-10">
+				<input type="datetime" class="form-control" name="createTime" id="createTime"
+						placeholder="yyyy-MM-dd HH:mm"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="updateTime" class="col-sm-2 control-label">更新时间:</label>
+			<div class="col-sm-10">
+				<input type="datetime" class="form-control" name="updateTime" id="updateTime"
+						placeholder="yyyy-MM-dd HH:mm"/>
+			</div>
+		</div>
+		<div style="text-align: right;">
+			<button type="submit" class="btn btn-default">提交</button>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

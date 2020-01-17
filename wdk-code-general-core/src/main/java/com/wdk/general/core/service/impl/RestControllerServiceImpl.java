@@ -9,7 +9,7 @@ import com.wdk.general.core.service.VerifyService;
 import com.wdk.general.core.utils.StringConversionUtil;
 import com.wdk.general.core.utils.DateUtils;
 import com.wdk.general.core.utils.FileUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,11 +123,11 @@ public class RestControllerServiceImpl implements RestControllerService {
         controller.append("import ").append(packages).append(".service.").append(param.getModelName()).append("Service;\n")
                 .append("import com.alibaba.druid.util.StringUtils;\n")
                 .append("import javax.servlet.http.HttpServletRequest;\n")
-                .append("import ").append(packages).append(".common.enums.ResponseStatusEnum;\n")
-                .append("import ").append(packages).append(".common.model.ResponseVo;\n")
+                .append("import ").append(packages).append(".config.enums.ResponseStatusEnum;\n")
+                .append("import ").append(packages).append(".config.model.ResponseVo;\n")
                 .append("import com.alibaba.fastjson.JSON;\n")
                 .append("import com.github.pagehelper.PageInfo;\n")
-                .append("import ").append(packages).append(".common.model.PageParam;\n")
+                .append("import ").append(packages).append(".config.model.PageParam;\n")
                 .append("import ").append(packages).append(".storage.entity.").append(param.getModelName()).append(";\n")
                 .append("import ").append(packages).append(".web.args.").append(param.getModelName()).append("Args;\n")
                 .append("import ").append(packages).append(".web.vo.").append(param.getModelName()).append("Vo;\n")

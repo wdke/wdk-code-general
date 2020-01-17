@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>项目生成信息信息新增</title>
+	<link rel="stylesheet" th:href="@{/static/bootstrap/3.3.7/css/bootstrap.min.css}">
+	<script th:src="@{/static/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+	<script th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+</head>
+<body>
+
+<div class="container">
+	<form class="form-horizontal" action="#" role="form" th:action="@{/pages/project/metadata/insert}" method="post">
+		<div class="form-group">
+			<label for="id" class="col-sm-2 control-label">id:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="id" id="id"
+						placeholder="请输入id"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="userId" class="col-sm-2 control-label">用户ID:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="userId" id="userId"
+						placeholder="请输入用户ID"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="projectGroup" class="col-sm-2 control-label">项目gr...:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="projectGroup" id="projectGroup"
+						placeholder="请输入项目gr..."/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="artifact" class="col-sm-2 control-label">artifact:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="artifact" id="artifact"
+						placeholder="请输入artifact"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="projectType" class="col-sm-2 control-label">项目类型:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="projectType" id="projectType"
+						placeholder="请输入项目类型"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="projectLanguage" class="col-sm-2 control-label">项目语言:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="projectLanguage" id="projectLanguage"
+						placeholder="请输入项目语言"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="packaging" class="col-sm-2 control-label">打包类型:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="packaging" id="packaging"
+						placeholder="请输入打包类型"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="javaVersion" class="col-sm-2 control-label">JDK版本:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="javaVersion" id="javaVersion"
+						placeholder="请输入JDK版本"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="version" class="col-sm-2 control-label">项目版本:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="version" id="version"
+						placeholder="请输入项目版本"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="projectName" class="col-sm-2 control-label">项目名称:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="projectName" id="projectName"
+						placeholder="请输入项目名称"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="description" class="col-sm-2 control-label">项目描述:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="description" id="description"
+						placeholder="请输入项目描述"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="packages" class="col-sm-2 control-label">项目包路径:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="packages" id="packages"
+						placeholder="请输入项目包路径"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="point" class="col-sm-2 control-label">项目端口号:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="point" id="point"
+						placeholder="请输入项目端口号"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="createTime" class="col-sm-2 control-label">创建日期:</label>
+			<div class="col-sm-10">
+				<input type="datetime" class="form-control" name="createTime" id="createTime"
+						placeholder="yyyy-MM-dd HH:mm"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="updateTime" class="col-sm-2 control-label">更新时间:</label>
+			<div class="col-sm-10">
+				<input type="datetime" class="form-control" name="updateTime" id="updateTime"
+						placeholder="yyyy-MM-dd HH:mm"/>
+			</div>
+		</div>
+		<div style="text-align: right;">
+			<button type="submit" class="btn btn-default">提交</button>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

@@ -6,7 +6,7 @@ import com.wdk.general.core.model.SchemaColumns;
 import com.wdk.general.core.model.Tables;
 import com.wdk.general.core.service.HtmlService;
 import com.wdk.general.core.utils.FileUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

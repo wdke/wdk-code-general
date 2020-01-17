@@ -1,7 +1,7 @@
 package com.wdk.general.core.service.impl;
 
+import com.wdk.general.core.common.model.LoginParam;
 import com.wdk.general.core.service.LoginService;
-import com.wdk.general.core.web.param.LoginParam;
 import org.springframework.stereotype.Service;
 
 /**

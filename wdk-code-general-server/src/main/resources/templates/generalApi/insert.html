@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>API信息维护表新增</title>
+	<link rel="stylesheet" th:href="@{/static/bootstrap/3.3.7/css/bootstrap.min.css}">
+	<script th:src="@{/static/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+	<script th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+</head>
+<body>
+
+<div class="container">
+	<form class="form-horizontal" action="#" role="form" th:action="@{/pages/general/api/insert}" method="post">
+		<div class="form-group">
+			<label for="id" class="col-sm-2 control-label">ID 唯一值:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="id" id="id"
+						placeholder="请输入ID 唯一值"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="path" class="col-sm-2 control-label">系统路径:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="path" id="path"
+						placeholder="请输入系统路径"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="args" class="col-sm-2 control-label">参数:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="args" id="args"
+						placeholder="请输入参数"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="vo" class="col-sm-2 control-label">查询结果集:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="vo" id="vo"
+						placeholder="请输入查询结果集"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="froms" class="col-sm-2 control-label">数据库表:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="froms" id="froms"
+						placeholder="请输入数据库表"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="wheres" class="col-sm-2 control-label">查询条件:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="wheres" id="wheres"
+						placeholder="请输入查询条件"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="orderbys" class="col-sm-2 control-label">排序:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="orderbys" id="orderbys"
+						placeholder="请输入排序"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="limits" class="col-sm-2 control-label">分页数据:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="limits" id="limits"
+						placeholder="请输入分页数据"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="createTime" class="col-sm-2 control-label">创建时间:</label>
+			<div class="col-sm-10">
+				<input type="datetime" class="form-control" name="createTime" id="createTime"
+						placeholder="yyyy-MM-dd HH:mm"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="updateTime" class="col-sm-2 control-label">更新时间:</label>
+			<div class="col-sm-10">
+				<input type="datetime" class="form-control" name="updateTime" id="updateTime"
+						placeholder="yyyy-MM-dd HH:mm"/>
+			</div>
+		</div>
+		<div style="text-align: right;">
+			<button type="submit" class="btn btn-default">提交</button>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

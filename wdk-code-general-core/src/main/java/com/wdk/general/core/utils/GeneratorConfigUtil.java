@@ -1,7 +1,11 @@
 package com.wdk.general.core.utils;
 
-import com.wdk.general.core.model.*;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
+import com.wdk.general.core.model.DbMessage;
+import com.wdk.general.core.model.ProjectMetadata;
+import com.wdk.general.core.model.SchemaColumns;
+import com.wdk.general.core.model.Tables;
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -9,7 +13,6 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thymeleaf.util.StringUtils;
 
 import java.io.FileOutputStream;
 import java.util.List;

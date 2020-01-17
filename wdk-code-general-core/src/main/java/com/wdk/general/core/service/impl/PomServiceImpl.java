@@ -4,7 +4,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.wdk.general.core.model.ProjectMetadata;
 import com.wdk.general.core.service.PomService;
 import com.wdk.general.core.utils.FileUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;

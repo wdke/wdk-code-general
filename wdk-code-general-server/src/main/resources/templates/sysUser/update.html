@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>用户管理更新</title>
+	<link rel="stylesheet" th:href="@{/static/bootstrap/3.3.7/css/bootstrap.min.css}">
+	<script th:src="@{/static/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+	<script th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+</head>
+<body>
+
+<div class="container">
+	<form class="form-horizontal" action="#" role="form" th:action="@{/pages/sys/user/update}" method="post">
+		<div class="form-group">
+			<label for="id" class="col-sm-2 control-label">id:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="id" id="id"
+						placeholder="请输入id" th:value="${data.id}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="username" class="col-sm-2 control-label">用户名:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="username" id="username"
+						placeholder="请输入用户名" th:value="${data.username}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="password" class="col-sm-2 control-label">用户密码:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="password" id="password"
+						placeholder="请输入用户密码" th:value="${data.password}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="passwordKey" class="col-sm-2 control-label">加密密钥:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="passwordKey" id="passwordKey"
+						placeholder="请输入加密密钥" th:value="${data.passwordKey}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="phone" class="col-sm-2 control-label">电话:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="phone" id="phone"
+						placeholder="请输入电话" th:value="${data.phone}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="email" class="col-sm-2 control-label">邮箱:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="email" id="email"
+						placeholder="请输入邮箱" th:value="${data.email}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="address" class="col-sm-2 control-label">地址:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="address" id="address"
+						placeholder="请输入地址" th:value="${data.address}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sex" class="col-sm-2 control-label">性别:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="sex" id="sex"
+						placeholder="请输入性别" th:value="${data.sex}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="birthday" class="col-sm-2 control-label">出生年月:</label>
+			<div class="col-sm-10">
+				<input type="datetime" class="form-control" name="birthday" id="birthday"
+						placeholder="yyyy-MM-dd HH:mm" th:value="${#dates.format(data.birthday,'yyyy-MM-dd HH:mm')}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="description" class="col-sm-2 control-label">描述:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="description" id="description"
+						placeholder="请输入描述" th:value="${data.description}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="roleId" class="col-sm-2 control-label">角色ID:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="roleId" id="roleId"
+						placeholder="请输入角色ID" th:value="${data.roleId}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="headImages" class="col-sm-2 control-label">用户头像:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="headImages" id="headImages"
+						placeholder="请输入用户头像" th:value="${data.headImages}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="createTime" class="col-sm-2 control-label">创建日期:</label>
+			<div class="col-sm-10">
+				<input type="datetime" class="form-control" name="createTime" id="createTime"
+						placeholder="yyyy-MM-dd HH:mm" th:value="${#dates.format(data.createTime,'yyyy-MM-dd HH:mm')}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="updateTime" class="col-sm-2 control-label">更新日期:</label>
+			<div class="col-sm-10">
+				<input type="datetime" class="form-control" name="updateTime" id="updateTime"
+						placeholder="yyyy-MM-dd HH:mm" th:value="${#dates.format(data.updateTime,'yyyy-MM-dd HH:mm')}"/>
+			</div>
+		</div>
+		<div style="text-align: right;">
+			<button type="submit" class="btn btn-default">提交</button>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

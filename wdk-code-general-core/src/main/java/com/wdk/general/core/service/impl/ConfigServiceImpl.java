@@ -4,7 +4,7 @@ import com.wdk.general.core.model.DbMessage;
 import com.wdk.general.core.model.ProjectMetadata;
 import com.wdk.general.core.service.ConfigService;
 import com.wdk.general.core.utils.FileUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -326,12 +326,12 @@ public class ConfigServiceImpl implements ConfigService {
                 .append("    </logger>\n")
                 .append("    \n")
                 .append("    <!--监控数据出参入参-->\n")
-                .append("    <logger name=\"").append(projectMetadata.getPackages()).append(".common.logger.AccessLog\" level=\"INFO\" additivity=\"false\">\n")
+                .append("    <logger name=\"").append(projectMetadata.getPackages()).append(".config.logger.AccessLog\" level=\"INFO\" additivity=\"false\">\n")
                 .append("        <appender-ref ref=\"AccessLog\"/>\n")
                 .append("    </logger>\n")
                 .append("    \n")
                 .append("    <!--处理耗时-->\n")
-                .append("    <logger name=\"").append(projectMetadata.getPackages()).append(".common.logger.TalStopWatch\" level=\"INFO\" additivity=\"false\">\n")
+                .append("    <logger name=\"").append(projectMetadata.getPackages()).append(".config.logger.TalStopWatch\" level=\"INFO\" additivity=\"false\">\n")
                 .append("        <appender-ref ref=\"PerfLog\"/>\n")
                 .append("    </logger>\n\n")
                 .append("\n")

@@ -1,0 +1,64 @@
+
+eureka:
+  client:
+    serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址
+      defaultZone: http://49.233.195.134:8802/eureka/
+
+spring:  
+  thymeleaf:  
+    enabled: true  
+    prefix: classpath:templates/  
+    suffix: .html  
+    cache: false  
+    mode: HTML  
+    encoding: UTF-8  
+  mvc:  
+    static-path-pattern: /static/**  
+  resources:  
+    static-locations: classpath:/static/
+
+  #数据库连接配置开始
+  datasource:
+    url: jdbc:mysql://49.233.195.134:3306/auto_code?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root1234
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    connectionProperties: druid.stat.mergeSql=true
+#数据库连接配置结束
+
+
+
+  #redis 数据库的配置
+  redis:
+    database: 0
+    host: 49.233.195.134
+    port: 6379
+    timeout: 5000
+    password: wdke@1216.com
+
+
+#mybatis配置开始
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.wdk.code.general.server.model
+  mapper-locations: classpath:mapper/*.xml
+#mybatis配置结束
+
+
+#分页拦截器配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+#分页拦截器配置结束
+
+
+host: localhost:8806
+
+filePath: /Users/wdke/person/java-code/auto-code/
+staticFile: /Users/wdke/person/java-code/github/wdk-code-general/wdk-code-general-core/src/main/resources/static
+
+

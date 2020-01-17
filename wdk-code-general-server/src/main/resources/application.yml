@@ -1,0 +1,19 @@
+server:
+  port: 8880
+
+  servlet:
+    context-path: /wdk-code-general-server
+
+
+spring:
+#  main:
+#    #当遇到同样名字的时候，是否允许覆盖注册
+#    allow-bean-definition-overriding: true
+  application:
+    name: wdk-code-general-server #指定服务名
+  profiles:
+    active: dev
+
+logging:
+  config: classpath:logback.xml
+

@@ -9,7 +9,7 @@ import com.wdk.general.core.service.ServiceService;
 import com.wdk.general.core.utils.StringConversionUtil;
 import com.wdk.general.core.utils.DateUtils;
 import com.wdk.general.core.utils.FileUtil;
-import com.wdk.general.core.web.Interceptor.UserContext;
+import com.wdk.general.core.common.model.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -303,7 +303,7 @@ public class ServiceServiceImpl implements ServiceService {
                 .append("import ").append(packages).append(".web.args.").append(param.getModelName()).append("Args;\n")
                 .append("\n")
                 .append("import com.github.pagehelper.PageInfo;\n")
-                .append("import ").append(packages).append(".common.model.PageParam;\n")
+                .append("import ").append(packages).append(".config.model.PageParam;\n")
                 .append("import java.util.List;\n")
                 .append("import java.util.Map;\n\n");
     }
@@ -321,7 +321,7 @@ public class ServiceServiceImpl implements ServiceService {
         service.append("\n")
                 .append("import com.github.pagehelper.PageHelper;\n")
                 .append("import com.github.pagehelper.PageInfo;\n")
-                .append("import ").append(packages).append(".common.model.PageParam;\n")
+                .append("import ").append(packages).append(".config.model.PageParam;\n")
                 .append("import ").append(packages).append(".storage.entity.").append(param.getModelName()).append(";\n")
                 .append("import ").append(packages).append(".web.args.").append(param.getModelName()).append("Args;\n")
                 .append("import ").append(packages).append(".web.vo.").append(param.getModelName()).append("Vo;\n")

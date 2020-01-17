@@ -2,8 +2,8 @@ package com.wdk.general.core.utils;
 
 
 import com.wdk.general.core.common.constant.WechatConstant;
-import com.wdk.general.core.web.vo.ArticleItemVo;
-import com.wdk.general.core.web.vo.SignatureVo;
+import com.wdk.general.core.common.model.ArticleItemVo;
+import com.wdk.general.core.common.model.SignatureVo;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -30,7 +30,7 @@ public class WeChatUtil {
      * @return
      */
     public static boolean checkSignature(String signature, String timestamp, String nonce) {
-        String[] arr = new String[] { WechatConstant.TOKEN, timestamp, nonce };
+        String[] arr = new String[]{WechatConstant.TOKEN, timestamp, nonce};
         // 将token、timestamp、nonce三个参数进行字典序排序
         // Arrays.sort(arr);
         sort(arr);
@@ -57,6 +57,7 @@ public class WeChatUtil {
 
     /**
      * sha1加密
+     *
      * @param jsapi_ticket
      * @param timestamp
      * @param url
@@ -81,7 +82,7 @@ public class WeChatUtil {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        SignatureVo vo=new SignatureVo();
+        SignatureVo vo = new SignatureVo();
         vo.setAppId(WechatConstant.APP_ID);
         vo.setTimestamp(timestamp);
         vo.setSignature(tmpStr.toLowerCase());
@@ -115,7 +116,7 @@ public class WeChatUtil {
      * @return
      */
     private static String byteToHexStr(byte mByte) {
-        char[] Digit = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+        char[] Digit = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         char[] tempArr = new char[2];
         tempArr[0] = Digit[(mByte >>> 4) & 0X0F];
         tempArr[1] = Digit[mByte & 0X0F];
@@ -124,10 +125,10 @@ public class WeChatUtil {
         return s;
     }
 
-    public static void main(String[]args) throws InterruptedException {
-        String wdk="wdksdasdas";
+    public static void main(String[] args) throws InterruptedException {
+        String wdk = "wdksdasdas";
         System.out.println(wdk);
-        System.out.println("byteToStr="+byteToStr(wdk.getBytes()));
+        System.out.println("byteToStr=" + byteToStr(wdk.getBytes()));
 
 
         MessageDigest md = null;
@@ -135,8 +136,8 @@ public class WeChatUtil {
             md = MessageDigest.getInstance("SHA-1");
             // 将三个参数字符串拼接成一个字符串进行sha1加密
             byte[] digest = md.digest(wdk.getBytes());
-            System.out.println("digest.length="+digest.length);
-            System.out.println("byteToStr.length()="+byteToStr(digest).length());
+            System.out.println("digest.length=" + digest.length);
+            System.out.println("byteToStr.length()=" + byteToStr(digest).length());
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -158,11 +159,12 @@ public class WeChatUtil {
 
     /**
      * 解析微信发来的请求(xml)
+     *
      * @param request
      * @return
      * @throws Exception
      */
-    @SuppressWarnings({ "unchecked"})
+    @SuppressWarnings({"unchecked"})
     public static Map<String, String> parseXml(HttpServletRequest request) throws Exception {
         // 将解析结果存储在HashMap中
         Map<String, String> map = new HashMap<String, String>();
@@ -200,7 +202,7 @@ public class WeChatUtil {
 
     private static void mapToXML2(Map map, StringBuffer sb) {
         Set set = map.keySet();
-        for (Iterator it = set.iterator(); it.hasNext();) {
+        for (Iterator it = set.iterator(); it.hasNext(); ) {
             String key = (String) it.next();
             Object value = map.get(key);
             if (null == value)
@@ -227,46 +229,50 @@ public class WeChatUtil {
 
         }
     }
+
     /**
      * 回复文本消息
+     *
      * @param requestMap
      * @param content
      * @return
      */
-    public static String sendTextMsg(Map<String, String> requestMap, String content){
+    public static String sendTextMsg(Map<String, String> requestMap, String content) {
 
-        Map<String, Object> map=new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("ToUserName", requestMap.get(WechatConstant.FromUserName));
-        map.put("FromUserName",  requestMap.get(WechatConstant.ToUserName));
+        map.put("FromUserName", requestMap.get(WechatConstant.ToUserName));
         map.put("MsgType", WechatConstant.RESP_MESSAGE_TYPE_TEXT);
         map.put("CreateTime", new Date().getTime());
         map.put("Content", content);
-        return  mapToXML(map);
+        return mapToXML(map);
     }
+
     /**
      * 回复图文消息
+     *
      * @param requestMap
      * @param items
      * @return
      */
-    public static String sendArticleMsg(Map<String, String> requestMap, List<ArticleItemVo> items){
-        if(items == null || items.size()<1){
+    public static String sendArticleMsg(Map<String, String> requestMap, List<ArticleItemVo> items) {
+        if (items == null || items.size() < 1) {
             return "";
         }
-        Map<String, Object> map=new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("ToUserName", requestMap.get(WechatConstant.FromUserName));
         map.put("FromUserName", requestMap.get(WechatConstant.ToUserName));
         map.put("MsgType", "news");
         map.put("CreateTime", new Date().getTime());
-        List<Map<String, Object>> Articles=new ArrayList<Map<String, Object>>();
-        for(ArticleItemVo itembean : items){
-            Map<String, Object> item=new HashMap<String, Object>();
-            Map<String, Object> itemContent=new HashMap<String, Object>();
+        List<Map<String, Object>> Articles = new ArrayList<Map<String, Object>>();
+        for (ArticleItemVo itembean : items) {
+            Map<String, Object> item = new HashMap<String, Object>();
+            Map<String, Object> itemContent = new HashMap<String, Object>();
             itemContent.put("Title", itembean.getTitle());
             itemContent.put("Description", itembean.getDescription());
             itemContent.put("PicUrl", itembean.getPicUrl());
             itemContent.put("Url", itembean.getUrl());
-            item.put("item",itemContent);
+            item.put("item", itemContent);
             Articles.add(item);
         }
         map.put("Articles", Articles);
