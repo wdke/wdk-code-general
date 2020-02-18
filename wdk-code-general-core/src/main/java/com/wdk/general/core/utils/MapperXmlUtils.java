@@ -110,7 +110,7 @@ public class MapperXmlUtils {
                         root.addComment(obj.getColumnComment())
                                 .addElement("if")
                                 .addAttribute("test", column + " != null and " + column + " != ''")
-                                .addText(before + "\t" + obj.getColumnName() + "=" + "#{" + column + ",jdbcType=" + dataType.getMybatisType() + "}," + before);
+                                .addText(before + "\t" + obj.getColumnName() + "," + before);
                     } else {
 
                         root.addComment(obj.getColumnComment())
@@ -138,7 +138,7 @@ public class MapperXmlUtils {
                         root.addComment(obj.getColumnComment())
                                 .addElement("if")
                                 .addAttribute("test", column + " != null and " + column + " != ''")
-                                .addText(before + "\t" + obj.getColumnName() + "=" + "#{" + column + ",jdbcType=" + dataType.getMybatisType() + "}," + before);
+                                .addText(before + "\t" + "#{" + column + ",jdbcType=" + dataType.getMybatisType() + "}," + before);
                     } else {
 
                         root.addComment(obj.getColumnComment())
