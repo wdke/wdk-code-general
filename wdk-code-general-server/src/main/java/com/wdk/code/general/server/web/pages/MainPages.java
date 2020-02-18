@@ -1,8 +1,10 @@
 package com.wdk.code.general.server.web.pages;
 
+import com.wdk.code.general.server.service.LoginService;
 import com.wdk.code.general.server.service.SysUserService;
 import com.wdk.code.general.server.web.args.SysUserArgs;
 import com.wdk.general.core.common.model.LoginParam;
+import com.wdk.general.core.common.model.ResponseVo;
 import com.wdk.general.core.utils.PasswordUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class MainPages {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private LoginService loginService;
+
     /**
      * 进入后台管理菜单
      *
@@ -39,27 +44,31 @@ public class MainPages {
      * @return
      */
     @PostMapping(value = "login/check", name = "登陆验证")
-    public String login(LoginParam loginParam, Model model, HttpServletRequest req) {
+    public String login(@Valid LoginParam loginParam, Model model, HttpServletRequest req) {
 
         if (StringUtils.isEmpty(loginParam.getUsername()) || StringUtils.isEmpty(loginParam.getPassword())) {
 
             model.addAttribute("username", loginParam.getUsername());
+            //返回参数
+            model.addAttribute("msg", "用户名和密码不能为空。");
             return "login";
         }
+        //判断登陆
+        ResponseVo<String> result = loginService.login(loginParam.getUsername(), loginParam.getPassword());
 
-//        UserArgs userArgs=new UserArgs();UserArgs
-//        userArgs.setUsername(loginParam.getUsername());
-//        userArgs.setPassord(loginParam.getPassword());
-//        String login = loginApi.login(userArgs);
+        //登陆成功
+        if (result.isSuccess()) {
 
-        req.getSession().setAttribute("username", loginParam.getUsername());
-        model.addAttribute("userId", 1000);
-        model.addAttribute("host", "49.233.195.134");
-        model.addAttribute("dbname", "wdk_test");
-        model.addAttribute("dbuser", "root");
-        model.addAttribute("dbpassword", "root1234");
-        model.addAttribute("dbport", "3306");
-        return "redirect:/main/index";
+            req.getSession().setAttribute("username", loginParam.getUsername());
+
+            return "redirect:/main/index";
+        }
+        //返回参数
+        model.addAttribute("username", loginParam.getUsername());
+        //返回参数
+        model.addAttribute("msg", result.getMsg());
+
+        return "login";
     }
 
 
@@ -69,7 +78,7 @@ public class MainPages {
      * @return
      */
     @PostMapping(value = "register/save", name = "登陆验证")
-    public String registerSave(@Valid SysUserArgs sysUserArgs,Model model,HttpServletRequest request) {
+    public String registerSave(@Valid SysUserArgs sysUserArgs, Model model, HttpServletRequest request) {
 
         //密码加密
         sysUserArgs.setPassword(PasswordUtil.encrypt(sysUserArgs.getPassword(), sysUserArgs.getUsername()));
@@ -78,7 +87,7 @@ public class MainPages {
         int num = sysUserService.insertSelective(sysUserArgs);
         if (num > 0) {
             //如果保存成功，则进行登陆
-            LoginParam loginParam=new LoginParam();
+            LoginParam loginParam = new LoginParam();
             loginParam.setUsername(sysUserArgs.getUsername());
             loginParam.setPassword(sysUserArgs.getPassword());
 //            return login(loginParam,model,request);

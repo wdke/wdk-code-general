@@ -1,66 +1,68 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>用户管理新增</title>
-	<link rel="stylesheet" th:href="@{/static/bootstrap/3.3.7/css/bootstrap.min.css}">
-	<script th:src="@{/static/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
-	<script th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <link rel="stylesheet" th:href="@{/static/bootstrap/3.3.7/css/bootstrap.min.css}">
+    <script th:src="@{/static/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <script th:src="@{/static/jquery/js/jquery-3.4.1.min.js}"></script>
 </head>
 <body>
 
 <div class="container" style="padding-top: 20px;">
 	<form class="form-horizontal" action="#" role="form" th:action="@{/main/register/save}" method="post">
 
-		<div class="form-group">
-			<label for="username" class="col-sm-2 control-label">用户名:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" name="username" id="username"
-						placeholder="请输入用户名"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="password" class="col-sm-2 control-label">用户密码:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" name="password" id="password"
-						placeholder="请输入用户密码"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="passwordKey" class="col-sm-2 control-label">加密密钥:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" name="passwordKey" id="passwordKey"
-						placeholder="请输入加密密钥"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="phone" class="col-sm-2 control-label">电话:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" name="phone" id="phone"
-						placeholder="请输入电话"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="email" class="col-sm-2 control-label">邮箱:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" name="email" id="email"
-						placeholder="请输入邮箱"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="sex" class="col-sm-2 control-label">性别:</label>
-			<div class="col-sm-10">
-				<select class="form-control" name="sex" id="sex">
-					<option value="男">男</option>
-					<option value="女">女</option>
-				</select>
-			</div>
-		</div>
-		<div style="text-align: right;">
-			<button type="submit" class="btn btn-default">提交</button>
-		</div>
-	</form>
+        <div class="form-group">
+            <label for="username" class="col-sm-2 control-label"><span style="color: red;">*&nbsp;</span>用户名:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="username" id="username"
+                       placeholder="请输入用户名"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">用户密码:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="password" id="password"
+                       placeholder="请输入用户密码"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="repassword" class="col-sm-2 control-label">密码验证:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="repassword"
+                       id="repassword"
+                       placeholder="请输入密码验证"/>
+                <span style="color: red;" id="passwordMsg"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phone" class="col-sm-2 control-label">电话:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="phone" id="phone"
+                       placeholder="请输入电话"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email" class="col-sm-2 control-label">邮箱:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="email" id="email"
+                       placeholder="请输入邮箱"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sex" class="col-sm-2 control-label">性别:</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="sex" id="sex">
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                </select>
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <button type="submit" class="btn btn-default">提交</button>
+        </div>
+    </form>
 </div>
 
 </body>
