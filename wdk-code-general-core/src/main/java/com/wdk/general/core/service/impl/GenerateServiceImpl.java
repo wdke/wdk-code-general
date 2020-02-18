@@ -6,6 +6,7 @@ import com.wdk.general.core.dao.SchemaColumnsDao;
 import com.wdk.general.core.dao.SchemaTablesDao;
 import com.wdk.general.core.model.*;
 import com.wdk.general.core.service.*;
+import com.wdk.general.core.utils.CommonFileUtils;
 import com.wdk.general.core.utils.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,11 +126,11 @@ public class GenerateServiceImpl implements GenerateService {
         logger.info("项目生成路径:{}", JSON.toJSONString(rootPath));
 
         //生成通用的文件
-//        CommonFileUtils.all(rootPath, projectMetadata.getPackages());
+        CommonFileUtils.all(rootPath, projectMetadata.getPackages());
         logger.info("生成通用的文件结束！");
 
         //copy静态文件
-//        FileUtil.fileCopyByCmd(staticFile, UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/resources");
+        FileUtil.fileCopyByCmd(staticFile, UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/resources");
         logger.info("copy静态文件结束！");
 
         //根据表名分组
@@ -169,17 +170,17 @@ public class GenerateServiceImpl implements GenerateService {
                 mapperXmlService.mapperXml(baseParam, projectMetadata.getPackages());
             }
 
-//            //生成service
-//            serviceService.init(baseParam, projectMetadata.getPackages());
-//
-//            //生成 PageController
-//            mvcControllerService.createFile(baseParam, projectMetadata.getPackages());
-//
-//            //生成 APIController
-//            restControllerService.init(baseParam, projectMetadata.getPackages());
-//
-//            //生成相关的HTML文件
-//            htmlService.all(baseParam);
+            //生成service
+            serviceService.init(baseParam, projectMetadata.getPackages());
+
+            //生成 PageController
+            mvcControllerService.createFile(baseParam, projectMetadata.getPackages());
+
+            //生成 APIController
+            restControllerService.init(baseParam, projectMetadata.getPackages());
+
+            //生成相关的HTML文件
+            htmlService.all(baseParam);
 
             logger.info("生成tableName={}相关文件结束。", entry.getKey());
 
