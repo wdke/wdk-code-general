@@ -427,14 +427,21 @@ public class MapperXmlServiceImpl implements MapperXmlService {
                     .addAttribute("resultType", dataType.getJavaPackages())
                     .addText("SELECT LAST_INSERT_ID()");
         }
-        inserts.addText("\n\t\tinsert into " + (param.getDbTables() ? param.getTableSchema() + "." : "") + param.getTableName() + " (");
-        MapperXmlUtils.columsElement(param, inserts, "\n\t\t", "colimnsIf");
-        inserts.addText("\n\t\t)\n");
-        inserts.addText("\t\tvalues (");
+        inserts.addText("\n\t\tinsert into " + (param.getDbTables() ? param.getTableSchema() + "." : "") + param.getTableName() + " ");
+        Element trim = inserts.addElement("trim")
+                .addAttribute("prefix", "(")
+                .addAttribute("suffixOverrides", ",");
+
+//                <trim prefix="(" suffix=")" suffixOverrides=",">
+        MapperXmlUtils.columsElement(param, trim, "\n\t\t", "colimnsIf");
+
+        trim = inserts.addElement("trim")
+                .addAttribute("prefix", "values (")
+                .addAttribute("suffix",")")
+                .addAttribute("suffixOverrides", ",");
 
         MapperXmlUtils.columsElement(param, inserts, "\n\t\t", "valuesIf");
 
-        inserts.addText("\n\t\t)\n\t");
         root.addComment("新增表不为空数据结束");
         return inserts.asXML();
     }
