@@ -1,5 +1,4 @@
-package com.wdk.general.core.service;
-
+package com.wdk.code.general.server.service;
 
 import com.wdk.general.core.common.model.LoginParam;
 
