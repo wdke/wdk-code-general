@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 /**
 项目生成信息信息
  * @author wdke
- * @date 2020/01/15
+ * @date 2020/02/18
  */
 @Repository
 public interface ProjectMetadataMapper{

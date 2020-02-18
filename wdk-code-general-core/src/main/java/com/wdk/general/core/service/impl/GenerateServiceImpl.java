@@ -1,17 +1,12 @@
 package com.wdk.general.core.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.wdk.general.core.common.constant.FilePathConstant;
+import com.wdk.general.core.common.model.UserContext;
 import com.wdk.general.core.dao.SchemaColumnsDao;
 import com.wdk.general.core.dao.SchemaTablesDao;
 import com.wdk.general.core.model.*;
 import com.wdk.general.core.service.*;
-import com.wdk.general.core.utils.StringConversionUtil;
-import com.wdk.general.core.utils.CommonFileUtils;
 import com.wdk.general.core.utils.FileUtil;
-import com.wdk.general.core.utils.GeneratorConfigUtil;
-import com.wdk.general.core.common.model.UserContext;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,11 +125,11 @@ public class GenerateServiceImpl implements GenerateService {
         logger.info("项目生成路径:{}", JSON.toJSONString(rootPath));
 
         //生成通用的文件
-        CommonFileUtils.all(rootPath, projectMetadata.getPackages());
+//        CommonFileUtils.all(rootPath, projectMetadata.getPackages());
         logger.info("生成通用的文件结束！");
 
         //copy静态文件
-        FileUtil.fileCopyByCmd(staticFile, UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/resources");
+//        FileUtil.fileCopyByCmd(staticFile, UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/resources");
         logger.info("copy静态文件结束！");
 
         //根据表名分组
@@ -164,7 +159,7 @@ public class GenerateServiceImpl implements GenerateService {
             baseParam.setMybatisCore(false);
 
             //生成实体
-            modelService.init(baseParam, projectMetadata.getPackages());
+//            modelService.init(baseParam, projectMetadata.getPackages());
 
             if (!baseParam.isMybatisCore()) {
                 //生成dao
@@ -174,17 +169,17 @@ public class GenerateServiceImpl implements GenerateService {
                 mapperXmlService.mapperXml(baseParam, projectMetadata.getPackages());
             }
 
-            //生成service
-            serviceService.init(baseParam, projectMetadata.getPackages());
-
-            //生成 PageController
-            mvcControllerService.createFile(baseParam, projectMetadata.getPackages());
-
-            //生成 APIController
-            restControllerService.init(baseParam, projectMetadata.getPackages());
-
-            //生成相关的HTML文件
-            htmlService.all(baseParam);
+//            //生成service
+//            serviceService.init(baseParam, projectMetadata.getPackages());
+//
+//            //生成 PageController
+//            mvcControllerService.createFile(baseParam, projectMetadata.getPackages());
+//
+//            //生成 APIController
+//            restControllerService.init(baseParam, projectMetadata.getPackages());
+//
+//            //生成相关的HTML文件
+//            htmlService.all(baseParam);
 
             logger.info("生成tableName={}相关文件结束。", entry.getKey());
 

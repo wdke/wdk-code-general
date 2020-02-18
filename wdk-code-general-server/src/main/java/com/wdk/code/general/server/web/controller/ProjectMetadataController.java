@@ -38,7 +38,7 @@ public class ProjectMetadataController {
     @GetMapping("index")
     public String index(Model model) {
 
-        ProjectMetadata projectMetadata = JSON.parseObject( redisStringDao.get(UserContext.current().getUsername()),ProjectMetadata.class);
+        ProjectMetadata projectMetadata = JSON.parseObject( redisStringDao.get("pm_" + UserContext.current().getUsername()),ProjectMetadata.class);
 
         if (projectMetadata == null) {
             projectMetadata = new ProjectMetadata();

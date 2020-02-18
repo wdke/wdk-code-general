@@ -160,7 +160,7 @@
 	<!--根据条件查询列表结束-->
 	<!--新增表数据开始-->
 	<insert id="insert" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
 		insert into general_api (
 			path,args,vo,
 			froms,wheres,orderbys,
@@ -177,89 +177,89 @@
 	<!--新增表数据结束-->
 	<!--新增表不为空数据开始-->
 	<insert id="insertSelective" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
-		insert into general_api (
-		<!--系统路径-->
-		<if test="path != null and path != ''">
-			path=#{path,jdbcType=VARCHAR},
-		</if>
-		<!--参数-->
-		<if test="args != null and args != ''">
-			args=#{args,jdbcType=VARCHAR},
-		</if>
-		<!--查询结果集-->
-		<if test="vo != null and vo != ''">
-			vo=#{vo,jdbcType=VARCHAR},
-		</if>
-		<!--数据库表-->
-		<if test="froms != null and froms != ''">
-			froms=#{froms,jdbcType=VARCHAR},
-		</if>
-		<!--查询条件-->
-		<if test="wheres != null and wheres != ''">
-			wheres=#{wheres,jdbcType=VARCHAR},
-		</if>
-		<!--排序-->
-		<if test="orderbys != null and orderbys != ''">
-			orderbys=#{orderbys,jdbcType=VARCHAR},
-		</if>
-		<!--分页数据-->
-		<if test="limits != null and limits != ''">
-			limits=#{limits,jdbcType=VARCHAR},
-		</if>
-		<!--创建时间-->
-		<if test="createTime != null">
-			create_time,
-		</if>
-		<!--更新时间-->
-		<if test="updateTime != null">
-			update_time,
-		</if>
-		)
-		values (
-		<!--系统路径-->
-		<if test="path != null and path != ''">
-			path=#{path,jdbcType=VARCHAR},
-		</if>
-		<!--参数-->
-		<if test="args != null and args != ''">
-			args=#{args,jdbcType=VARCHAR},
-		</if>
-		<!--查询结果集-->
-		<if test="vo != null and vo != ''">
-			vo=#{vo,jdbcType=VARCHAR},
-		</if>
-		<!--数据库表-->
-		<if test="froms != null and froms != ''">
-			froms=#{froms,jdbcType=VARCHAR},
-		</if>
-		<!--查询条件-->
-		<if test="wheres != null and wheres != ''">
-			wheres=#{wheres,jdbcType=VARCHAR},
-		</if>
-		<!--排序-->
-		<if test="orderbys != null and orderbys != ''">
-			orderbys=#{orderbys,jdbcType=VARCHAR},
-		</if>
-		<!--分页数据-->
-		<if test="limits != null and limits != ''">
-			limits=#{limits,jdbcType=VARCHAR},
-		</if>
-		<!--创建时间-->
-		<if test="createTime != null">
-			#{createTime,jdbcType=TIMESTAMP},
-		</if>
-		<!--更新时间-->
-		<if test="updateTime != null">
-			#{updateTime,jdbcType=TIMESTAMP},
-		</if>
-		)
-	
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
+		insert into general_api  
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<!--系统路径-->
+			<if test="path != null and path != ''">
+				path,
+			</if>
+			<!--参数-->
+			<if test="args != null and args != ''">
+				args,
+			</if>
+			<!--查询结果集-->
+			<if test="vo != null and vo != ''">
+				vo,
+			</if>
+			<!--数据库表-->
+			<if test="froms != null and froms != ''">
+				froms,
+			</if>
+			<!--查询条件-->
+			<if test="wheres != null and wheres != ''">
+				wheres,
+			</if>
+			<!--排序-->
+			<if test="orderbys != null and orderbys != ''">
+				orderbys,
+			</if>
+			<!--分页数据-->
+			<if test="limits != null and limits != ''">
+				limits,
+			</if>
+			<!--创建时间-->
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<!--更新时间-->
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<!--系统路径-->
+			<if test="path != null and path != ''">
+				#{path,jdbcType=VARCHAR},
+			</if>
+			<!--参数-->
+			<if test="args != null and args != ''">
+				#{args,jdbcType=VARCHAR},
+			</if>
+			<!--查询结果集-->
+			<if test="vo != null and vo != ''">
+				#{vo,jdbcType=VARCHAR},
+			</if>
+			<!--数据库表-->
+			<if test="froms != null and froms != ''">
+				#{froms,jdbcType=VARCHAR},
+			</if>
+			<!--查询条件-->
+			<if test="wheres != null and wheres != ''">
+				#{wheres,jdbcType=VARCHAR},
+			</if>
+			<!--排序-->
+			<if test="orderbys != null and orderbys != ''">
+				#{orderbys,jdbcType=VARCHAR},
+			</if>
+			<!--分页数据-->
+			<if test="limits != null and limits != ''">
+				#{limits,jdbcType=VARCHAR},
+			</if>
+			<!--创建时间-->
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<!--更新时间-->
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
 	</insert>
 	<!--新增表不为空数据结束-->
 	<!--批量新增表数据开始-->
 	<insert id="batchInsert" parameterType="java.util.List">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
 		<if test="list != null and list.size != 0">
 			insert into general_api (
 				path,args,vo,
@@ -351,7 +351,7 @@
 	<!--根据主键存在就更新，不存在就新增开始-->
 	<!--API信息维护表批量新增，存在就更新，不存在就插入-->
 	<insert id="batchInsertUpdate" parameterType="java.util.List">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
 		<if test="list !=null and list.size != 0">
 			insert into  general_api(
 				path,args,vo,

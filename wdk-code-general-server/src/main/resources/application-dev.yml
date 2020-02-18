@@ -35,7 +35,7 @@ spring:
     host: 49.233.195.134
     port: 6379
     timeout: 5000
-    password: wdke@1216.com
+#    password: wdke@1216.com
 
 
 #mybatis配置开始

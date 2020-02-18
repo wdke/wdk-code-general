@@ -197,7 +197,7 @@
 	<!--根据条件查询列表结束-->
 	<!--新增表数据开始-->
 	<insert id="insert" parameterType="com.wdk.code.general.server.storage.entity.SysUser">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
 		insert into sys_user (
 			username,password,password_key,
 			phone,email,address,
@@ -218,121 +218,121 @@
 	<!--新增表数据结束-->
 	<!--新增表不为空数据开始-->
 	<insert id="insertSelective" parameterType="com.wdk.code.general.server.storage.entity.SysUser">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
-		insert into sys_user (
-		<!--用户名-->
-		<if test="username != null and username != ''">
-			username=#{username,jdbcType=VARCHAR},
-		</if>
-		<!--用户密码-->
-		<if test="password != null and password != ''">
-			password=#{password,jdbcType=VARCHAR},
-		</if>
-		<!--加密密钥-->
-		<if test="passwordKey != null and passwordKey != ''">
-			password_key=#{passwordKey,jdbcType=VARCHAR},
-		</if>
-		<!--电话-->
-		<if test="phone != null">
-			phone,
-		</if>
-		<!--邮箱-->
-		<if test="email != null and email != ''">
-			email=#{email,jdbcType=VARCHAR},
-		</if>
-		<!--地址-->
-		<if test="address != null and address != ''">
-			address=#{address,jdbcType=VARCHAR},
-		</if>
-		<!--性别-->
-		<if test="sex != null and sex != ''">
-			sex=#{sex,jdbcType=VARCHAR},
-		</if>
-		<!--出生年月-->
-		<if test="birthday != null">
-			birthday,
-		</if>
-		<!--描述-->
-		<if test="description != null and description != ''">
-			description=#{description,jdbcType=VARCHAR},
-		</if>
-		<!--角色ID-->
-		<if test="roleId != null">
-			role_id,
-		</if>
-		<!--用户头像-->
-		<if test="headImages != null and headImages != ''">
-			head_images=#{headImages,jdbcType=VARCHAR},
-		</if>
-		<!--创建日期-->
-		<if test="createTime != null">
-			create_time,
-		</if>
-		<!--更新日期-->
-		<if test="updateTime != null">
-			update_time,
-		</if>
-		)
-		values (
-		<!--用户名-->
-		<if test="username != null and username != ''">
-			username=#{username,jdbcType=VARCHAR},
-		</if>
-		<!--用户密码-->
-		<if test="password != null and password != ''">
-			password=#{password,jdbcType=VARCHAR},
-		</if>
-		<!--加密密钥-->
-		<if test="passwordKey != null and passwordKey != ''">
-			password_key=#{passwordKey,jdbcType=VARCHAR},
-		</if>
-		<!--电话-->
-		<if test="phone != null">
-			#{phone,jdbcType=BIGINT},
-		</if>
-		<!--邮箱-->
-		<if test="email != null and email != ''">
-			email=#{email,jdbcType=VARCHAR},
-		</if>
-		<!--地址-->
-		<if test="address != null and address != ''">
-			address=#{address,jdbcType=VARCHAR},
-		</if>
-		<!--性别-->
-		<if test="sex != null and sex != ''">
-			sex=#{sex,jdbcType=VARCHAR},
-		</if>
-		<!--出生年月-->
-		<if test="birthday != null">
-			#{birthday,jdbcType=TIMESTAMP},
-		</if>
-		<!--描述-->
-		<if test="description != null and description != ''">
-			description=#{description,jdbcType=VARCHAR},
-		</if>
-		<!--角色ID-->
-		<if test="roleId != null">
-			#{roleId,jdbcType=BIGINT},
-		</if>
-		<!--用户头像-->
-		<if test="headImages != null and headImages != ''">
-			head_images=#{headImages,jdbcType=VARCHAR},
-		</if>
-		<!--创建日期-->
-		<if test="createTime != null">
-			#{createTime,jdbcType=TIMESTAMP},
-		</if>
-		<!--更新日期-->
-		<if test="updateTime != null">
-			#{updateTime,jdbcType=TIMESTAMP},
-		</if>
-		)
-	
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
+		insert into sys_user  
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<!--用户名-->
+			<if test="username != null and username != ''">
+				username,
+			</if>
+			<!--用户密码-->
+			<if test="password != null and password != ''">
+				password,
+			</if>
+			<!--加密密钥-->
+			<if test="passwordKey != null and passwordKey != ''">
+				password_key,
+			</if>
+			<!--电话-->
+			<if test="phone != null">
+				phone,
+			</if>
+			<!--邮箱-->
+			<if test="email != null and email != ''">
+				email,
+			</if>
+			<!--地址-->
+			<if test="address != null and address != ''">
+				address,
+			</if>
+			<!--性别-->
+			<if test="sex != null and sex != ''">
+				sex,
+			</if>
+			<!--出生年月-->
+			<if test="birthday != null">
+				birthday,
+			</if>
+			<!--描述-->
+			<if test="description != null and description != ''">
+				description,
+			</if>
+			<!--角色ID-->
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<!--用户头像-->
+			<if test="headImages != null and headImages != ''">
+				head_images,
+			</if>
+			<!--创建日期-->
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<!--更新日期-->
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<!--用户名-->
+			<if test="username != null and username != ''">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<!--用户密码-->
+			<if test="password != null and password != ''">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<!--加密密钥-->
+			<if test="passwordKey != null and passwordKey != ''">
+				#{passwordKey,jdbcType=VARCHAR},
+			</if>
+			<!--电话-->
+			<if test="phone != null">
+				#{phone,jdbcType=BIGINT},
+			</if>
+			<!--邮箱-->
+			<if test="email != null and email != ''">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<!--地址-->
+			<if test="address != null and address != ''">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<!--性别-->
+			<if test="sex != null and sex != ''">
+				#{sex,jdbcType=VARCHAR},
+			</if>
+			<!--出生年月-->
+			<if test="birthday != null">
+				#{birthday,jdbcType=TIMESTAMP},
+			</if>
+			<!--描述-->
+			<if test="description != null and description != ''">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<!--角色ID-->
+			<if test="roleId != null">
+				#{roleId,jdbcType=BIGINT},
+			</if>
+			<!--用户头像-->
+			<if test="headImages != null and headImages != ''">
+				#{headImages,jdbcType=VARCHAR},
+			</if>
+			<!--创建日期-->
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<!--更新日期-->
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
 	</insert>
 	<!--新增表不为空数据结束-->
 	<!--批量新增表数据开始-->
 	<insert id="batchInsert" parameterType="java.util.List">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
 		<if test="list != null and list.size != 0">
 			insert into sys_user (
 				username,password,password_key,
@@ -448,7 +448,7 @@
 	<!--根据主键存在就更新，不存在就新增开始-->
 	<!--用户管理批量新增，存在就更新，不存在就插入-->
 	<insert id="batchInsertUpdate" parameterType="java.util.List">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
 		<if test="list !=null and list.size != 0">
 			insert into  sys_user(
 				username,password,password_key,

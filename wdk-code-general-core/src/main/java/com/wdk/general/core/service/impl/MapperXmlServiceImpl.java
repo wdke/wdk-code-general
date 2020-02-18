@@ -430,17 +430,18 @@ public class MapperXmlServiceImpl implements MapperXmlService {
         inserts.addText("\n\t\tinsert into " + (param.getDbTables() ? param.getTableSchema() + "." : "") + param.getTableName() + " ");
         Element trim = inserts.addElement("trim")
                 .addAttribute("prefix", "(")
+                .addAttribute("suffix",")")
                 .addAttribute("suffixOverrides", ",");
 
 //                <trim prefix="(" suffix=")" suffixOverrides=",">
-        MapperXmlUtils.columsElement(param, trim, "\n\t\t", "colimnsIf");
+        MapperXmlUtils.columsElement(param, trim, "\n\t\t\t", "colimnsIf");
 
         trim = inserts.addElement("trim")
                 .addAttribute("prefix", "values (")
                 .addAttribute("suffix",")")
                 .addAttribute("suffixOverrides", ",");
 
-        MapperXmlUtils.columsElement(param, inserts, "\n\t\t", "valuesIf");
+        MapperXmlUtils.columsElement(param, trim, "\n\t\t\t", "valuesIf");
 
         root.addComment("新增表不为空数据结束");
         return inserts.asXML();

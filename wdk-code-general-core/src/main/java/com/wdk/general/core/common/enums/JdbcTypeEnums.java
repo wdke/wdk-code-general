@@ -15,6 +15,7 @@ public enum JdbcTypeEnums {
     LONGTEXT("LONGTEXT","String","java.lang.String","LONGVARCHAR"),
     DATETIME("DATETIME","Date","java.util.Date","TIMESTAMP"),
     INT("INT","Integer","java.lang.Integer","INTEGER"),
+    INTEGER("INTEGER","Integer","java.lang.Integer","INTEGER"),
     MEDIUMINT("MEDIUMINT","Integer","java.lang.Integer","INTEGER"),
     SMALLINT("SMALLINT","Short","java.lang.Short","SMALLINT"),
     TINYINT("TINYINT","Byte","java.lang.Byte","TINYINT"),
@@ -74,6 +75,8 @@ public enum JdbcTypeEnums {
         this.dbType=dbType;
 
         this.javaType=javaType;
+
+        this.javaPackages=javaPackages;
 
         this.mybatisType=mybatisType;
     }

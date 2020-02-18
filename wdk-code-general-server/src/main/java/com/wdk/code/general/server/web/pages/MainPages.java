@@ -57,7 +57,7 @@ public class MainPages {
         ResponseVo<String> result = loginService.login(loginParam.getUsername(), loginParam.getPassword());
 
         //登陆成功
-        if (result.isSuccess()) {
+        if (!result.isSuccess()) {
 
             req.getSession().setAttribute("username", loginParam.getUsername());
 

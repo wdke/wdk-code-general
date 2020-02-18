@@ -160,7 +160,7 @@
 	<!--根据条件查询列表结束-->
 	<!--新增表数据开始-->
 	<insert id="insert" parameterType="com.wdk.code.general.server.storage.entity.DbMessages">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
 		insert into db_messages (
 			user_id,db_type,host,
 			db_name,db_username,db_password,
@@ -177,89 +177,89 @@
 	<!--新增表数据结束-->
 	<!--新增表不为空数据开始-->
 	<insert id="insertSelective" parameterType="com.wdk.code.general.server.storage.entity.DbMessages">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
-		insert into db_messages (
-		<!--用户ID-->
-		<if test="userId != null">
-			user_id,
-		</if>
-		<!--数据库类型-->
-		<if test="dbType != null and dbType != ''">
-			db_type=#{dbType,jdbcType=VARCHAR},
-		</if>
-		<!--数据库地址-->
-		<if test="host != null and host != ''">
-			host=#{host,jdbcType=VARCHAR},
-		</if>
-		<!--数据库名称-->
-		<if test="dbName != null and dbName != ''">
-			db_name=#{dbName,jdbcType=VARCHAR},
-		</if>
-		<!--数据库用户名-->
-		<if test="dbUsername != null and dbUsername != ''">
-			db_username=#{dbUsername,jdbcType=VARCHAR},
-		</if>
-		<!--数据库密码-->
-		<if test="dbPassword != null and dbPassword != ''">
-			db_password=#{dbPassword,jdbcType=VARCHAR},
-		</if>
-		<!--数据库端口号-->
-		<if test="dbPort != null">
-			db_port,
-		</if>
-		<!--创建日期-->
-		<if test="createTime != null">
-			create_time,
-		</if>
-		<!--更新时间-->
-		<if test="updateTime != null">
-			update_time,
-		</if>
-		)
-		values (
-		<!--用户ID-->
-		<if test="userId != null">
-			#{userId,jdbcType=INTEGER},
-		</if>
-		<!--数据库类型-->
-		<if test="dbType != null and dbType != ''">
-			db_type=#{dbType,jdbcType=VARCHAR},
-		</if>
-		<!--数据库地址-->
-		<if test="host != null and host != ''">
-			host=#{host,jdbcType=VARCHAR},
-		</if>
-		<!--数据库名称-->
-		<if test="dbName != null and dbName != ''">
-			db_name=#{dbName,jdbcType=VARCHAR},
-		</if>
-		<!--数据库用户名-->
-		<if test="dbUsername != null and dbUsername != ''">
-			db_username=#{dbUsername,jdbcType=VARCHAR},
-		</if>
-		<!--数据库密码-->
-		<if test="dbPassword != null and dbPassword != ''">
-			db_password=#{dbPassword,jdbcType=VARCHAR},
-		</if>
-		<!--数据库端口号-->
-		<if test="dbPort != null">
-			#{dbPort,jdbcType=INTEGER},
-		</if>
-		<!--创建日期-->
-		<if test="createTime != null">
-			#{createTime,jdbcType=TIMESTAMP},
-		</if>
-		<!--更新时间-->
-		<if test="updateTime != null">
-			#{updateTime,jdbcType=TIMESTAMP},
-		</if>
-		)
-	
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
+		insert into db_messages  
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<!--用户ID-->
+			<if test="userId != null">
+				user_id,
+			</if>
+			<!--数据库类型-->
+			<if test="dbType != null and dbType != ''">
+				db_type,
+			</if>
+			<!--数据库地址-->
+			<if test="host != null and host != ''">
+				host,
+			</if>
+			<!--数据库名称-->
+			<if test="dbName != null and dbName != ''">
+				db_name,
+			</if>
+			<!--数据库用户名-->
+			<if test="dbUsername != null and dbUsername != ''">
+				db_username,
+			</if>
+			<!--数据库密码-->
+			<if test="dbPassword != null and dbPassword != ''">
+				db_password,
+			</if>
+			<!--数据库端口号-->
+			<if test="dbPort != null">
+				db_port,
+			</if>
+			<!--创建日期-->
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<!--更新时间-->
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<!--用户ID-->
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<!--数据库类型-->
+			<if test="dbType != null and dbType != ''">
+				#{dbType,jdbcType=VARCHAR},
+			</if>
+			<!--数据库地址-->
+			<if test="host != null and host != ''">
+				#{host,jdbcType=VARCHAR},
+			</if>
+			<!--数据库名称-->
+			<if test="dbName != null and dbName != ''">
+				#{dbName,jdbcType=VARCHAR},
+			</if>
+			<!--数据库用户名-->
+			<if test="dbUsername != null and dbUsername != ''">
+				#{dbUsername,jdbcType=VARCHAR},
+			</if>
+			<!--数据库密码-->
+			<if test="dbPassword != null and dbPassword != ''">
+				#{dbPassword,jdbcType=VARCHAR},
+			</if>
+			<!--数据库端口号-->
+			<if test="dbPort != null">
+				#{dbPort,jdbcType=INTEGER},
+			</if>
+			<!--创建日期-->
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<!--更新时间-->
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
 	</insert>
 	<!--新增表不为空数据结束-->
 	<!--批量新增表数据开始-->
 	<insert id="batchInsert" parameterType="java.util.List">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
 		<if test="list != null and list.size != 0">
 			insert into db_messages (
 				user_id,db_type,host,
@@ -351,7 +351,7 @@
 	<!--根据主键存在就更新，不存在就新增开始-->
 	<!--数据源信息批量新增，存在就更新，不存在就插入-->
 	<insert id="batchInsertUpdate" parameterType="java.util.List">
-		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
 		<if test="list !=null and list.size != 0">
 			insert into  db_messages(
 				user_id,db_type,host,
