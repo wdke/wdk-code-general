@@ -55,6 +55,8 @@ public class ProjectMetadata implements Serializable {
 	//项目端口号
 	private Integer point;
 
+	private Byte useActualColumnNames;
+
 	//创建日期
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date createTime;

@@ -296,7 +296,7 @@ public class MapperXmlServiceImpl implements MapperXmlService {
                 .addAttribute("refid", "Base_Where_Sql");
 
         //生成排序
-        select.addElement("if").addAttribute("test", "orderBy != null").addText("order by ${orderBy}\n");
+        select.addElement("if").addAttribute("test", "orderBy != null").addText("\n\t\t\torder by ${orderBy}\n\t\t");
 
 
         root.addComment("根据条件查询列表结束");

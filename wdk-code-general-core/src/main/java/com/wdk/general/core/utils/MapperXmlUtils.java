@@ -211,10 +211,10 @@ public class MapperXmlUtils {
                             JdbcTypeEnums dataTypes = JdbcTypeEnums.jdbcTypeEnumsByDbType(schemaColumns.getDataType());
 
                             if (i == 0) {
-                                ifs.addText(schemaColumns.getColumnName() + "=#{item." + cols + ",jdbcType=" + dataTypes.getMybatisType() + "}");
+                                ifs.addText(schemaColumns.getColumnName() + "=#{item." + schemaColumns.getModelObjName() + ",jdbcType=" + dataTypes.getMybatisType() + "}");
                             } else {
 
-                                ifs.addText(before + "\t\t\tand " + schemaColumns.getColumnName() + "=#{item." + cols + ",jdbcType=" + dataTypes.getMybatisType() + "}");
+                                ifs.addText(before + "\t\t\tand " + schemaColumns.getModelObjName() + "=#{item." + cols + ",jdbcType=" + dataTypes.getMybatisType() + "}");
                             }
                         }
                     }
