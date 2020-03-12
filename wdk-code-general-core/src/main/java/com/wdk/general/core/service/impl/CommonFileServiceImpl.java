@@ -46,7 +46,7 @@ public class CommonFileServiceImpl implements CommonFileService {
         }
 
         //生成 LoginController.java 文件
-        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/web/controller/LoginController.java";
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getProjectName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/web/controller/LoginController.java";
         //获取文本内容
         content = loginController(packages);
 
@@ -59,7 +59,7 @@ public class CommonFileServiceImpl implements CommonFileService {
         }
 
         //生成 LoginService.java 文件
-        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/service/LoginService.java";
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getProjectName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/service/LoginService.java";
         //获取文本内容
         content = loginService(packages);
 
@@ -72,7 +72,7 @@ public class CommonFileServiceImpl implements CommonFileService {
         }
 
         //生成 LoginServiceImpl.java 文件
-        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/service/impl/LoginServiceImpl.java";
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getProjectName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/service/impl/LoginServiceImpl.java";
         //获取文本内容
         content = loginServiceImpl(packages);
 
@@ -86,7 +86,7 @@ public class CommonFileServiceImpl implements CommonFileService {
 
 
         //生成 RedisConstant.java 文件
-        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/config/constant/RedisConstant.java";
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getProjectName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/config/constant/RedisConstant.java";
         //获取文本内容
         content = redisConstant(packages + ".config.constant");
 
@@ -100,7 +100,7 @@ public class CommonFileServiceImpl implements CommonFileService {
 
 
         //生成 IndexPages.java 文件
-        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/web/pages/IndexPages.java";
+        filePath = UserContext.current().getProjectRoot() + "/" + projectMetadata.getProjectName() + "-server/src/main/java/" + projectMetadata.getPackages().replaceAll("\\.", "/") + "/web/pages/IndexPages.java";
         //获取文本内容
         content = indexPages(packages + ".web.pages");
 
@@ -179,13 +179,13 @@ public class CommonFileServiceImpl implements CommonFileService {
 
         StringBuilder sb = new StringBuilder();
         sb.append("FROM java:8-jre-alpine\n")
-                .append("ADD ").append(projectMetadata.getName()).append("-").append(projectMetadata.getVersion()).append(".jar app.jar\n")
+                .append("ADD ").append(projectMetadata.getProjectName()).append("-").append(projectMetadata.getVersion()).append(".jar app.jar\n")
                 .append("EXPOSE ").append(projectMetadata.getPoint()).append("\n")
                 .append("ENV JAVA_OPTS=\"-Xms128m -Xmx128m\"\n")
                 .append("ENTRYPOINT [ \"sh\", \"-c\", \"java $JAVA_OPTS -Dspring.profiles.active=dev -Djava.security.egd=file:/dev/./urandom -jar app.jar\"]\n");
 
         String rootPath = System.getProperty("user.dir");
-        String file = rootPath + "/shell/" + projectMetadata.getName() + "/Dockerfile";
+        String file = rootPath + "/shell/" + projectMetadata.getProjectName() + "/Dockerfile";
 
         try {
             FileUtil.write(file, sb.toString());
@@ -211,16 +211,16 @@ public class CommonFileServiceImpl implements CommonFileService {
         StringBuilder sb = new StringBuilder();
         sb.append("#!/bin/bash\n")
                 .append("echo \"-------删除容器---------\"\n")
-                .append("docker stop ").append(projectMetadata.getName()).append("\n")
-                .append("docker rm ").append(projectMetadata.getName()).append("\n")
-                .append("docker rmi ").append(projectMetadata.getName()).append(":0.0.1\n")
-                .append("echo $(docker build -t ").append(projectMetadata.getName()).append(":0.0.1 .)\n")
+                .append("docker stop ").append(projectMetadata.getProjectName()).append("\n")
+                .append("docker rm ").append(projectMetadata.getProjectName()).append("\n")
+                .append("docker rmi ").append(projectMetadata.getProjectName()).append(":0.0.1\n")
+                .append("echo $(docker build -t ").append(projectMetadata.getProjectName()).append(":0.0.1 .)\n")
                 .append("#echo \"------请输入新的ContainerId------\"\n")
                 .append("#read containerId --net=host\n")
-                .append("docker run --privileged  -d -p ").append(projectMetadata.getPoint()).append(":").append(projectMetadata.getPoint()).append(" --name ").append(projectMetadata.getName()).append(" $(docker images | grep ").append(projectMetadata.getName()).append(" |grep 0.0.1| awk '{print $3}')");
+                .append("docker run --privileged  -d -p ").append(projectMetadata.getPoint()).append(":").append(projectMetadata.getPoint()).append(" --name ").append(projectMetadata.getProjectName()).append(" $(docker images | grep ").append(projectMetadata.getProjectName()).append(" |grep 0.0.1| awk '{print $3}')");
 
         String rootPath = System.getProperty("user.dir");
-        String file = rootPath + "/shell/" + projectMetadata.getName() + "/docker-manager.sh";
+        String file = rootPath + "/shell/" + projectMetadata.getProjectName() + "/docker-manager.sh";
 
         try {
             FileUtil.write(file, sb.toString());
@@ -246,21 +246,21 @@ public class CommonFileServiceImpl implements CommonFileService {
         StringBuilder sb = new StringBuilder();
         sb.append("version: \"2\" #版本号\n")
                 .append("services:\n")
-                .append("  ").append(projectMetadata.getName()).append(": #服务名称（不是容器名）\n")
+                .append("  ").append(projectMetadata.getProjectName()).append(": #服务名称（不是容器名）\n")
                 .append("\timage: \"ascdc/jdk8\"  #使用的镜像\n")
                 .append("\tports:\n")
                 .append("\t  - \"").append(projectMetadata.getPoint()).append(":").append(projectMetadata.getPoint()).append("\"  #暴露的端口信息和docker run -d -p 80:80 一样\n")
                 .append("\trestart: \"always\" #重启策略，能够使服务保持始终运行，生产环境推荐使用\n")
-                .append("\tcontainer_name: ").append(projectMetadata.getName()).append(" #容器名称\n")
+                .append("\tcontainer_name: ").append(projectMetadata.getProjectName()).append(" #容器名称\n")
                 .append("\t#挂载文件ps:如果是挂载文件必须在容器中也指定名称，推荐是挂载文件夹，下面只是做个文件挂载的案例也可以\n")
                 .append("\t#挂载文件夹/root/compose_test/jdk/:/data\n")
                 .append("\tvolumes:  \n")
-                .append("\t  - /opt/app/auto-code/").append(projectMetadata.getName()).append("/").append(projectMetadata.getName()).append("-").append(projectMetadata.getVersion()).append(".jar:/app.jar\n")
+                .append("\t  - /opt/app/auto-code/").append(projectMetadata.getProjectName()).append("/").append(projectMetadata.getProjectName()).append("-").append(projectMetadata.getVersion()).append(".jar:/app.jar\n")
                 .append("\t  #- /opt/app/wdk-code-general/auto-code:/script/auto-code\n")
                 .append("\tentrypoint: java -Xms128m -Xmx128m -Dspring.profiles.active=dev -Djava.security.egd=file:/dev/./urandom -jar /app.jar #启动容器后执行的命令\n");
 
         String rootPath = System.getProperty("user.dir");
-        String file = rootPath + "/shell/" + projectMetadata.getName() + "/docker-compose.yml";
+        String file = rootPath + "/shell/" + projectMetadata.getProjectName() + "/docker-compose.yml";
 
         try {
             FileUtil.write(file, sb.toString());
@@ -287,17 +287,17 @@ public class CommonFileServiceImpl implements CommonFileService {
         StringBuilder sb = new StringBuilder();
         sb.append("#!/bin/bash\n")
                 .append("echo \"-------开始复制文件到指定文件目录---------\"\n")
-                .append("cd auto-code/").append(projectMetadata.getName()).append("/\n")
+                .append("cd auto-code/").append(projectMetadata.getProjectName()).append("/\n")
                 .append("echo $(mvn clean)\n")
                 .append("echo $(mvn package)\n")
-                .append("rm -rf /opt/app/auto-code/").append(projectMetadata.getName()).append("/\n")
-                .append("mkdir /opt/app/auto-code/").append(projectMetadata.getName()).append("\n")
-                .append("cp ./target/").append(projectMetadata.getName()).append("-").append(projectMetadata.getVersion()).append(".jar /opt/app/auto-code/").append(projectMetadata.getName()).append("/\n")
-                .append("cp ").append(rootPath).append("/shell/").append(projectMetadata.getName()).append("/* ").append("/opt/app/auto-code/").append(projectMetadata.getName()).append("/\n")
-                .append("cd /opt/app/auto-code/").append(projectMetadata.getName()).append("/\n")
+                .append("rm -rf /opt/app/auto-code/").append(projectMetadata.getProjectName()).append("/\n")
+                .append("mkdir /opt/app/auto-code/").append(projectMetadata.getProjectName()).append("\n")
+                .append("cp ./target/").append(projectMetadata.getProjectName()).append("-").append(projectMetadata.getVersion()).append(".jar /opt/app/auto-code/").append(projectMetadata.getProjectName()).append("/\n")
+                .append("cp ").append(rootPath).append("/shell/").append(projectMetadata.getProjectName()).append("/* ").append("/opt/app/auto-code/").append(projectMetadata.getProjectName()).append("/\n")
+                .append("cd /opt/app/auto-code/").append(projectMetadata.getProjectName()).append("/\n")
                 .append("echo \"-------开始部署docker容器---------\"\n")
                 .append("echo $(docker-compose up -d)\n");
-        String file = rootPath + "/shell/" + projectMetadata.getName() + ".sh";
+        String file = rootPath + "/shell/" + projectMetadata.getProjectName() + ".sh";
 
         try {
             FileUtil.write(file, sb.toString());

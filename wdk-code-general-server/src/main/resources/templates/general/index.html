@@ -13,6 +13,17 @@
 
 <div class="container">
     <form role="form" action="#" method="post" th:action="@{/generate/init}">
+
+
+        <select name="dbMessageId" style="height: 50px;width: 200px;">
+            <option th:each="db,userStat:${dbMessagesList}" th:value="${db.id}"
+                    th:text="${db.dbType+'/'+db.dbName}"></option>
+        </select>
+
+        <select name="dbMessageId" style="height: 50px;width: 200px;">
+            <option th:each="project,userStat:${projectList}" th:value="${project.id}"
+                    th:text="${project.projectName+':'+project.point}"></option>
+        </select>
         <table class="table table-striped">
             <thead>
             <tr>

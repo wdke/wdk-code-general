@@ -130,7 +130,7 @@ public class GenerateServiceImpl implements GenerateService {
         logger.info("生成通用的文件结束！");
 
         //copy静态文件
-        FileUtil.fileCopyByCmd(staticFile, UserContext.current().getProjectRoot() + "/" + projectMetadata.getName() + "-server/src/main/resources");
+        FileUtil.fileCopyByCmd(staticFile, UserContext.current().getProjectRoot() + "/" + projectMetadata.getProjectName() + "-server/src/main/resources");
         logger.info("copy静态文件结束！");
 
         //根据表名分组
@@ -149,7 +149,7 @@ public class GenerateServiceImpl implements GenerateService {
             }
             baseParam = new BaseParam();
             //参数初始化
-            baseParam.setTableSchema(dbMessage.getDbname());
+            baseParam.setTableSchema(dbMessage.getDbName());
             baseParam.setTableName(entry.getKey());
             baseParam.setColumns(entry.getValue());
             baseParam.setKeys(entry.getValue().stream().filter(obj -> "PRI".equals(obj.getColumnKey())).collect(Collectors.toList()));

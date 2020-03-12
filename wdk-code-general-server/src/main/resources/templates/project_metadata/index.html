@@ -11,6 +11,11 @@
 <body>
 
 <div class="container">
+
+    <select>
+        <option th:each="tab,userStat:${list}" th:value="${tab.id}" th:text="${tab.projectName+':'+tab.point}"
+                ></option>
+    </select>
     <form class="form-horizontal" action="#" role="form" th:action="@{/project/metadata/save}" method="post">
 
         <table class="table table-striped">
@@ -18,11 +23,11 @@
 
             <tr>
                 <th width="50">
-                    <label for="group" class="col-sm-2 control-label">Group:</label>
+                    <label for="projectGroup" class="col-sm-2 control-label">Group:</label>
                 </th>
                 <td>
-                    <input type="text" oninput="packagesChange()" class="form-control" name="group" id="group"
-                           placeholder="www.com" th:value="${pm.group}"/>
+                    <input type="text" oninput="packagesChange()" class="form-control" name="projectGroup" id="projectGroup"
+                           placeholder="www.com" th:value="${pm.projectGroup}"/>
                 </td>
             </tr>
 
@@ -39,22 +44,22 @@
 
             <tr>
                 <th>
-                    <label for="type" class="col-sm-2 control-label">Type</label>
+                    <label for="projectType" class="col-sm-2 control-label">Type</label>
                 </th>
                 <td>
-                    <select class="form-control" name="type" id="type" th:value="${pm.type}">
-                        <option th:selected="${pm.type=='Maven Project'}" value="Maven Project">Maven Project</option>
+                    <select class="form-control" name="projectType" id="projectType" th:value="${pm.projectType}">
+                        <option th:selected="${pm.projectType=='Maven Project'}" value="Maven Project">Maven Project</option>
                     </select>
                 </td>
             </tr>
 
             <tr>
                 <th>
-                    <label for="language" class="col-sm-2 control-label">Language</label>
+                    <label for="projectLanguage" class="col-sm-2 control-label">Language</label>
                 </th>
                 <td>
-                    <select class="form-control" name="language" id="language" th:value="${pm.language}">
-                        <option th:selected="${pm.language=='java'}" value="java">java</option>
+                    <select class="form-control" name="projectLanguage" id="projectLanguage" th:value="${pm.projectLanguage}">
+                        <option th:selected="${pm.projectLanguage=='java'}" value="java">java</option>
                     </select>
                 </td>
             </tr>
@@ -93,11 +98,11 @@
 
             <tr>
                 <th>
-                    <label for="name" class="col-sm-2 control-label">Name</label>
+                    <label for="projectName" class="col-sm-2 control-label">Name</label>
                 </th>
                 <td>
-                    <input type="text" class="form-control" name="name" id="name"
-                           placeholder="springboot-demo" th:value="${pm.name}">
+                    <input type="text" class="form-control" name="projectName" id="projectName"
+                           placeholder="springboot-demo" th:value="${pm.projectName}">
                 </td>
             </tr>
 
@@ -123,7 +128,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="useActualColumnNames" class="col-sm-2 control-label">驼峰式命名</label>
+                    <label for="useActualColumnNames" class="col-sm-2 control-label">驼峰</label>
                 </th>
                 <td>
                     <select class="form-control" name="useActualColumnNames" id="useActualColumnNames">

@@ -54,7 +54,7 @@ public class SchemaColumnsDaoImpl implements SchemaColumnsDao {
                 .append("privileges as privileges,")
                 .append("column_comment as columnComment")
                 .append(" from FROM COLUMNS where TABLE_SCHEMA='")
-                .append(UserContext.current().getDbMessage().getDbname()).append("'");
+                .append(UserContext.current().getDbMessage().getDbName()).append("'");
         List<SchemaColumns> columns = JdbcTemplates.query(sql.toString(), new BeanHandler<>(SchemaColumns.class));
         conversion(columns);
         return columns;
@@ -97,7 +97,7 @@ public class SchemaColumnsDaoImpl implements SchemaColumnsDao {
                 .append("privileges as privileges,")
                 .append("column_comment as columnComment")
                 .append(" from COLUMNS \n where  TABLE_SCHEMA='")
-                .append(UserContext.current().getDbMessage().getDbname()).append("' and table_name in (");
+                .append(UserContext.current().getDbMessage().getDbName()).append("' and table_name in (");
         for (String table : tableName) {
             sql.append("'").append(table).append("',");
         }

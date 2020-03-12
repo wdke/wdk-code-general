@@ -17,6 +17,13 @@ public interface SchemaTablesDao {
     List<Tables> list();
 
     /**
+     * 所有表
+     * @param tableSchema
+     * @return
+     */
+    List<Tables> list(String tableSchema);
+
+    /**
      * 部分tableName
      *
      * @param tableNames
@@ -31,5 +38,4 @@ public interface SchemaTablesDao {
      * @return
      */
     Tables one(String tableName);
-
 }

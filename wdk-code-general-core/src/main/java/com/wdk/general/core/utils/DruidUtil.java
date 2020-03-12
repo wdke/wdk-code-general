@@ -42,9 +42,9 @@ public class DruidUtil {
         if (null == map.get(dbMessage.getUserId())) {
 
             Properties properties = new Properties();
-            properties.setProperty("url", "jdbc:mysql://" + dbMessage.getHost() + ":" + dbMessage.getDbport() + "/information_schema?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull");
-            properties.setProperty("username", dbMessage.getDbuser());
-            properties.setProperty("password", dbMessage.getDbpassword());
+            properties.setProperty("url", "jdbc:mysql://" + dbMessage.getHost() + ":" + dbMessage.getDbPort() + "/information_schema?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull");
+            properties.setProperty("username", dbMessage.getDbUsername());
+            properties.setProperty("password", dbMessage.getDbPassword());
             properties.setProperty("driver-class-name", "com.mysql.jdbc.Driver");
             properties.setProperty("type", "com.alibaba.druid.pool.DruidDataSource");
             properties.setProperty("connectionProperties", "druid.stat.mergeSql=true");

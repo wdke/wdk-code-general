@@ -14,11 +14,18 @@ package com.wdk.code.general.server.web.interceptor;
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.wdk.code.general.server.redis.RedisStringDao;
+import com.wdk.code.general.server.service.DbMessagesService;
+import com.wdk.code.general.server.service.ProjectMetadataService;
+import com.wdk.code.general.server.web.args.DbMessagesArgs;
+import com.wdk.code.general.server.web.args.ProjectMetadataArgs;
+import com.wdk.code.general.server.web.vo.DbMessagesVo;
+import com.wdk.code.general.server.web.vo.ProjectMetadataVo;
 import com.wdk.general.core.common.model.UserContext;
 import com.wdk.general.core.model.DbMessage;
 import com.wdk.general.core.model.ProjectMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by loutao on 2018/6/20.
@@ -40,6 +48,12 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Autowired
     private RedisStringDao redisStringDao;
+
+    @Autowired
+    private ProjectMetadataService projectMetadataService;
+
+    @Autowired
+    private DbMessagesService dbMessagesService;
 
     private static final Logger logger = LoggerFactory.getLogger(TokenInterceptor.class);
 
@@ -99,23 +113,37 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     private boolean preHandleService(HttpServletRequest request, HttpServletResponse response) {
 
-        String username = (String) request.getSession().getAttribute("username");
-
-        if (StringUtils.isEmpty(username)) {
-            try {
-                if (null == request.getSession().getAttribute("redirect")) {
-                    logger.info("redirect url:{}", request.getRequestURI());
-                    request.getSession().setAttribute("redirect", request.getRequestURI());
-                }
-                response.sendRedirect("/wdk-code-general-server/main/login");
-                return false;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        /**
+         * 处理用户信息
+         */
+        if (!initUserInfo(request, response)) {
+            return false;
         }
 
-        UserContext.current().setUsername(username);
+        /**
+         * 处理跳转信息
+         */
+        if (!sendRedirect(request, response)) {
+            return false;
+        }
+
+        //处理数据源信息
+        initDbMessage();
+
+        //处理项目信息
+        initProjectMetadata();
+
+        return true;
+    }
+
+    /**
+     * 跳转处理
+     *
+     * @param request
+     * @param response
+     */
+    public boolean sendRedirect(HttpServletRequest request, HttpServletResponse response) {
+
 
         if (null != request.getSession().getAttribute("redirect")) {
             String redirect = (String) request.getSession().getAttribute("redirect");
@@ -127,21 +155,87 @@ public class TokenInterceptor implements HandlerInterceptor {
             }
             return false;
         }
-        DbMessage dbMessage = JSON.parseObject(redisStringDao.get("db_" + UserContext.current().getUsername()),DbMessage.class);
 
-        if (null != dbMessage) {
-            UserContext.current().setDbMessage(dbMessage);
+        return true;
+    }
+
+    /**
+     * 处理用户信息
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    public boolean initUserInfo(HttpServletRequest request, HttpServletResponse response) {
+
+        Integer userId = (Integer) request.getSession().getAttribute("userId");
+        UserContext.current().setUserId(userId);
+
+        String username = (String) request.getSession().getAttribute("username");
+        if (StringUtils.isEmpty(username)) {
+            try {
+                if (null == request.getSession().getAttribute("redirect")) {
+                    logger.info("redirect url:{}", request.getRequestURI());
+                    request.getSession().setAttribute("redirect", request.getRequestURI());
+                }
+                response.sendRedirect("/wdk-code-general-server/main/login");
+                return false;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
         }
 
-        ProjectMetadata projectMetadata = JSON.parseObject(redisStringDao.get("pm_"+ UserContext.current().getUsername()),ProjectMetadata.class);
+        UserContext.current().setUsername(username);
+        return true;
+    }
+
+    /**
+     * 处理项目信息
+     */
+    public void initProjectMetadata() {
+
+        ProjectMetadata projectMetadata = JSON.parseObject(redisStringDao.get("pm_" + UserContext.current().getUsername()), ProjectMetadata.class);
 
         if (null != projectMetadata) {
             UserContext.current().setProjectMetadata(projectMetadata);
-            UserContext.current().setProjectRoot(filePath + "/" + projectMetadata.getName());
+            UserContext.current().setProjectRoot(filePath + "/" + projectMetadata.getProjectName());
+        } else {
+            ProjectMetadataArgs projectMetadataArgs = new ProjectMetadataArgs();
+            projectMetadataArgs.setUserId(UserContext.current().getUserId());
+            List<ProjectMetadataVo> list = projectMetadataService.list(projectMetadataArgs);
+            if (list.size() > 0) {
+                projectMetadata = new ProjectMetadata();
+                BeanUtils.copyProperties(list.get(0), projectMetadata);
+                UserContext.current().setProjectMetadata(projectMetadata);
+                UserContext.current().setProjectRoot(filePath + "/" + projectMetadata.getProjectName());
+            }
+
         }
+    }
 
 
-        return true;
+    /**
+     * 处理数据源信息
+     */
+    public void initDbMessage() {
+
+        DbMessage dbMessage = JSON.parseObject(redisStringDao.get("db_" + UserContext.current().getUsername()), DbMessage.class);
+
+        if (null != dbMessage) {
+            UserContext.current().setDbMessage(dbMessage);
+        } else {
+            DbMessagesArgs dbMessagesArgs = new DbMessagesArgs();
+            dbMessagesArgs.setUserId(UserContext.current().getUserId());
+            List<DbMessagesVo> list = dbMessagesService.list(dbMessagesArgs);
+            if (list.size() > 0) {
+                dbMessage = new DbMessage();
+                BeanUtils.copyProperties(list.get(0), dbMessage);
+                UserContext.current().setDbMessage(dbMessage);
+
+            }
+        }
     }
 
 }

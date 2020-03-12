@@ -20,15 +20,15 @@ public class DbMessage implements Serializable {
 
 
     //数据库名称
-    private String dbname;
+    private String dbName;
 
     //数据库管理员名称
-    private String dbuser;
+    private String dbUsername;
 
     //数据库密码
-    private String dbpassword;
+    private String dbPassword;
 
     //数据库端口号
-    private Integer dbport = 3306;
+    private Integer dbPort = 3306;
 
 }

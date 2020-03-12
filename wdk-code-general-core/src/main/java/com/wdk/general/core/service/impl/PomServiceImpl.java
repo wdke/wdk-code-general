@@ -42,10 +42,10 @@ public class PomServiceImpl implements PomService {
         //项目信息
         root.addComment("项目信息");
         root.addElement("modelVersion").addText("4.0.0");
-        root.addElement("groupId").addText(projectMetadata.getGroup());
+        root.addElement("groupId").addText(projectMetadata.getProjectGroup());
         root.addElement("artifactId").addText(projectMetadata.getArtifact());
         root.addElement("version").addText(projectMetadata.getVersion());
-        root.addElement("name").addText(projectMetadata.getName());
+        root.addElement("name").addText(projectMetadata.getProjectName());
         root.addElement("description").addText(projectMetadata.getDescription());
         root.addElement("packaging").addText("pom");
 
@@ -67,7 +67,7 @@ public class PomServiceImpl implements PomService {
 //        properties.addElement("spring-cloud.version").addText("Finchley.SR2");
 
         root.addComment("modules 信息");
-        root.addElement("modules").addElement("module").addText(projectMetadata.getName() + "-server");
+        root.addElement("modules").addElement("module").addText(projectMetadata.getProjectName() + "-server");
 
         //导入包
 //        root.addComment("导入包");
@@ -171,10 +171,10 @@ public class PomServiceImpl implements PomService {
         //项目信息
         root.addComment("项目信息");
         root.addElement("modelVersion").addText("4.0.0");
-        root.addElement("groupId").addText(projectMetadata.getGroup());
+        root.addElement("groupId").addText(projectMetadata.getProjectGroup());
         root.addElement("artifactId").addText(projectMetadata.getArtifact() + "-server");
         root.addElement("version").addText(projectMetadata.getVersion());
-        root.addElement("name").addText(projectMetadata.getName() + "-server");
+        root.addElement("name").addText(projectMetadata.getProjectName() + "-server");
         root.addElement("description").addText(projectMetadata.getDescription());
         root.addElement("packaging").addText(projectMetadata.getPackaging());
 

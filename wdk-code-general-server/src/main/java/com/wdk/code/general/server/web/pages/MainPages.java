@@ -59,8 +59,6 @@ public class MainPages {
         //登陆成功
         if (result.isSuccess()) {
 
-            req.getSession().setAttribute("username", loginParam.getUsername());
-
             return "redirect:/main/index";
         }
         //返回参数

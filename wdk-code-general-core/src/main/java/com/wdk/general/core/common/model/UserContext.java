@@ -95,11 +95,11 @@ public class UserContext {
     }
 
     public String getProjectServerRoot() {
-        return projectRoot + "/" + projectMetadata.getName() + "-server";
+        return projectRoot + "/" + projectMetadata.getProjectName() + "-server";
     }
 
     public String getProjectApiRoot() {
-        return projectRoot + "/" + projectMetadata.getName() + "-Api";
+        return projectRoot + "/" + projectMetadata.getProjectName() + "-Api";
     }
 
     public void setProjectRoot(String projectRoot) {

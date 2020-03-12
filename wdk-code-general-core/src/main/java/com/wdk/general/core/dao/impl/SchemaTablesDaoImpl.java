@@ -26,7 +26,21 @@ public class SchemaTablesDaoImpl implements SchemaTablesDao {
      */
     @Override
     public List<Tables> list() {
-        String sql = "SELECT TABLE_SCHEMA as tablSchema, TABLE_NAME as tableName, TABLE_COMMENT as tableComment FROM TABLES where TABLE_SCHEMA='" + UserContext.current().getDbMessage().getDbname() + "'";
+        String sql = "SELECT TABLE_SCHEMA as tablSchema, TABLE_NAME as tableName, TABLE_COMMENT as tableComment FROM TABLES where TABLE_SCHEMA='" + UserContext.current().getDbMessage().getDbName() + "'";
+        List<Tables> query = JdbcTemplates.query(sql, new BeanHandler<>(Tables.class));
+        conversion(query);
+        return query;
+    }
+
+    /**
+     * 根据数据库获取所有表
+     *
+     * @param tableSchema
+     * @return
+     */
+    @Override
+    public List<Tables> list(String tableSchema) {
+        String sql = "SELECT TABLE_SCHEMA as tablSchema, TABLE_NAME as tableName, TABLE_COMMENT as tableComment FROM TABLES where TABLE_SCHEMA='" + tableSchema + "'";
         List<Tables> query = JdbcTemplates.query(sql, new BeanHandler<>(Tables.class));
         conversion(query);
         return query;
@@ -49,7 +63,7 @@ public class SchemaTablesDaoImpl implements SchemaTablesDao {
         sql.append("SELECT TABLE_SCHEMA as tablSchema, TABLE_NAME as tableName, TABLE_COMMENT as tableComment ")
                 .append("FROM TABLES ")
                 .append("where TABLE_SCHEMA='")
-                .append(UserContext.current().getDbMessage().getDbname())
+                .append(UserContext.current().getDbMessage().getDbName())
                 .append("' and TABLE_NAME in (");
         for (int i = 0; i < tableNames.length; i++) {
 
@@ -79,11 +93,11 @@ public class SchemaTablesDaoImpl implements SchemaTablesDao {
         sql.append("SELECT TABLE_SCHEMA as tablSchema, TABLE_NAME as tableName, TABLE_COMMENT as tableComment ")
                 .append("FROM TABLES ")
                 .append("where TABLE_SCHEMA='")
-                .append(UserContext.current().getDbMessage().getDbname())
+                .append(UserContext.current().getDbMessage().getDbName())
                 .append("' and TABLE_NAME in (");
         List<Tables> query = JdbcTemplates.query(sql.toString(), new BeanHandler<>(Tables.class));
         conversion(query);
-        if(query.size()>0){
+        if (query.size() > 0) {
             return query.get(0);
         }
         return null;
@@ -110,7 +124,7 @@ public class SchemaTablesDaoImpl implements SchemaTablesDao {
             if (StringUtils.isEmpty(obj.getTableComment())) {
                 obj.setTableComment(obj.getModelObjName());
             } else if (obj.getTableComment().length() > 12) {
-                obj.setTableComment(obj.getTableComment().substring(0,10)+"...");
+                obj.setTableComment(obj.getTableComment().substring(0, 10) + "...");
             }
         });
 

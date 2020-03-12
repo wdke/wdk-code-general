@@ -1,8 +1,8 @@
 package com.wdk.code.general.server.web.vo;
 
-import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import java.util.Date;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -41,10 +41,10 @@ public class DbMessagesVo implements Serializable {
 	private Integer dbPort;
 
 	//创建日期
-	private Date createTime;
+	private Long createTime;
 
 	//更新时间
-	private Date updateTime;
+	private Long updateTime;
 
 
 

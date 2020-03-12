@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -181,6 +183,13 @@ public class ProjectMetadataServiceImpl implements ProjectMetadataService{
 	@Override
 	public int insertSelective(ProjectMetadataArgs param){
 
+		Map<String,Object> map=new HashMap<>();
+		map.put("userId",param.getUserId());
+		map.put("projectName",param.getProjectName());
+		List<ProjectMetadata> checkdata = projectMetadataMapper.selectListByMap(map);
+		if(!checkdata.isEmpty()){
+			return 0;
+		}
 		//参数类型转化
 		ProjectMetadata projectMetadata = new ProjectMetadata();
 		BeanUtils.copyProperties(param,projectMetadata);

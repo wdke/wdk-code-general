@@ -175,9 +175,9 @@ public class GeneratorConfigUtil {
         DbMessage dbMessage = UserContext.current().getDbMessage();
         context.addElement("jdbcConnection")
                 .addAttribute("driverClass", "com.mysql.jdbc.Driver")
-                .addAttribute("connectionURL", "jdbc:mysql://" + dbMessage.getHost() + ":" + dbMessage.getDbport() + "/" + dbMessage.getDbname() + "?useUnicode=true")
-                .addAttribute("userId", dbMessage.getDbuser())
-                .addAttribute("password", dbMessage.getDbpassword());
+                .addAttribute("connectionURL", "jdbc:mysql://" + dbMessage.getHost() + ":" + dbMessage.getDbPort() + "/" + dbMessage.getDbName() + "?useUnicode=true")
+                .addAttribute("userId", dbMessage.getDbUsername())
+                .addAttribute("password", dbMessage.getDbPassword());
 
     }
 

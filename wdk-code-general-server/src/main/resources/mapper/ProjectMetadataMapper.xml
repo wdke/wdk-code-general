@@ -7,14 +7,14 @@
 	<resultMap id="BaseResultMap" type="com.wdk.code.general.server.storage.entity.ProjectMetadata">
 		<id column="id" jdbcType="INTEGER" property="id"/>
 		<result column="user_id" jdbcType="INTEGER" property="userId"/>
-		<result column="group" jdbcType="VARCHAR" property="group"/>
+		<result column="project_group" jdbcType="VARCHAR" property="projectGroup"/>
 		<result column="artifact" jdbcType="VARCHAR" property="artifact"/>
-		<result column="type" jdbcType="VARCHAR" property="type"/>
-		<result column="language" jdbcType="VARCHAR" property="language"/>
+		<result column="project_type" jdbcType="VARCHAR" property="projectType"/>
+		<result column="project_language" jdbcType="VARCHAR" property="projectLanguage"/>
 		<result column="packaging" jdbcType="VARCHAR" property="packaging"/>
 		<result column="java_version" jdbcType="VARCHAR" property="javaVersion"/>
 		<result column="version" jdbcType="VARCHAR" property="version"/>
-		<result column="name" jdbcType="VARCHAR" property="name"/>
+		<result column="project_name" jdbcType="VARCHAR" property="projectName"/>
 		<result column="description" jdbcType="VARCHAR" property="description"/>
 		<result column="packages" jdbcType="VARCHAR" property="packages"/>
 		<result column="point" jdbcType="INTEGER" property="point"/>
@@ -28,8 +28,8 @@
 	<!--查询数据库表结束-->
 	<!--查询字段开始-->
 	<sql id="Base_Column_Sql">
-		id,user_id,group,artifact,type,language,packaging,java_version,version,name,description,packages,point,
-		create_time,update_time
+		id,user_id,project_group,artifact,project_type,project_language,packaging,java_version,version,project_name,
+		description,packages,point,create_time,update_time
 	</sql>
 	<!--查询字段结束-->
 	<!--查询条件开始-->
@@ -43,20 +43,20 @@
 			and user_id=#{userId,jdbcType=INTEGER}
 		</if>
 		<!--项目gr...-->
-		<if test="group != null and group != ''">
-			and group=#{group,jdbcType=VARCHAR}
+		<if test="projectGroup != null and projectGroup != ''">
+			and project_group=#{projectGroup,jdbcType=VARCHAR}
 		</if>
 		<!--artifact-->
 		<if test="artifact != null and artifact != ''">
 			and artifact=#{artifact,jdbcType=VARCHAR}
 		</if>
 		<!--项目类型-->
-		<if test="type != null and type != ''">
-			and type=#{type,jdbcType=VARCHAR}
+		<if test="projectType != null and projectType != ''">
+			and project_type=#{projectType,jdbcType=VARCHAR}
 		</if>
 		<!--项目语言-->
-		<if test="language != null and language != ''">
-			and language=#{language,jdbcType=VARCHAR}
+		<if test="projectLanguage != null and projectLanguage != ''">
+			and project_language=#{projectLanguage,jdbcType=VARCHAR}
 		</if>
 		<!--打包类型-->
 		<if test="packaging != null and packaging != ''">
@@ -71,8 +71,8 @@
 			and version=#{version,jdbcType=VARCHAR}
 		</if>
 		<!--项目名称-->
-		<if test="name != null and name != ''">
-			and name=#{name,jdbcType=VARCHAR}
+		<if test="projectName != null and projectName != ''">
+			and project_name=#{projectName,jdbcType=VARCHAR}
 		</if>
 		<!--项目描述-->
 		<if test="description != null and description != ''">
@@ -107,20 +107,20 @@
 			and user_id=#{user_id,jdbcType=INTEGER}
 		</if>
 		<!--项目gr...-->
-		<if test="group != null and group != ''">
-			and group=#{group,jdbcType=VARCHAR}
+		<if test="project_group != null and project_group != ''">
+			and project_group=#{project_group,jdbcType=VARCHAR}
 		</if>
 		<!--artifact-->
 		<if test="artifact != null and artifact != ''">
 			and artifact=#{artifact,jdbcType=VARCHAR}
 		</if>
 		<!--项目类型-->
-		<if test="type != null and type != ''">
-			and type=#{type,jdbcType=VARCHAR}
+		<if test="project_type != null and project_type != ''">
+			and project_type=#{project_type,jdbcType=VARCHAR}
 		</if>
 		<!--项目语言-->
-		<if test="language != null and language != ''">
-			and language=#{language,jdbcType=VARCHAR}
+		<if test="project_language != null and project_language != ''">
+			and project_language=#{project_language,jdbcType=VARCHAR}
 		</if>
 		<!--打包类型-->
 		<if test="packaging != null and packaging != ''">
@@ -135,8 +135,8 @@
 			and version=#{version,jdbcType=VARCHAR}
 		</if>
 		<!--项目名称-->
-		<if test="name != null and name != ''">
-			and name=#{name,jdbcType=VARCHAR}
+		<if test="project_name != null and project_name != ''">
+			and project_name=#{project_name,jdbcType=VARCHAR}
 		</if>
 		<!--项目描述-->
 		<if test="description != null and description != ''">
@@ -206,19 +206,19 @@
 	<!--根据条件查询列表结束-->
 	<!--新增表数据开始-->
 	<insert id="insert" parameterType="com.wdk.code.general.server.storage.entity.ProjectMetadata">
-		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
 		insert into project_metadata (
-			user_id,group,artifact,
-			type,language,packaging,
-			java_version,version,name,
+			user_id,project_group,artifact,
+			project_type,project_language,packaging,
+			java_version,version,project_name,
 			description,packages,point,
 			create_time,update_time
 		)
 		values (
 			
-			#{userId,jdbcType=INTEGER},#{group,jdbcType=VARCHAR},#{artifact,jdbcType=VARCHAR},
-			#{type,jdbcType=VARCHAR},#{language,jdbcType=VARCHAR},#{packaging,jdbcType=VARCHAR},
-			#{javaVersion,jdbcType=VARCHAR},#{version,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},
+			#{userId,jdbcType=INTEGER},#{projectGroup,jdbcType=VARCHAR},#{artifact,jdbcType=VARCHAR},
+			#{projectType,jdbcType=VARCHAR},#{projectLanguage,jdbcType=VARCHAR},#{packaging,jdbcType=VARCHAR},
+			#{javaVersion,jdbcType=VARCHAR},#{version,jdbcType=VARCHAR},#{projectName,jdbcType=VARCHAR},
 			#{description,jdbcType=VARCHAR},#{packages,jdbcType=VARCHAR},#{point,jdbcType=INTEGER},
 			#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
 		)
@@ -226,29 +226,29 @@
 	</insert>
 	<!--新增表数据结束-->
 	<!--新增表不为空数据开始-->
-	<insert id="insertSelective" parameterType="com.wdk.code.general.server.storage.entity.ProjectMetadata">
+	<insert id="insertSelective" parameterType="com.wdk.code.general.server.storage.entity.ProjectMetadata" >
 		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
-		insert into project_metadata  
+		insert into project_metadata
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<!--用户ID-->
 			<if test="userId != null">
 				user_id,
 			</if>
 			<!--项目gr...-->
-			<if test="group != null and group != ''">
-				group,
+			<if test="projectGroup != null and projectGroup != ''">
+				project_group,
 			</if>
 			<!--artifact-->
 			<if test="artifact != null and artifact != ''">
 				artifact,
 			</if>
 			<!--项目类型-->
-			<if test="type != null and type != ''">
-				type,
+			<if test="projectType != null and projectType != ''">
+				project_type,
 			</if>
 			<!--项目语言-->
-			<if test="language != null and language != ''">
-				language,
+			<if test="projectLanguage != null and projectLanguage != ''">
+				project_language,
 			</if>
 			<!--打包类型-->
 			<if test="packaging != null and packaging != ''">
@@ -263,8 +263,8 @@
 				version,
 			</if>
 			<!--项目名称-->
-			<if test="name != null and name != ''">
-				name,
+			<if test="projectName != null and projectName != ''">
+				project_name,
 			</if>
 			<!--项目描述-->
 			<if test="description != null and description != ''">
@@ -293,20 +293,20 @@
 				#{userId,jdbcType=INTEGER},
 			</if>
 			<!--项目gr...-->
-			<if test="group != null and group != ''">
-				#{group,jdbcType=VARCHAR},
+			<if test="projectGroup != null and projectGroup != ''">
+				#{projectGroup,jdbcType=VARCHAR},
 			</if>
 			<!--artifact-->
 			<if test="artifact != null and artifact != ''">
 				#{artifact,jdbcType=VARCHAR},
 			</if>
 			<!--项目类型-->
-			<if test="type != null and type != ''">
-				#{type,jdbcType=VARCHAR},
+			<if test="projectType != null and projectType != ''">
+				#{projectType,jdbcType=VARCHAR},
 			</if>
 			<!--项目语言-->
-			<if test="language != null and language != ''">
-				#{language,jdbcType=VARCHAR},
+			<if test="projectLanguage != null and projectLanguage != ''">
+				#{projectLanguage,jdbcType=VARCHAR},
 			</if>
 			<!--打包类型-->
 			<if test="packaging != null and packaging != ''">
@@ -321,8 +321,8 @@
 				#{version,jdbcType=VARCHAR},
 			</if>
 			<!--项目名称-->
-			<if test="name != null and name != ''">
-				#{name,jdbcType=VARCHAR},
+			<if test="projectName != null and projectName != ''">
+				#{projectName,jdbcType=VARCHAR},
 			</if>
 			<!--项目描述-->
 			<if test="description != null and description != ''">
@@ -349,21 +349,21 @@
 	<!--新增表不为空数据结束-->
 	<!--批量新增表数据开始-->
 	<insert id="batchInsert" parameterType="java.util.List">
-		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
 		<if test="list != null and list.size != 0">
 			insert into project_metadata (
-				user_id,group,artifact,
-				type,language,packaging,
-				java_version,version,name,
+				user_id,project_group,artifact,
+				project_type,project_language,packaging,
+				java_version,version,project_name,
 				description,packages,point,
 				create_time,update_time
 			)
 			values
 			<foreach collection="list" item="item" index="index" separator=",">
 				(
-				#{item.userId,jdbcType=INTEGER},#{item.group,jdbcType=VARCHAR},#{item.artifact,jdbcType=VARCHAR},
-				#{item.type,jdbcType=VARCHAR},#{item.language,jdbcType=VARCHAR},#{item.packaging,jdbcType=VARCHAR},
-				#{item.javaVersion,jdbcType=VARCHAR},#{item.version,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},
+				#{item.userId,jdbcType=INTEGER},#{item.projectGroup,jdbcType=VARCHAR},#{item.artifact,jdbcType=VARCHAR},
+				#{item.projectType,jdbcType=VARCHAR},#{item.projectLanguage,jdbcType=VARCHAR},#{item.packaging,jdbcType=VARCHAR},
+				#{item.javaVersion,jdbcType=VARCHAR},#{item.version,jdbcType=VARCHAR},#{item.projectName,jdbcType=VARCHAR},
 				#{item.description,jdbcType=VARCHAR},#{item.packages,jdbcType=VARCHAR},#{item.point,jdbcType=INTEGER},
 				#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP}
 				)
@@ -385,14 +385,14 @@
 		update project_metadata
 		set  
 			user_id=#{userId,jdbcType=INTEGER},
-			group=#{group,jdbcType=VARCHAR},
+			project_group=#{projectGroup,jdbcType=VARCHAR},
 			artifact=#{artifact,jdbcType=VARCHAR},
-			type=#{type,jdbcType=VARCHAR},
-			language=#{language,jdbcType=VARCHAR},
+			project_type=#{projectType,jdbcType=VARCHAR},
+			project_language=#{projectLanguage,jdbcType=VARCHAR},
 			packaging=#{packaging,jdbcType=VARCHAR},
 			java_version=#{javaVersion,jdbcType=VARCHAR},
 			version=#{version,jdbcType=VARCHAR},
-			name=#{name,jdbcType=VARCHAR},
+			project_name=#{projectName,jdbcType=VARCHAR},
 			description=#{description,jdbcType=VARCHAR},
 			packages=#{packages,jdbcType=VARCHAR},
 			point=#{point,jdbcType=INTEGER},
@@ -411,20 +411,20 @@
 				user_id=#{userId,jdbcType=INTEGER},
 			</if>
 			<!--项目gr...-->
-			<if test="group != null and group != ''">
-				group=#{group,jdbcType=VARCHAR},
+			<if test="projectGroup != null and projectGroup != ''">
+				project_group=#{projectGroup,jdbcType=VARCHAR},
 			</if>
 			<!--artifact-->
 			<if test="artifact != null and artifact != ''">
 				artifact=#{artifact,jdbcType=VARCHAR},
 			</if>
 			<!--项目类型-->
-			<if test="type != null and type != ''">
-				type=#{type,jdbcType=VARCHAR},
+			<if test="projectType != null and projectType != ''">
+				project_type=#{projectType,jdbcType=VARCHAR},
 			</if>
 			<!--项目语言-->
-			<if test="language != null and language != ''">
-				language=#{language,jdbcType=VARCHAR},
+			<if test="projectLanguage != null and projectLanguage != ''">
+				project_language=#{projectLanguage,jdbcType=VARCHAR},
 			</if>
 			<!--打包类型-->
 			<if test="packaging != null and packaging != ''">
@@ -439,8 +439,8 @@
 				version=#{version,jdbcType=VARCHAR},
 			</if>
 			<!--项目名称-->
-			<if test="name != null and name != ''">
-				name=#{name,jdbcType=VARCHAR},
+			<if test="projectName != null and projectName != ''">
+				project_name=#{projectName,jdbcType=VARCHAR},
 			</if>
 			<!--项目描述-->
 			<if test="description != null and description != ''">
@@ -470,34 +470,34 @@
 	<!--根据主键存在就更新，不存在就新增开始-->
 	<!--项目生成信息信息批量新增，存在就更新，不存在就插入-->
 	<insert id="batchInsertUpdate" parameterType="java.util.List">
-		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">SELECT LAST_INSERT_ID()</selectKey>
+		<selectKey keyProperty="id" order="AFTER">SELECT LAST_INSERT_ID()</selectKey>
 		<if test="list !=null and list.size != 0">
 			insert into  project_metadata(
-				user_id,group,artifact,
-				type,language,packaging,
-				java_version,version,name,
+				user_id,project_group,artifact,
+				project_type,project_language,packaging,
+				java_version,version,project_name,
 				description,packages,point,
 				create_time,update_time
 			)
 			values 
  			<foreach collection="list" item="item" index="index" separator=",">
 				(
-				#{item.userId,jdbcType=INTEGER},#{item.group,jdbcType=VARCHAR},#{item.artifact,jdbcType=VARCHAR},
-				#{item.type,jdbcType=VARCHAR},#{item.language,jdbcType=VARCHAR},#{item.packaging,jdbcType=VARCHAR},
-				#{item.javaVersion,jdbcType=VARCHAR},#{item.version,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},
+				#{item.userId,jdbcType=INTEGER},#{item.projectGroup,jdbcType=VARCHAR},#{item.artifact,jdbcType=VARCHAR},
+				#{item.projectType,jdbcType=VARCHAR},#{item.projectLanguage,jdbcType=VARCHAR},#{item.packaging,jdbcType=VARCHAR},
+				#{item.javaVersion,jdbcType=VARCHAR},#{item.version,jdbcType=VARCHAR},#{item.projectName,jdbcType=VARCHAR},
 				#{item.description,jdbcType=VARCHAR},#{item.packages,jdbcType=VARCHAR},#{item.point,jdbcType=INTEGER},
 				#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP})
 			</foreach>
 				ON DUPLICATE KEY UPDATE
 				user_id=#{userId,jdbcType=INTEGER},
-				group=#{group,jdbcType=VARCHAR},
+				project_group=#{projectGroup,jdbcType=VARCHAR},
 				artifact=#{artifact,jdbcType=VARCHAR},
-				type=#{type,jdbcType=VARCHAR},
-				language=#{language,jdbcType=VARCHAR},
+				project_type=#{projectType,jdbcType=VARCHAR},
+				project_language=#{projectLanguage,jdbcType=VARCHAR},
 				packaging=#{packaging,jdbcType=VARCHAR},
 				java_version=#{javaVersion,jdbcType=VARCHAR},
 				version=#{version,jdbcType=VARCHAR},
-				name=#{name,jdbcType=VARCHAR},
+				project_name=#{projectName,jdbcType=VARCHAR},
 				description=#{description,jdbcType=VARCHAR},
 				packages=#{packages,jdbcType=VARCHAR},
 				point=#{point,jdbcType=INTEGER},
@@ -521,11 +521,11 @@
 					</foreach>
 				</trim>
 				<!--项目gr...-->
-				<trim prefix=" group = case " suffix="end,">
+				<trim prefix=" projectGroup = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
-						<if test="item.group!=null">
-							when id=#{item.group,jdbcType=INTEGER}
-							then #{item.group,jdbcType=VARCHAR}
+						<if test="item.projectGroup!=null">
+							when id=#{item.projectGroup,jdbcType=INTEGER}
+							then #{item.projectGroup,jdbcType=VARCHAR}
 						</if>
 					</foreach>
 				</trim>
@@ -539,20 +539,20 @@
 					</foreach>
 				</trim>
 				<!--项目类型-->
-				<trim prefix=" type = case " suffix="end,">
+				<trim prefix=" projectType = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
-						<if test="item.type!=null">
-							when id=#{item.type,jdbcType=INTEGER}
-							then #{item.type,jdbcType=VARCHAR}
+						<if test="item.projectType!=null">
+							when id=#{item.projectType,jdbcType=INTEGER}
+							then #{item.projectType,jdbcType=VARCHAR}
 						</if>
 					</foreach>
 				</trim>
 				<!--项目语言-->
-				<trim prefix=" language = case " suffix="end,">
+				<trim prefix=" projectLanguage = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
-						<if test="item.language!=null">
-							when id=#{item.language,jdbcType=INTEGER}
-							then #{item.language,jdbcType=VARCHAR}
+						<if test="item.projectLanguage!=null">
+							when id=#{item.projectLanguage,jdbcType=INTEGER}
+							then #{item.projectLanguage,jdbcType=VARCHAR}
 						</if>
 					</foreach>
 				</trim>
@@ -584,11 +584,11 @@
 					</foreach>
 				</trim>
 				<!--项目名称-->
-				<trim prefix=" name = case " suffix="end,">
+				<trim prefix=" projectName = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
-						<if test="item.name!=null">
-							when id=#{item.name,jdbcType=INTEGER}
-							then #{item.name,jdbcType=VARCHAR}
+						<if test="item.projectName!=null">
+							when id=#{item.projectName,jdbcType=INTEGER}
+							then #{item.projectName,jdbcType=VARCHAR}
 						</if>
 					</foreach>
 				</trim>

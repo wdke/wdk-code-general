@@ -11,6 +11,10 @@
 <body>
 
 <div class="container">
+    <select>
+        <option th:each="tab,userStat:${list}" th:value="${tab.id}" th:text="${tab.dbType+'/'+tab.dbName}"
+                th:selected="${tab.id == db.id}"></option>
+    </select>
     <form class="form-horizontal" action="#" role="form" th:action="@{/db/save}" method="post">
 
         <input type="hidden" class="form-control" name="userId" id="userId"
@@ -23,34 +27,34 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="dbname" class="col-sm-2 control-label">数据库名称</label>
+            <label for="dbName" class="col-sm-2 control-label">数据库名称</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="dbname" id="dbname"
-                       placeholder="test" th:value="${db.dbname}">
+                <input type="text" class="form-control" name="dbName" id="dbName"
+                       placeholder="test" th:value="${db.dbName}">
             </div>
         </div>
 
         <div class="form-group">
-            <label for="dbuser" class="col-sm-2 control-label">数据库用户名</label>
+            <label for="dbUsername" class="col-sm-2 control-label">数据库用户名</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="dbuser" id="dbuser"
-                       placeholder="root" th:value="${db.dbuser}">
+                <input type="text" class="form-control" name="dbUsername" id="dbUsername"
+                       placeholder="root" th:value="${db.dbUsername}">
             </div>
         </div>
 
 
         <div class="form-group">
-            <label for="dbpassword" class="col-sm-2 control-label">数据库密码</label>
+            <label for="dbPassword" class="col-sm-2 control-label">数据库密码</label>
             <div class="col-sm-10">
-                <input type="password" class="form-control" name="dbpassword" id="dbpassword"
-                       placeholder="字母数字下划线" th:value="${db.dbpassword}">
+                <input type="password" class="form-control" name="dbPassword" id="dbPassword"
+                       placeholder="字母数字下划线" th:value="${db.dbPassword}">
             </div>
         </div>
         <div class="form-group">
-            <label for="dbport" class="col-sm-2 control-label">数据库端口号</label>
+            <label for="dbPort" class="col-sm-2 control-label">数据库端口号</label>
             <div class="col-sm-10">
-                <input type="number" class="form-control" name="dbport" id="dbport"
-                       placeholder="3306" th:value="${db.dbport}">
+                <input type="number" class="form-control" name="dbPort" id="dbPort"
+                       placeholder="3306" th:value="${db.dbPort}">
             </div>
         </div>
         <div class="form-group">
