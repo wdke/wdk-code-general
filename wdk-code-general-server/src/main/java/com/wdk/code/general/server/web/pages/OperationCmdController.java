@@ -1,4 +1,4 @@
-package com.wdk.code.general.server.web.controller;
+package com.wdk.code.general.server.web.pages;
 
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;

@@ -1,4 +1,4 @@
-package com.wdk.code.general.server.web.controller;
+package com.wdk.code.general.server.web.pages;
 
 import com.wdk.code.general.server.service.DbMessagesService;
 import com.wdk.code.general.server.service.ProjectMetadataService;
@@ -73,17 +73,17 @@ public class GenerateController {
         ProjectMetadata projectMetadata = UserContext.current().getProjectMetadata();
         System.out.println(tableName.length);
 
-//        pomService.pom();
-//        pomService.serverPom();
-//        configService.application(projectMetadata.getName());
-//        configService.applicationBranch("dev", projectMetadata.getPackages());
-//        configService.applicationBranch("prod", projectMetadata.getPackages());
-//        configService.applicationBranch("test", projectMetadata.getPackages());
-//        configService.logBack();
+        pomService.pom();
+        pomService.serverPom();
+        configService.application(projectMetadata.getProjectName());
+        configService.applicationBranch("dev", projectMetadata.getPackages());
+        configService.applicationBranch("prod", projectMetadata.getPackages());
+        configService.applicationBranch("test", projectMetadata.getPackages());
+        configService.logBack();
 
         generateService.init(tableName);
 
-//        commonFileService.all(projectMetadata.getProJectJavaName(), projectMetadata.getPackages());
+        commonFileService.all(projectMetadata.getProJectJavaName(), projectMetadata.getPackages());
 
         return "general/index";
 

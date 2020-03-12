@@ -1,5 +1,5 @@
 server:
-  port: 8880
+  port: 8806
 
   servlet:
     context-path: /wdk-code-general-server

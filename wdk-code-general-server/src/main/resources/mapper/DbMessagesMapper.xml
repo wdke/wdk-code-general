@@ -145,10 +145,13 @@
 		<where>
 			<include refid="Base_Where_Sql"/>
 		</where>
-		<if test="orderBy != null">order by ${orderBy}
-</if>	</select>
+		<if test="orderBy != null">
+			order by ${orderBy}
+		</if>
+	</select>
 	<!--根据条件查询列表结束-->
-	<!--根据条件查询列表开始-->	<select id="count" parameterType="com.wdk.code.general.server.storage.entity.DbMessages" resultType="java.lang.Integer">
+	<!--根据条件查询列表开始-->
+	<select id="count" parameterType="com.wdk.code.general.server.storage.entity.DbMessages" resultType="java.lang.Integer">
 		select count(*)
 
 		from  
@@ -387,7 +390,7 @@
 				<trim prefix=" userId = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.userId!=null">
-							when id=#{item.userId,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.userId,jdbcType=INTEGER}
 						</if>
 					</foreach>
@@ -396,7 +399,7 @@
 				<trim prefix=" dbType = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.dbType!=null">
-							when id=#{item.dbType,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.dbType,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -405,7 +408,7 @@
 				<trim prefix=" host = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.host!=null">
-							when id=#{item.host,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.host,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -414,7 +417,7 @@
 				<trim prefix=" dbName = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.dbName!=null">
-							when id=#{item.dbName,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.dbName,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -423,7 +426,7 @@
 				<trim prefix=" dbUsername = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.dbUsername!=null">
-							when id=#{item.dbUsername,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.dbUsername,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -432,7 +435,7 @@
 				<trim prefix=" dbPassword = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.dbPassword!=null">
-							when id=#{item.dbPassword,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.dbPassword,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -441,7 +444,7 @@
 				<trim prefix=" dbPort = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.dbPort!=null">
-							when id=#{item.dbPort,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.dbPort,jdbcType=INTEGER}
 						</if>
 					</foreach>
@@ -450,7 +453,7 @@
 				<trim prefix=" createTime = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.createTime!=null">
-							when id=#{item.createTime,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.createTime,jdbcType=TIMESTAMP}
 						</if>
 					</foreach>
@@ -459,7 +462,7 @@
 				<trim prefix=" updateTime = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.updateTime!=null">
-							when id=#{item.updateTime,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.updateTime,jdbcType=TIMESTAMP}
 						</if>
 					</foreach>

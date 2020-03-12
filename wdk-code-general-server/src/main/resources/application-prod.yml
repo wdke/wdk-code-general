@@ -2,7 +2,7 @@
 eureka:
   client:
     serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址
-      defaultZone: http://192.168.1.101:8802/eureka/
+      defaultZone: http://eureka-server:8802/eureka/
 
 spring:  
   thymeleaf:  
@@ -19,7 +19,7 @@ spring:
 
   #数据库连接配置开始
   datasource:
-    url: jdbc:mysql://49.233.195.134:3306/auto_code?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://mysql57:3306/auto_code?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
     username: root
     password: root1234
     driver-class-name: com.mysql.jdbc.Driver
@@ -32,9 +32,10 @@ spring:
   #redis 数据库的配置
   redis:
     database: 0
-    host: 192.168.1.100
+    host: redis
     port: 6379
     timeout: 5000
+    password: wdke@1216.com
 
 
 #mybatis配置开始
@@ -53,5 +54,13 @@ pagehelper:
   support-methods-arguments: true
   params: count=countSql
 #分页拦截器配置结束
+
+
+
+
+host: localhost:8806
+
+filePath: /opt/auto-code/
+staticFile: /opt/auto-code/static
 
 

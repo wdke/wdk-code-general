@@ -145,10 +145,13 @@
 		<where>
 			<include refid="Base_Where_Sql"/>
 		</where>
-		<if test="orderBy != null">order by ${orderBy}
-</if>	</select>
+		<if test="orderBy != null">
+			order by ${orderBy}
+		</if>
+	</select>
 	<!--根据条件查询列表结束-->
-	<!--根据条件查询列表开始-->	<select id="count" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi" resultType="java.lang.Integer">
+	<!--根据条件查询列表开始-->
+	<select id="count" parameterType="com.wdk.code.general.server.storage.entity.GeneralApi" resultType="java.lang.Integer">
 		select count(*)
 
 		from  
@@ -387,7 +390,7 @@
 				<trim prefix=" path = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.path!=null">
-							when id=#{item.path,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.path,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -396,7 +399,7 @@
 				<trim prefix=" args = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.args!=null">
-							when id=#{item.args,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.args,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -405,7 +408,7 @@
 				<trim prefix=" vo = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.vo!=null">
-							when id=#{item.vo,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.vo,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -414,7 +417,7 @@
 				<trim prefix=" froms = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.froms!=null">
-							when id=#{item.froms,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.froms,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -423,7 +426,7 @@
 				<trim prefix=" wheres = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.wheres!=null">
-							when id=#{item.wheres,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.wheres,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -432,7 +435,7 @@
 				<trim prefix=" orderbys = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.orderbys!=null">
-							when id=#{item.orderbys,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.orderbys,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -441,7 +444,7 @@
 				<trim prefix=" limits = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.limits!=null">
-							when id=#{item.limits,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.limits,jdbcType=VARCHAR}
 						</if>
 					</foreach>
@@ -450,7 +453,7 @@
 				<trim prefix=" createTime = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.createTime!=null">
-							when id=#{item.createTime,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.createTime,jdbcType=TIMESTAMP}
 						</if>
 					</foreach>
@@ -459,7 +462,7 @@
 				<trim prefix=" updateTime = case " suffix="end,">
 					<foreach collection="list" item="item" index="index">
 						<if test="item.updateTime!=null">
-							when id=#{item.updateTime,jdbcType=INTEGER}
+							when id=#{item.id,jdbcType=INTEGER}
 							then #{item.updateTime,jdbcType=TIMESTAMP}
 						</if>
 					</foreach>

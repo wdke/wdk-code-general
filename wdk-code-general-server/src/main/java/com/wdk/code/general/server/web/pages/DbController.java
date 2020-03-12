@@ -1,4 +1,4 @@
-package com.wdk.code.general.server.web.controller;
+package com.wdk.code.general.server.web.pages;
 
 import com.alibaba.fastjson.JSON;
 import com.wdk.code.general.server.redis.RedisStringDao;

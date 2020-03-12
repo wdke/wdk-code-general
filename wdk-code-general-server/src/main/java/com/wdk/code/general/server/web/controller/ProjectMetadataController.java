@@ -1,95 +1,139 @@
 package com.wdk.code.general.server.web.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.wdk.code.general.server.redis.RedisStringDao;
+import com.github.pagehelper.PageInfo;
 import com.wdk.code.general.server.service.ProjectMetadataService;
 import com.wdk.code.general.server.web.args.ProjectMetadataArgs;
 import com.wdk.code.general.server.web.vo.ProjectMetadataVo;
-import com.wdk.general.core.common.constant.RedisConstant;
-import com.wdk.general.core.common.model.UserContext;
+import com.wdk.general.core.common.enums.ResponseStatusEnum;
+import com.wdk.general.core.common.model.PageParam;
+import com.wdk.general.core.common.model.ResponseVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-/**
- * created by wdk on 2019/12/13
- */
 
-@Controller
-@RequestMapping("project/metadata")
+//项目生成信息信息页面控制类
+@RestController
+@RequestMapping("api/project/metadata")
 public class ProjectMetadataController {
 
-    private Logger logger = LoggerFactory.getLogger(ProjectMetadataController.class);
+	//定义生成logger对象
+	private static Logger logger=LoggerFactory.getLogger(ProjectMetadataController.class);
 
-    @Autowired
-    private RedisStringDao redisStringDao;
+	//项目生成信息信息逻辑处理对象
+	@Autowired
+	private ProjectMetadataService projectMetadataService;
 
+	/**
+	* 分页查询接口
+	*
+	* @param projectMetadata
+	* @author jack
+	* @date 2020/03/12 14:54
+	*/
+	@RequestMapping(value = "",name = "分页查询接口")
+	public ResponseVo<PageInfo<ProjectMetadataVo>> index(ProjectMetadataArgs projectMetadata, PageParam pageParam){
 
-    @Autowired
-    private ProjectMetadataService projectMetadataService;
+		//调用业务逻辑
+		PageInfo<ProjectMetadataVo> result = projectMetadataService.pageInfo(projectMetadata, pageParam);
 
-    /**
-     * 进入创建项目目录
-     *
-     * @param model
-     * @return
-     */
-    @GetMapping("index")
-    public String index(Model model) {
+		return new ResponseVo(ResponseStatusEnum.SUCCESS, result);
+	}
 
+	/**
+	* 查询数据列表接口
+	*
+	* @param projectMetadata
+	* @author jack
+	* @date 2020/03/12 14:54
+	*/
+	@RequestMapping(value = "list",name = "查询数据列表接口")
+	public ResponseVo<List<ProjectMetadataVo>> list(ProjectMetadataArgs projectMetadata){
 
-        ProjectMetadataArgs projectMetadataArgs = new ProjectMetadataArgs();
-        projectMetadataArgs.setUserId(UserContext.current().getUserId());
-        List<ProjectMetadataVo> list = projectMetadataService.list(projectMetadataArgs);
-        model.addAttribute("list", list);
+		//调用业务逻辑
+		List<ProjectMetadataVo> result = projectMetadataService.list(projectMetadata);
 
-        ProjectMetadataArgs projectMetadata = JSON.parseObject(redisStringDao.get("pm_" + UserContext.current().getUsername()), ProjectMetadataArgs.class);
+		return new ResponseVo(ResponseStatusEnum.SUCCESS, result);
+	}
 
-        if (projectMetadata == null) {
-            projectMetadata = new ProjectMetadataArgs();
-            if (list.size() > 0) {
-                BeanUtils.copyProperties(list.get(0), projectMetadata);
-            }
-        }
+	/**
+	* 根据条件统计总量接口
+	*
+	* @param projectMetadata
+	* @author jack
+	* @date 2020/03/12 14:54
+	*/
+	@RequestMapping(value = "count",name = "根据条件统计总量接口")
+	public ResponseVo<Integer> count(ProjectMetadataArgs projectMetadata){
 
-        model.addAttribute("pm", projectMetadata);
+		//调用业务逻辑
+		Integer result = projectMetadataService.count(projectMetadata);
 
-        return "project_metadata/index";
+		return new ResponseVo(ResponseStatusEnum.SUCCESS, result);
+	}
 
-    }
+	/**
+	* 新增接口
+	*
+	* @param projectMetadata
+	* @author jack
+	* @date 2020/03/12 14:54
+	*/
+	@PostMapping(value = "insert",name = "新增接口")
+	public ResponseVo<Integer> insert(@RequestBody ProjectMetadataArgs projectMetadata){
 
-    /**
-     * 项目信息存储
-     *
-     * @param model
-     * @param projectMetadata
-     * @param request
-     * @return
-     */
-    @PostMapping("save")
-    public String save(Model model, ProjectMetadataArgs projectMetadata, HttpServletRequest request) {
+		//调用业务逻辑
+		Integer result = projectMetadataService.insertSelective(projectMetadata);
 
-        redisStringDao.set("pm_" + UserContext.current().getUsername(), JSON.toJSONString(projectMetadata), RedisConstant.PROJECT_TIME);
+		return new ResponseVo(ResponseStatusEnum.SUCCESS, result);
+	}
 
-        projectMetadata.setUserId(UserContext.current().getUserId());
-        if (null == projectMetadata.getPoint()) {
-            projectMetadata.setPoint(8080);
-        }
-        projectMetadataService.insertSelective(projectMetadata);
+	/**
+	* 更新接口
+	*
+	* @param projectMetadata
+	* @author jack
+	* @date 2020/03/12 14:54
+	*/
+	@PostMapping(value = "update",name = "更新接口")
+	public ResponseVo<Integer> update(@RequestBody ProjectMetadataArgs projectMetadata){
 
-        model.addAttribute("pm", projectMetadata);
+		//调用业务逻辑
+		Integer result = projectMetadataService.updateSelectiveByPrimaryKey(projectMetadata);
 
-        return "project_metadata/index";
+		return new ResponseVo(ResponseStatusEnum.SUCCESS, result);
+	}
 
-    }
+	/**
+	 * 移除方法
+	 *
+	 * @param id
+	 * @return
+	 */
+	@PostMapping(value = "remove/{id}", name = "移除方法")
+	public ResponseVo<Integer> remove(@PathVariable("id") Integer id) {
+		//调用业务逻辑
+		Integer result = projectMetadataService.deleteByPrimaryKey(id);
+
+		return new ResponseVo(ResponseStatusEnum.SUCCESS, result);
+	}
+
+	/**
+	 * 详情
+	 *
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(value = "detail/{id}", name = "详情方法")
+	public ResponseVo<ProjectMetadataVo> detail(@PathVariable("id") Integer id) {
+		//调用业务逻辑
+		ProjectMetadataVo result = projectMetadataService.selectByPrimaryKey(id);
+
+		return new ResponseVo(ResponseStatusEnum.SUCCESS, result);
+	}
+
 
 }
