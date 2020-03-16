@@ -6,6 +6,7 @@ package com.wdk.general.core.service.impl;
  */
 
 import com.wdk.general.core.common.constant.WechatConstant;
+import com.wdk.general.core.common.model.ArticleItemVo;
 import com.wdk.general.core.service.WeChatService;
 import com.wdk.general.core.utils.WeChatUtil;
 import org.slf4j.Logger;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,7 +58,13 @@ public class WeChatServiceImpl implements WeChatService {
             // 文本消息
             if (msgType.equals(WechatConstant.REQ_MESSAGE_TYPE_TEXT)) {
 
-                respXml = WeChatUtil.sendTextMsg(requestMap, "不知道你在说啥。");
+                List<ArticleItemVo> items = new ArrayList<>();
+                ArticleItemVo item = new ArticleItemVo();
+                item.setTitle("个人博客");
+                item.setUrl("http://hnsqwdk.top/wordpress/");
+                items.add(item);
+
+                respXml = WeChatUtil.sendArticleMsg(requestMap, items);
             }
             // 图片消息
             else if (msgType.equals(WechatConstant.REQ_MESSAGE_TYPE_IMAGE)) {

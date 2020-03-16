@@ -1,6 +1,8 @@
 package com.wdk.code.general.server.web.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.wdk.code.general.server.https.WechatApiService;
+import com.wdk.general.core.common.constant.WechatConstant;
 import com.wdk.general.core.service.WeChatService;
 import com.wdk.general.core.utils.WeChatUtil;
 import org.slf4j.Logger;
@@ -23,6 +25,9 @@ public class WeChatController {
 
     @Autowired
     private WeChatService weChatService;
+
+    @Autowired
+    private WechatApiService wechatApiService;
 
     /**
      * 处理微信服务器发来的get请求，进行签名的验证
@@ -66,5 +71,16 @@ public class WeChatController {
         return weChatService.processRequest(request);
     }
 
+    /**
+     * 此处是处理微信服务器的消息转发的
+     */
+    @GetMapping(value = "token")
+    public String token(HttpServletRequest request) {
+
+        logger.info("微信消息：Index：request->{}", JSON.toJSONString(request.getParameterMap()));
+
+        String result = wechatApiService.token("client_credential", WechatConstant.APP_ID, WechatConstant.APPSECRET);
+        return result;
+    }
 
 }

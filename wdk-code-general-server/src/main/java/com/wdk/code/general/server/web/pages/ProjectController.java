@@ -26,9 +26,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("project/metadata")
-public class ProjectMetadataController {
+public class ProjectController {
 
-    private Logger logger = LoggerFactory.getLogger(ProjectMetadataController.class);
+    private Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
     @Autowired
     private RedisStringDao redisStringDao;

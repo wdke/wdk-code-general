@@ -84,6 +84,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         }
 
         if (requestURI.contains("/login")
+                || requestURI.contains("/wechat")
                 || requestURI.contains("/error")
                 || requestURI.contains("/register")
                 || requestURI.contains("/menus")
